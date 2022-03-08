@@ -4,7 +4,7 @@ This is product information from my old company Integrity Instruments, Inc. whic
 Integrity Instruments designed, manufactured, marketed and sold electronics for the serial communications, ICS, SCADA, and data acquisition markets. Our products shipped to dozens of countries across the world and were used in countless solutions by thousands of customers. Our products had a 100% guarantee and very few boards were ever returned.
 
 Some information you will find include:
-- [Schematics](https://github.com/anthonykempka/Integrity-Instruments-Products/tree/main/Manuals)
+- [Schematics](https://github.com/anthonykempka/Integrity-Instruments-Products/tree/main/Schematics)
 - Firmware source code
 - Software source code ranging from old MS-DOS software to Microsoft Windows software
 - [User manuals](https://github.com/anthonykempka/Integrity-Instruments-Products/tree/main/Manuals)
