@@ -7,7 +7,7 @@ Some information you will find include:
 - [Schematics](https://github.com/anthonykempka/Integrity-Instruments-Products/tree/main/Manuals)
 - Firmware source code
 - Software source code ranging from old MS-DOS software to Microsoft Windows software
-- Product manuals
+- [User manuals](https://github.com/anthonykempka/Integrity-Instruments-Products/tree/main/Manuals)
 - Design notes to capture the reasons certain design choices were made
 
 ![Integrity Instruments (small)](https://user-images.githubusercontent.com/16089554/156586284-04dc350c-f0f1-4b80-b41b-2571d90f10a4.png)
