@@ -4,7 +4,7 @@ These User Manuals are named using the part of model number - mostly.
 
 | Name | Description |
 |------|-------------|
-| 232M100 | RS-232 data acquisition digital I/O board using the Microchip PIC 18F4455 |
+| [232M100](https://github.com/anthonykempka/Integrity-Instruments-Products/blob/main/Manuals/PDF/232-OPT1%20MANUAL.pdf) | RS-232 data acquisition digital I/O board using the Microchip PIC 18F4455 |
 | 232M200 | RS-232 data acquisition x8 digital I/O and analog I/O (x2 A/D and x2 D/A) using the Microchip PIC16F874A |
 | 232M300 | RS-232 data acquisition x16 digital I/O and analog I/O (x8 A/D and x2 D/A) using the Microchip PIC16C65B |
 | 232M300-CNT | RS-232 data acquisition x16 digital I/O and pulse-counter input + PWM output using the Microchip PIC18F422 |
