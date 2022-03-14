@@ -3,7 +3,7 @@
 //
 // TEST_DIG.C
 //
-//          Integrity Instruments (a division of Cogito Software, Inc.)
+//          Integrity Instruments 
 //          -----------------------------------------------------------
 //          P.O. Box 451
 //          Pine River, MN  56474
