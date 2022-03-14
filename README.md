@@ -8,7 +8,7 @@ Our products had a 100% guarantee. Very few boards were ever returned and the va
 Some information you will find include:
 - [Schematics](https://github.com/anthonykempka/Integrity-Instruments-Products/tree/main/Schematics)
 - [Firmware source code](https://github.com/anthonykempka/Integrity-Instruments-Products/tree/main/Firmware)
-- Software source code ranging from old MS-DOS software to Microsoft Windows software
+- [Software source code](https://github.com/anthonykempka/Integrity-Instruments-Products/tree/main/Software) ranging from old MS-DOS software to Microsoft Windows software
 - [User manuals](https://github.com/anthonykempka/Integrity-Instruments-Products/tree/main/Manuals)
 - Design notes to capture the reasons certain design choices were made
 
