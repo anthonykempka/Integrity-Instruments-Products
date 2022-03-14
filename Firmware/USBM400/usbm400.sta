@@ -1,0 +1,119 @@
+
+ROM used: 7914 (24%)
+          7914 (24%) including unused fragments
+
+          2 Average locations per line
+          7 Average locations per statement
+
+RAM used: 204 (10%) at main() level
+          224 (11%) worst case
+
+Stack used: 9 worst case (out of 25 total available)
+
+Lines Stmts  %   Files
+----- ----- ---  -----
+ 1093   420  37  usbm400.c
+  412     0   0  ..\..\..\Program Files\PICC\Devices\18f6520.h
+  417   126  11  ..\..\..\Program Files\PICC\Drivers\string.h
+   28     0   0  ..\..\..\Program Files\PICC\Drivers\stddef.h
+   28     0   0  ..\..\..\Program Files\PICC\Drivers\ctype.h
+ 1349   564  50  usbn9603.c
+  247    14   1  USBM400_desc.h
+  211    14   1  usbn9603_reg.h
+----- -----
+ 3785  1138 Total
+
+Page ROM  %  RAM   Vol Diff  Functions:
+---- --- --- ---   --- ----  ----------
+0     40   0   1             @delay_ms1
+0     42   0   0             @const97
+0     52   0   5   129  4.6  strlen
+0     12   0   0    47  1.8  setup_spi_fast
+0     12   0   0    47  1.8  setup_spi_clk64
+0     22   0   1   157  0.8  setup_spi_mode
+0     34   0   0             @const201
+0     62   0   0             @const203
+0     20   0   0             @const205
+0     72   0   0             @const207
+0     66   0   0             @const209
+0     44   0   0             @const211
+0    100   1   5   276  6.0  endpoint_status_init
+0    132   1   0   399  2.4  reset_usb
+0    468   3   2  1034  4.4  usb_init
+0    530   3   5  3298 10.4  XmitOnUSB0
+0    152   1   2   840  7.2  getdescriptor
+0    244   2   2  1279  6.3  clrfeature
+0    224   1   5  1006  7.3  setconfiguration
+0    222   1   2  1154  6.3  setfeature
+0    276   2   0  1641  6.9  getstatus
+0    140   1   2   964  9.7  handle_setup
+0     46   0   1   309  6.0  tx_1
+0     46   0   1   309  6.0  tx_2
+0     46   0   1   309  6.0  tx_3
+0    204   1   6  1005  9.7  rx_1
+0     26   0   0    29  1.2  usbn_get_version
+0    124   1   3   871  7.2  usb_isr
+0    224   1   4  1021  6.8  handle_alt
+0    210   1   5  1286 11.5  handle_txev
+0    272   2   8  1498 13.5  handle_rxev
+0     28   0   0             @MEMSET
+0      4   0   0     5  1.0  handle_warn
+0      4   0   0     5  1.0  handle_frame
+0      4   0   0     5  1.0  handle_uld
+0     50   0   2   372  3.4  usbn_write
+0     58   0   2   409  2.9  usbn_read
+0     22   0   2   136  2.3  rd_eeprom
+0     48   0   3   390  4.5  wr_eeprom
+0    132   1   3   420  5.2  update_dac
+0    140   1   4   553  6.8  acquire_adc
+0     62   0   1   235  3.7  config_adc
+0      6   0   0    45  1.4  led_on_red
+0      6   0   0    45  1.4  led_on_green
+0      6   0   0    45  1.4  led_off
+0     14   0   0    69  1.9  trigger_led_red
+0     14   0   1    89  3.3  write_port1
+0     20   0   1   110  3.4  read_port1
+0     14   0   1    89  3.3  write_port2
+0     20   0   1   110  3.4  read_port2
+0     20   0   1    82  2.5  set_dir_port1
+0      8   0   0    20  1.3  get_dir_port1
+0     20   0   1    82  2.5  set_dir_port2
+0      8   0   0    20  1.3  get_dir_port2
+0    136   1   8   475  7.5  hex_to_bin
+0    102   1   9   341  5.7  bin_to_hex
+0     16   0   0    39  2.0  timer0_isr
+0     76   0   0   412  5.1  timer1_isr
+0    218   1   5   753  8.7  update_eesettings
+0   2034  13  11 11871 14.9  MAIN
+0     30   0   0             @const348
+0     28   0   0             @const349
+0     28   0   0             @const350
+0     28   0   0             @const351
+0     28   0   0             @const352
+0     28   0   0             @const353
+0     28   0   0             @const354
+0     28   0   0             @const355
+0     28   0   0             @const356
+0     28   0   0             @const357
+
+Program metrics:
+    Functions               51
+    Statements              1138
+    Comments                1663
+    Volume (V)              60256
+    Difficilty (D)          251.9
+    Effort to implement (E) 15178309
+    Time to implement (T)   234 hours, 14 minutes
+    Est Delivered Bugs (B)  20
+    Cyclomatic Complexity   206
+    Maintainability (MI)    110
+
+ Segment     Used  Free
+-----------  ----  ----
+00000-00002     4  0  
+00004-00006     4  0  
+00008-000B4   174  0  
+000B6-07FFE  7732  24854  
+
+
+

@@ -1,0 +1,9 @@
+Message[301] E:\PICTOOLS\485-25~1\P12C508.INC 37 : MESSAGE: (Processor-header file mismatch.  Verify selected processor.)
+Error[113]   E:\PICTOOLS\485-25~1\485E.ASM 155 : Symbol not previously defined (Bit_Count_Min)
+Error[113]   E:\PICTOOLS\485-25~1\485E.ASM 165 : Symbol not previously defined (BitCount_Min)
+Error[113]   E:\PICTOOLS\485-25~1\485E.ASM 169 : Symbol not previously defined (Bit_Count_Min)
+Error[113]   E:\PICTOOLS\485-25~1\485E.ASM 176 : Symbol not previously defined (RS232_TMT_3)
+Error[113]   E:\PICTOOLS\485-25~1\485E.ASM 184 : Symbol not previously defined (BitCount_Min)
+Error[113]   E:\PICTOOLS\485-25~1\485E.ASM 188 : Symbol not previously defined (Bit_Count_Min)
+(last command = ) 
+ERRORS! 

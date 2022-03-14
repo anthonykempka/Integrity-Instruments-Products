@@ -1,0 +1,329 @@
+MPASM 02.01.08 Intermediate      485E.ASM   2-18-2002  20:30:43         PAGE  1
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                    00001 ;**************************************************************************
+                    00002 ; 485E.ASM
+                    00003 ;
+                    00004 ; High Speed Auto Enable, Auto Baud detect converter
+                    00005 ;
+                    00006 ; Version Info
+                    00007 ; -------------
+                    00008 ; Version 1.3
+                    00009 ;   Changed from counting loop to Timer0 based timing
+                    00010 ;
+                    00011 ; Version 1.4
+                    00012 ;   Added watchdog timeout support and commented some code.
+                    00013 ;
+                    00014 ; Version 1.5
+                    00015 ;   Removed RS232_SLOW algorithm to removed power up deadlock.
+                    00016 ;
+                    00017 ; Version 1.6
+                    00018 ;   Changed algorithm to use table driven 485 drive enable timeout rather
+                    00019 ;   than calculate timeout.
+                    00020 ;
+                    00021 ;--------------------------------------------------------------------------
+                    00022 ;
+                    00023 ; Author
+                    00024 ; ------
+                    00025 ; Anthony A. Kempka
+                    00026 ;
+                    00027 ;**************************************************************************
+                    00028 
+                    00029         LIST P=12C508A, R=DEC
+                    00030 
+                    00031 #include "p12c508.inc"
+                    00001         LIST
+                    00002 ; P12C508.INC  Standard Header File, Version 1.02    Microchip Technology, Inc.
+Message[301]: MESSAGE: (Processor-header file mismatch.  Verify selected processor.)
+                    00105         LIST
+                    00032 
+                    00033 ;
+                    00034 ; Use the following config settings
+0FFF 0FE6           00035         __CONFIG   _CP_ON & _WDT_ON & _MCLRE_OFF & _IntRC_OSC
+                    00036 
+                    00037 ;
+                    00038 ; Handy bit defines
+                    00039 ;
+  00000000          00040 TX_EN_Bit       EQU     0x00
+  00000001          00041 RS232_Bit       EQU     0x01
+  00000002          00042 RTS_Bit         EQU     0x02
+  00000003          00043 RS485_Bit       EQU     0x03
+  00000004          00044 CTS_Bit         EQU     0x04
+  00000005          00045 LED_Bit         EQU     0x05
+                    00046 
+  0000002E          00047 TRIS_LED_OFF    EQU     0x2E
+  0000000E          00048 TRIS_LED_ON     EQU     0x0E
+                    00049 
+MPASM 02.01.08 Intermediate      485E.ASM   2-18-2002  20:30:43         PAGE  2
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                    00050 ;--------------------------------------------------------------------------
+                    00051 ;   Set ScratchPadRam here.
+                    00052 ;--------------------------------------------------------------------------
+  00000008          00053 ScratchPadRam   EQU     0x08
+                    00054 
+                    00055 ;--------------------------------------------------------------------------
+                    00056 ; Variables
+                    00057 ;--------------------------------------------------------------------------
+                    00058 
+  00000008          00059 Timeout         EQU     ScratchPadRam+0
+  00000009          00060 Timeout_X10     EQU     ScratchPadRam+1
+  0000000A          00061 Timeout_485     EQU     ScratchPadRam+2
+  0000000B          00062 Count           EQU     ScratchPadRam+3
+                    00063 
+  0000000C          00064 TMR0_Timeout    EQU     ScratchPadRam+4
+  0000000D          00065 Bit_Count       EQU     ScratchPadRam+5
+                    00066 
+                    00067 ;--------------------------------------------------------------------------
+                    00068 ; Program Code
+                    00069 ;--------------------------------------------------------------------------
+                    00070 
+                    00071 ;--------------------------------------------------------------------------
+                    00072 ; Main Program
+                    00073 ;--------------------------------------------------------------------------
+0000                00074                 ORG     0
+                    00075 
+0000                00076 Start
+0000 0025           00077                 MOVWF   OSCCAL          ; Load the oscillator calibration
+0001 0066           00078                 CLRF    GPIO            ; Clear the I/O outputs
+0002 0C2E           00079                 MOVLW   TRIS_LED_OFF    ; Configure I/O
+0003 0006           00080                 TRIS    GPIO            ; Load the TRIS
+0004 0586           00081                 BSF     GPIO, CTS_Bit   ; Make sure CTS inactive!
+                    00082 
+0005 0CC2           00083                 MOVLW   0xC2            ; Option register prescale 1:8
+                    00084                                         ; TMR0 
+0006 0002           00085                 OPTION                  ; load into option register
+                    00086 
+                    00087 ;
+                    00088 ; Start with the FAST prescale 9600-115200 since this is the most common.
+                    00089 ; Use the timeout for 9600 BPS since it is the slowest.
+                    00090 ;
+                    00091 
+0007 0C82           00092                 MOVLW   0x82            ; Starting timeout 130 count, 9600 BPS
+0008 0029           00093                 MOVWF   Timeout_X10
+0009 0C0D           00094                 MOVLW   0x0D            ; bit time timeout 13
+000A 0028           00095                 MOVWF   Timeout
+                    00096 
+000B                00097 Data_In_Loop
+000B 0004           00098                 CLRWDT                  ; Kick the dog
+000C 0726           00099                 BTFSS   GPIO, RS232_Bit ; Check RS232 active (0)
+000D 0925           00100                 CALL    RS232_TMT
+000E 0766           00101                 BTFSS   GPIO, RS485_Bit ; Check RS485 active (0)
+000F 0913           00102                 CALL    RS485_RCV
+MPASM 02.01.08 Intermediate      485E.ASM   2-18-2002  20:30:43         PAGE  3
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0010 0746           00103                 BTFSS   GPIO, RTS_Bit   ; Check for RTS active (0)
+0011 0486           00104                 BCF     GPIO, CTS_Bit   ; CTS Active
+0012 0A0B           00105                 GOTO    Data_In_Loop    ; Repeat the whole thing
+                    00106 
+                    00107 
+                    00108 ;--------------------------------------------------------------------------
+                    00109 ;
+                    00110 ; Handles the RS-485 receive (RS-232 transmit to PC)
+                    00111 ;
+0013                00112 RS485_RCV
+0013 0586           00113                 BSF     GPIO, CTS_Bit   ; Make sure CTS inactive!
+0014 0C0E           00114                 MOVLW   TRIS_LED_ON     ; LED ON state
+0015 0006           00115                 TRIS    GPIO
+0016 05A6           00116                 BSF     GPIO, LED_Bit   ; LED Green
+                    00117 
+0017                00118 RS485_RCV_START
+0017 0CFF           00119                 MOVLW   0xFF            ; Set the timeout
+0018 002A           00120                 MOVWF   Timeout_485
+                    00121 
+0019                00122 RS485_RCV_LOOP
+0019 0004           00123                 CLRWDT                  ; Kick the dog
+001A 0726           00124                 BTFSS   GPIO, RS232_Bit ; Check RS232 active (0)
+001B 0A21           00125                 GOTO    RS485_RCV_TMT
+001C 0766           00126                 BTFSS   GPIO, RS485_Bit ; Check RS485 active (0)
+001D 0A17           00127                 GOTO    RS485_RCV_START
+001E 02EA           00128                 DECFSZ  Timeout_485, F  ; Do timeout decrement
+001F 0A19           00129                 GOTO    RS485_RCV_LOOP
+0020 0A22           00130                 GOTO    RS485_RCV_END
+                    00131 
+0021                00132 RS485_RCV_TMT
+0021 0925           00133                 CALL    RS232_TMT
+0022                00134 RS485_RCV_END
+0022 0C2E           00135                 MOVLW   TRIS_LED_OFF    ; LED OFF state
+0023 0006           00136                 TRIS    GPIO
+0024 0800           00137                 RETLW   0
+                    00138 
+                    00139 
+                    00140 ;--------------------------------------------------------------------------
+                    00141 ;
+                    00142 ; Handles the RS-232 (HOST PC) transmitinng
+                    00143 ;
+                    00144 ; When this routine is entered, we are seeing the START bit of
+                    00145 ; the first byte being sent.
+                    00146 ;
+0025                00147 RS232_TMT
+0025 0061           00148                 CLRF    TMR0            ; Clear the TIMER0 count
+0026 0506           00149                 BSF     GPIO, TX_EN_Bit ; Enable RS485 transmit
+0027 0C0E           00150                 MOVLW   TRIS_LED_ON     ; LED ON state
+0028 0006           00151                 TRIS    GPIO
+0029 04A6           00152                 BCF     GPIO, LED_Bit   ; LED Red
+                    00153 
+002A 0CFF           00154                 MOVLW   0xFF            ; Reset minimum bit count
+Error[113]  : Symbol not previously defined (Bit_Count_Min)
+MPASM 02.01.08 Intermediate      485E.ASM   2-18-2002  20:30:43         PAGE  4
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+002B 0020           00155                 MOVWF   Bit_Count_Min
+002C 0C09           00156                 MOVLW   0x09            ; Opcode count to here
+002D 002D           00157                 MOVWF   Bit_Count
+                    00158                 
+002E 0004           00159 RS232_TMT_ON    CLRWDT
+002F 02AD           00160                 INCF    Bit_Count, F
+0030 0726           00161                 BTFSS   GPIO, RS232_Bit ; Check RS232 inactive (1)
+0031 0A2E           00162                 GOTO    RS232_TMT_ON
+                    00163 
+0032 020D           00164 RS232_TMT_1     MOVFW   Bit_Count       ; Check new bit count minimum
+Error[113]  : Symbol not previously defined (BitCount_Min)
+0033 0080           00165                 SUBWF   BitCount_Min, W ; subtract current from current min.
+0034 0703           00166                 BTFSS   STATUS, C
+0035 0A39           00167                 GOTO    RS232_TMT_OFF   ; no carry set (Timeout < W)
+0036 020D           00168                 MOVFW   Bit_Count       ; carry set (Timeout > W)
+Error[113]  : Symbol not previously defined (Bit_Count_Min)
+0037 0020           00169                 MOVWF   Bit_Count_Min   ; Save bit count
+                    00170 
+0038 0061           00171                 CLRF    TMR0            ; Clear timer 0 for OFF loop
+                    00172                 
+0039                00173 RS232_TMT_OFF
+0039 0004           00174                 CLRWDT
+003A 0726           00175                 BTFSS   GPIO, RS232_Bit ; Check RS232 active (0)
+Error[113]  : Symbol not previously defined (RS232_TMT_3)
+003B 0A00           00176                 GOTO    RS232_TMT_3
+003C 0201           00177                 MOVFW   TMR0            ; check timeout
+003D 008C           00178                 SUBWF   TMR0_Timeout, W
+003E 0703           00179                 BTFSS   STATUS, C
+003F 0A48           00180                 GOTO    RS232_TMT_TIMEOUT
+0040 0A39           00181                 GOTO    RS232_TMT_OFF
+                    00182 
+0041 020D           00183 RS232_TMT_2     MOVFW   Bit_Count       ; Check new bit count minimum
+Error[113]  : Symbol not previously defined (BitCount_Min)
+0042 0080           00184                 SUBWF   BitCount_Min, W ; subtract current from current min.
+0043 0703           00185                 BTFSS   STATUS, C
+0044 0A2E           00186                 GOTO    RS232_TMT_ON    ; no carry set (Timeout < W)
+0045 020D           00187                 MOVFW   Bit_Count       ; carry set (Timeout > W)
+Error[113]  : Symbol not previously defined (Bit_Count_Min)
+0046 0020           00188                 MOVWF   Bit_Count_Min   ; Save bit count
+0047 0A2E           00189                 GOTO    RS232_TMT_ON
+                    00190 
+0048                00191 RS232_TMT_TIMEOUT
+0048 0406           00192                 BCF     GPIO, TX_EN_Bit ; Disable RS485 transmit
+0049 0C2E           00193                 MOVLW   TRIS_LED_OFF    ; LED OFF state
+004A 0006           00194                 TRIS    GPIO
+004B 0586           00195                 BSF     GPIO, CTS_Bit   ; Make sure CTS inactive!
+004C 0800           00196                 RETLW   0
+                    00197 
+                    00198 
+                    00199 ;----------------------------------------------------------------------------
+                    00200 
+                    00201                 END
+MPASM 02.01.08 Intermediate      485E.ASM   2-18-2002  20:30:43         PAGE  5
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+Bit_Count                         0000000D
+C                                 00000000
+CTS_Bit                           00000004
+Count                             0000000B
+DC                                00000001
+Data_In_Loop                      0000000B
+F                                 00000001
+FSR                               00000004
+GPIO                              00000006
+GPWUF                             00000007
+INDF                              00000000
+LED_Bit                           00000005
+NOT_GPPU                          00000006
+NOT_GPWU                          00000007
+NOT_PD                            00000003
+NOT_TO                            00000004
+OSCCAL                            00000005
+PA0                               00000005
+PCL                               00000002
+PS0                               00000000
+PS1                               00000001
+PS2                               00000002
+PSA                               00000003
+RS232_Bit                         00000001
+RS232_TMT                         00000025
+RS232_TMT_1                       00000032
+RS232_TMT_2                       00000041
+RS232_TMT_OFF                     00000039
+RS232_TMT_ON                      0000002E
+RS232_TMT_TIMEOUT                 00000048
+RS485_Bit                         00000003
+RS485_RCV                         00000013
+RS485_RCV_END                     00000022
+RS485_RCV_LOOP                    00000019
+RS485_RCV_START                   00000017
+RS485_RCV_TMT                     00000021
+RTS_Bit                           00000002
+STATUS                            00000003
+ScratchPadRam                     00000008
+Start                             00000000
+T0CS                              00000005
+T0SE                              00000004
+TMR0                              00000001
+TMR0_Timeout                      0000000C
+TRIS_LED_OFF                      0000002E
+TRIS_LED_ON                       0000000E
+TX_EN_Bit                         00000000
+Timeout                           00000008
+Timeout_485                       0000000A
+Timeout_X10                       00000009
+W                                 00000000
+Z                                 00000002
+_CP_OFF                           00000FFF
+MPASM 02.01.08 Intermediate      485E.ASM   2-18-2002  20:30:43         PAGE  6
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+_CP_ON                            00000FF7
+_ExtRC_OSC                        00000FFF
+_IntRC_OSC                        00000FFE
+_LP_OSC                           00000FFC
+_MCLRE_OFF                        00000FEF
+_MCLRE_ON                         00000FFF
+_WDT_OFF                          00000FFB
+_WDT_ON                           00000FFF
+_XT_OSC                           00000FFD
+__12C508A                         00000001
+
+
+MEMORY USAGE MAP ('X' = Used,  '-' = Unused)
+
+0000 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+0040 : XXXXXXXXXXXXX--- ---------------- ---------------- ----------------
+0FC0 : ---------------- ---------------- ---------------- ---------------X
+
+All other memory blocks unused.
+
+Program Memory Words Used:    77
+Program Memory Words Free:   435
+
+
+Errors   :     6
+Warnings :     0 reported,     0 suppressed
+Messages :     1 reported,     0 suppressed
+
+

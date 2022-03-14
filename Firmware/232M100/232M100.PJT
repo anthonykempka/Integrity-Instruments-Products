@@ -1,0 +1,81 @@
+[PROJECT]
+Target=232M100.hex
+Development_Mode=
+Processor=0x4455
+ToolSuite=CCS
+Processor_Text=PIC18F4455
+
+[Directories]
+Include=C:\Program Files\PICC\devices\;C:\Program Files\PICC\dr;C:\Program Files\PICC\Drivers;
+Library=
+LinkerScript=
+
+[Target Data]
+FileList=C:\data\piccode\232M100\232M100\232M100.c
+BuildTool=C-COMPILER
+OptionString=+FH
+AdditionalOptionString=
+BuildRequired=1
+
+[232M100.c]
+Type=4
+Path=
+FileList=
+BuildTool=
+OptionString=
+AdditionalOptionString=
+
+[mru-list]
+1=232M100.c
+
+[Windows]
+0=0000 %S 0 0 796 451 3 0
+
+[Opened Files]
+1=232M100.c
+2=..\..\..\..\Program Files\PICC\devices\18F4455.h
+3=..\..\..\..\Program Files\PICC\Drivers\string.h
+4=
+5=..\..\..\..\Program Files\PICC\drivers\string.h
+6=
+[debugperif]
+selected=Analog/Digital Conv
+[debugram]
+autoread=1
+[debugeedata]
+autoread=1
+[debugbreak]
+count=0
+f1=E:\0Jobs\DataAcq\232M100\232M100.c
+l1=1176
+[pcwdebug]
+watchcol0=75
+[debugwatch]
+count=2
+e1=AD_Calibration
+e2=ResponseBuffer
+[debugexpr]
+expr=
+sideeffects=0
+[defines]
+enabled=0
+D1=
+V1=
+[fileformats]
+forcecoff=0
+debug=4
+error=2
+object=0
+list=0
+scratch=0
+sta=1
+tre=1
+allerrors=1
+allwarnings=1
+stayupne=1
+stayupoe=0
+[debugsfr]
+autoread=1
+[Units]
+Count=1
+1=232M100.c (main)

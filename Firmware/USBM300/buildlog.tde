@@ -1,0 +1,34 @@
+Building: e:\data\piccode\usbm30~1\usbm300.tpr
+ 
+==== NODE 4 ====
+usbn96~1.h PASSED to ROOT NODE
+ 
+==== NODE 3 ====
+usbm30~1.h PASSED to ROOT NODE
+ 
+==== NODE 2 ====
+usbn9603.c PASSED to ROOT NODE
+ 
+==== NODE 1 ====
+usbm300.c PASSED to ROOT NODE
+ 
+==== NODE 0 ====
+Checking dependencies...
+Build FORCED by "Always BUILD ALL" option
+Building Project....
+Deleting usbm300.COD
+Deleting usbm300.ERR
+Deleting usbm300.HEX
+Deleting usbm300.SYM
+Deleting tde.err
+Looking for e:\pictools\picc\CCSC.EXE
+Found e:\pictools\picc\CCSC.EXE
+Executing e:\pictools\picc\CCSC.EXE +FB +DS +FM +DC +ES +PE usbm300.c...
+Found ERROR FILE. Logging its contents and looking for ERRORs:
+  
+The Error file contained NO ERROR indicators
+ 
+Found symbols file: usbm300.COD
+Loading SYMBOLs
+Project Build Complete
+Saving log to: e:\data\piccode\usbm30~1\buildlog.tde

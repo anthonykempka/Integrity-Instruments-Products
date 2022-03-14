@@ -1,0 +1,36 @@
+[PROJECT]
+Target=usbm300.HEX
+Development_Mode=2
+Processor=0x6C67
+ToolSuite=CCS
+
+[Directories]
+Include=
+Library=
+LinkerScript=
+
+[Target Data]
+FileList=usbm300.c;
+BuildTool=C-COMPILER
+OptionString=+FM
+AdditionalOptionString=
+BuildRequired=1
+
+[usbm300.c]
+Type=4
+Path=
+FileList=
+BuildTool=
+OptionString=
+AdditionalOptionString=
+
+[mru-list]
+1=usbm300.c
+
+[Windows]
+0=0000 usbm300.c 0 0 796 451 3 0
+
+[debugwatch]
+count=0
+[debugbreak]
+count=0

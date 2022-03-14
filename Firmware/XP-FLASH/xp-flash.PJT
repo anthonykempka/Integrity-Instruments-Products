@@ -1,0 +1,36 @@
+[PROJECT]
+Target=xp-flash.HEX
+Development_Mode=
+Processor=0x628A
+ToolSuite=CCS
+
+[Directories]
+Include=E:\PICTOOLS\PICC\devices\;E:\PICTOOLS\PICC\drivers\
+Library=
+LinkerScript=
+
+[Target Data]
+FileList=xp-flash.c;
+BuildTool=C-COMPILER
+OptionString=+FM
+AdditionalOptionString=
+BuildRequired=1
+
+[xp-flash.c]
+Type=4
+Path=
+FileList=
+BuildTool=
+OptionString=
+AdditionalOptionString=
+
+[mru-list]
+1=xp-flash.c
+
+[Windows]
+0=0000 xp-flash.c 0 0 796 451 3 0
+
+[Opened Files]
+1=E:\Data\PicCode\XP FLASH\xp-flash.c
+2=E:\PICTOOLS\PICC\Devices\16F628A.h
+3=

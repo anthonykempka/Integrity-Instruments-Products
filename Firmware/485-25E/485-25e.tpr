@@ -1,0 +1,96 @@
+[Project]
+Tool=MPASM
+ToolPath=
+ToolOpts=
+[485e.asm]
+Tool=<NONE>
+ToolPath=
+ToolOpts=
+[TDE]
+version=4.01
+Home Directory=e:\pictools\
+[File Regs Settings]
+ColWidth0=34
+ColWidthX=24
+RowHeight=14
+[Files]
+1=485e.asm
+[Special Regs Settings]
+NameSort=1
+ShowAddr=1
+ShowBin=1
+ShowASCII=1
+ShowHEX=1
+ColName0=Add
+ColWidth0=34
+ColName1=Name
+ColWidth1=84
+ColName2=0x
+ColWidth2=24
+ColName3=Binary
+ColWidth3=84
+ColName4=C
+ColWidth4=83
+[Watch Window Settings]
+Sorted=0
+ShowAddr=1
+ColWidth0=10
+ColWidth1=34
+ColWidth2=84
+ColWidth3=24
+ColWidth4=0
+[Open Windows]
+Code=0
+SpecialReg=1
+FileReg=1
+Watch=0
+EEProm=0
+Trace=0
+Stack=0
+Editor=1
+GoToLabel=0
+PortSim=0
+[WINDOW POSITIONS]
+ERROR=125,654,741,212
+Code=784,363,198,172
+SpecialReg=785,335,170,219
+FileReg=747,596,493,121
+Watch=389,236,140,167
+EEPROM=17,353,448,119
+Trace=55,353,448,119
+Stack=492,127,140,125
+Editor=39,221,702,490
+GoToLabel=424,43,140,181
+PortSim=311,42,326,223
+Main=49,116,640,76
+[Data Breakpoints]
+BP1ENABLE=0
+BP1CYCLE=7
+BP1DATA=0
+BP1MASK=xxxxxxxx
+BP1ADDR=WREG
+BP1MATCHON=0
+BP2ENABLE=0
+BP2CYCLE=7
+BP2DATA=0
+BP2MASK=xxxxxxxx
+BP2ADDR=WREG
+BP2MATCHON=0
+[EDITORS]
+0=p12c508.inc
+1=485e.asm
+[EMULATOR]
+DEVICE=16C63A
+Frequency= 4000000
+WDTState=2
+BAUD=2
+PORT=2
+DemoMode=0
+TraceEnabled=0
+TraceSize=0
+StackBreak=1
+ExtBreakEnabled=0
+ExtBreakOnRising=0
+ShowExtInputs=0
+WorkOffLine=0
+EmulateRdWt=0

@@ -1,0 +1,185 @@
+005     PORT_A
+006     PORT_B
+007     PORT_C
+008     PSP_DATA
+008     PORT_D
+009     PORT_E
+014     SSPCON
+015     CCP_1_LOW
+015-016 CCP_1
+016     CCP_1_HIGH
+01B     CCP_2_LOW
+01B-01C CCP_2
+01C     CCP_2_HIGH
+020     @SCRATCH
+021     @SCRATCH
+021     _RETURN_
+022     @SCRATCH
+023     @SCRATCH
+024     @SCRATCH
+025     @INTERRUPT_AREA
+026     @INTERRUPT_AREA
+027     @INTERRUPT_AREA
+028     @INTERRUPT_AREA
+029     @INTERRUPT_AREA
+02A     @INTERRUPT_AREA
+02B     @INTERRUPT_AREA
+02C     @INTERRUPT_AREA
+02D     @INTERRUPT_AREA
+02E     @INTERRUPT_AREA
+02F     EEFlags
+030     CurrentDip
+031     SpiMode
+032     AsyncStreamFlags
+033     AsyncStreamUpdate
+034-035 AsyncCount
+036-037 AsyncTimeout
+038     StreamADCount
+039-040 ADSampleConfig
+041     Port1Cur
+042     Port2Cur
+043-046 PulseCountCur
+047     LedGreenFlag
+048-049 LedCount
+04A     Port1_Dir
+04B     Port2_Dir
+04C-04D DAC_CH0
+04E-04F DAC_CH1
+050-053 PulseCount
+054     LastCharRcvd
+055     CommandBufferIndex
+056-065 CommandBuffer
+066-075 ResponseBuffer
+076     RxCommErr
+077     strtok.save
+078     main.i
+079     main.j
+07A     main.k
+07B     main.x
+07C-07D main.temp
+094     SSPSTAT
+09C.6   C1OUT
+09C.7   C2OUT
+0A0     write_port2.value
+0A0     check_async_stream.i
+0A0     write_port1.value
+0A0     set_dir_port1.direction
+0A0     get_dip_set_baud.NewDip
+0A0     update_dac.data
+0A0     get_eesettings.i
+0A0     set_dir_port2.direction
+0A0     get_async_config.i
+0A0     hex_to_bin.ptr
+0A0     post_message.@SCRATCH
+0A0     main.@SCRATCH
+0A1     hex_to_bin.value
+0A1     wr_eeprom.address
+0A1     @delay_ms1.P1
+0A1     check_async_stream.j
+0A1-0A2 get_async_config.j
+0A1     update_dac.@SCRATCH
+0A1     main.@SCRATCH
+0A2     hex_to_bin.i
+0A2     wr_eeprom.data
+0A2     check_async_stream.x
+0A2     update_dac.@SCRATCH
+0A2     main.@SCRATCH
+0A3     wr_eeprom.i
+0A3-0A4 check_async_stream.temp
+0A3     hex_to_bin.tmp_ptr
+0A3     get_async_config.@SCRATCH
+0A3     main.@SCRATCH
+0A4     hex_to_bin.@SCRATCH
+0A4     get_async_config.@SCRATCH
+0A4     main.@SCRATCH
+0A5-0A8 check_async_stream.i32
+0A5     rd_eeprom.address
+0A5     hex_to_bin.@SCRATCH
+0A6     rd_eeprom.data
+0A6     hex_to_bin.@SCRATCH
+0A9     xmit_response.tmp_ptr
+0A9     read_port2.value
+0A9     acquire_adc.control
+0A9     bin_to_hex.value
+0A9     read_port1.value
+0A9     check_async_stream.@SCRATCH
+0AA     acquire_adc.unipolar
+0AA     bin_to_hex.ptr
+0AA     xmit_response.@SCRATCH
+0AA     check_async_stream.@SCRATCH
+0AB-0AC acquire_adc.ad_sample
+0AB     bin_to_hex.digit
+0AB     check_async_stream.@SCRATCH
+0AC     bin_to_hex.tmp_ptr
+0AC     check_async_stream.@SCRATCH
+0AD     acquire_adc.data
+0AD     bin_to_hex.@SCRATCH
+0AD     check_async_stream.@SCRATCH
+0AE     setup_spi_mode.mode
+0AE     bin_to_hex.@SCRATCH
+0AF     RDA_isr.@SCRATCH
+10C     EEDATA
+10D     EEADR
+10E     EEDATH
+10F     EEADRH
+18C     EECON1
+18D     EECON2
+
+01FB  @delay_ms1
+0179  setup_spi_fast
+0184  setup_spi_clk64
+0174  setup_spi_mode
+018E  update_dac
+02E1  acquire_adc
+00F2  rd_eeprom
+0129  wr_eeprom
+008A  led_on_red
+0087  led_on_green
+008D  led_off
+0859  trigger_led_red
+09F9  write_port1
+09B3  read_port1
+0A10  write_port2
+09CC  read_port2
+0150  set_dir_port1
+05AE  get_dir_port1
+0162  set_dir_port2
+05B2  get_dir_port2
+053B  hex_to_bin
+0345  bin_to_hex
+007A  timer0_isr
+0090  timer1_isr
+00DC  RDA_isr
+0106  get_eesettings
+025F  get_async_config
+020F  get_dip_set_baud
+036E  xmit_response
+038E  check_async_stream
+024B  post_message
+0045  @const10787
+0800  main
+0800  @cinit
+0C97  error_rsp
+
+Project Files:
+    E:\0Jobs\DataAcq\232M300\232M300.c
+    C:\Program Files\PICC\devices\16F874A.h
+    C:\Program Files\PICC\drivers\string.h
+    C:\Program Files\PICC\drivers\stddef.h
+    C:\Program Files\PICC\drivers\ctype.h
+
+Compiler Settings:
+    Processor:      PIC16F874A
+    Pointer Size:   8
+    ADC Range:      0-255
+    Opt Level:      9
+    Short,Int,Long: 1,8,16
+
+Output Files:
+    Errors:      E:\0Jobs\DataAcq\232M300\232M300.err
+    INHX8:       E:\0Jobs\DataAcq\232M300\232M300.HEX
+    Symbols:     E:\0Jobs\DataAcq\232M300\232M300.SYM
+    List:        E:\0Jobs\DataAcq\232M300\232M300.LST
+    Debug/COFF:  E:\0Jobs\DataAcq\232M300\232M300.cof
+    Call Tree:   E:\0Jobs\DataAcq\232M300\232M300.tre
+    Statistics:  E:\0Jobs\DataAcq\232M300\232M300.sta

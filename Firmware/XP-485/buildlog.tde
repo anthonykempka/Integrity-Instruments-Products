@@ -1,0 +1,39 @@
+Building: e:\data\piccode\xp-485~1\xp-485.tpr
+ 
+==== NODE 1 ====
+xp-485.asm PASSED to ROOT NODE
+ 
+==== NODE 0 ====
+Building Project....
+  Warning[217] E:\DATA\PICCODE\XP-485~1\XP-485.ASM 34 : Hex file format specified on command line.
+  Message[302] E:\DATA\PICCODE\XP-485~1\XP-485.ASM 199 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+  Message[302] E:\DATA\PICCODE\XP-485~1\XP-485.ASM 201 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+  Message[302] E:\DATA\PICCODE\XP-485~1\XP-485.ASM 203 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+  Message[302] E:\DATA\PICCODE\XP-485~1\XP-485.ASM 205 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+  Message[302] E:\DATA\PICCODE\XP-485~1\XP-485.ASM 239 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+  Message[302] E:\DATA\PICCODE\XP-485~1\XP-485.ASM 240 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+  Message[302] E:\DATA\PICCODE\XP-485~1\XP-485.ASM 241 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+  Message[302] E:\DATA\PICCODE\XP-485~1\XP-485.ASM 242 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+  Message[302] E:\DATA\PICCODE\XP-485~1\XP-485.ASM 244 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+  Message[302] E:\DATA\PICCODE\XP-485~1\XP-485.ASM 246 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+  Message[305] E:\DATA\PICCODE\XP-485~1\XP-485.ASM 279 : Using default destination of 1 (file).
+  Message[305] E:\DATA\PICCODE\XP-485~1\XP-485.ASM 319 : Using default destination of 1 (file).
+  Message[302] E:\DATA\PICCODE\XP-485~1\XP-485.ASM 329 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+  Message[302] E:\DATA\PICCODE\XP-485~1\XP-485.ASM 345 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+  Message[302] E:\DATA\PICCODE\XP-485~1\XP-485.ASM 377 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+  Message[302] E:\DATA\PICCODE\XP-485~1\XP-485.ASM 450 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+  Message[302] E:\DATA\PICCODE\XP-485~1\XP-485.ASM 451 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+  Message[302] E:\DATA\PICCODE\XP-485~1\XP-485.ASM 452 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+  Message[302] E:\DATA\PICCODE\XP-485~1\XP-485.ASM 548 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+  Message[302] E:\DATA\PICCODE\XP-485~1\XP-485.ASM 603 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+  Message[302] E:\DATA\PICCODE\XP-485~1\XP-485.ASM 618 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+  Message[305] E:\DATA\PICCODE\XP-485~1\XP-485.ASM 693 : Using default destination of 1 (file).
+  Message[305] E:\DATA\PICCODE\XP-485~1\XP-485.ASM 729 : Using default destination of 1 (file).
+  Message[305] E:\DATA\PICCODE\XP-485~1\XP-485.ASM 780 : Using default destination of 1 (file).
+  Message[305] E:\DATA\PICCODE\XP-485~1\XP-485.ASM 797 : Using default destination of 1 (file).
+  Message[305] E:\DATA\PICCODE\XP-485~1\XP-485.ASM 1141 : Using default destination of 1 (file).
+  Message[305] E:\DATA\PICCODE\XP-485~1\XP-485.ASM 1145 : Using default destination of 1 (file).
+  Message[302] E:\DATA\PICCODE\XP-485~1\XP-485.ASM 1165 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Loading SYMBOLs
+Project Build Complete
+Saving log to: e:\data\piccode\xp-485~1\buildlog.tde

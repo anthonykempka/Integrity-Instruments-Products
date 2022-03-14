@@ -1,0 +1,16 @@
+Warning[217] E:\DATA\PICCODE\232M20~1\232M200.ASM 41 : Hex file format specified on command line.
+Message[302] E:\DATA\PICCODE\232M20~1\232M200.ASM 253 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] E:\DATA\PICCODE\232M20~1\232M200.ASM 255 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] E:\DATA\PICCODE\232M20~1\232M200.ASM 257 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] E:\DATA\PICCODE\232M20~1\232M200.ASM 258 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] E:\DATA\PICCODE\232M20~1\232M200.ASM 330 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] E:\DATA\PICCODE\232M20~1\232M200.ASM 331 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] E:\DATA\PICCODE\232M20~1\232M200.ASM 332 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] E:\DATA\PICCODE\232M20~1\232M200.ASM 335 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] E:\DATA\PICCODE\232M20~1\232M200.ASM 337 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] E:\DATA\PICCODE\232M20~1\232M200.ASM 363 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] E:\DATA\PICCODE\232M20~1\232M200.ASM 845 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] E:\DATA\PICCODE\232M20~1\232M200.ASM 908 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] E:\DATA\PICCODE\232M20~1\232M200.ASM 1278 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] E:\DATA\PICCODE\232M20~1\232M200.ASM 1295 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] E:\DATA\PICCODE\232M20~1\232M200.ASM 1465 : Register in operand not in bank 0.  Ensure that bank bits are correct.

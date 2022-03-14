@@ -1,0 +1,2049 @@
+MPASM 02.01.08 Intermediate    XP-485.ASM   12-16-2002  13:40:08         PAGE  1
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                    00001 ;----------------------------------------------------------------------------
+                    00002 ;
+                    00003 ; Integrity Instruments
+                    00004 ; ---------------------
+                    00005 ; PO Box 451   2642 20th Ave SW
+                    00006 ; Pine River, MN 56474
+                    00007 ; Tel: 800-450-2001
+                    00008 ; Web: www.rs-485.com
+                    00009 ;
+                    00010 ; Description
+                    00011 ; -----------
+                    00012 ; XP Converter Code
+                    00013 ;
+                    00014 ; Version: 1.01
+                    00015 ; ---------------
+                    00016 ;
+                    00017 ; Revision History
+                    00018 ; -------------------------------------------------------
+                    00019 ; A. Kempka     Original        01/19/2002      v1.0
+                    00020 ; A. Kempka                     12/16/2002      v1.01
+                    00021 ;               Added "Run Mode" message when transitioning from Program Mode
+                    00022 ;               to Run Mode when powering up Silent.
+                    00023 ;   A. Kempka   RTM             12/16/2002
+                    00024 ;
+                    00025 ;
+                    00026 
+                    00027 
+                    00028 ;
+                    00029 ;----------------------------------------------------------------------------
+                    00030 ; Specify processor type and output format.
+                    00031 ;
+                    00032 ; BUGBUG: Use 16C63A in the final release
+                    00033 ;
+Warning[217]: Hex file format specified on command line.
+                    00034         list p=16c63A, f=inhx8m
+                    00035 
+                    00036 ;----------------------------------------------------------------------------
+                    00037 ; Include the Processor specific defines.
+                    00038 ;
+                    00039 #INCLUDE "P16C63A.INC"
+                    00001         LIST
+                    00002 ; P16C63A.INC  Standard Header File, Version 1.00    Microchip Technology, Inc.
+                    00286         LIST
+                    00040 
+                    00041 ;
+                    00042 ; MPU configuration options
+                    00043 ;
+2007 00C6           00044   __CONFIG   _CP_ALL & _WDT_ON & _HS_OSC & _PWRTE_ON & _BODEN_ON
+                    00045 
+                    00046 ;----------------------------------------------------------------------------
+                    00047 ; General equates.
+                    00048 ;----------------------------------------------------------------------------
+                    00049 
+MPASM 02.01.08 Intermediate    XP-485.ASM   12-16-2002  13:40:08         PAGE  2
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+  00000031          00050 VERSION_MAJOR       EQU     '1'
+  00000030          00051 VERSION_MINOR1      EQU     '0'
+  00000031          00052 VERSION_MINOR2      EQU     '1'
+                    00053 
+  00000001          00054 TRUE                EQU     0x01
+  00000000          00055 FALSE               EQU     0x00
+                    00056 
+                    00057 ;
+                    00058 ; Baud Rate divisors
+                    00059 ; Clock = 7.3728 Mhz with prescale of 64
+                    00060 ;
+                    00061 ;SPBRG_600           EQU     0xBF
+                    00062 ;SPBRG_1200          EQU     0x5F
+                    00063 ;SPBRG_2400          EQU     0x2F
+                    00064 ;SPBRG_4800          EQU     0x17
+                    00065 ;SPBRG_9600          EQU     0x0B
+                    00066 ;SPBRG_19200         EQU     0x05
+                    00067 ;SPBRG_38400         EQU     0x02
+                    00068 ;SPBRG_57600         EQU     0x01
+                    00069 ;SPBRG_115200        EQU     0x00
+                    00070 ;
+                    00071 ; Clock = 14.7456 Mhz with prescale of 64
+                    00072 ;
+  000000BF          00073 SPBRG_1200          EQU     0xBF
+  0000005F          00074 SPBRG_2400          EQU     0x5F
+  0000002F          00075 SPBRG_4800          EQU     0x2F
+  00000017          00076 SPBRG_9600          EQU     0x17
+  0000000B          00077 SPBRG_19200         EQU     0x0B
+  00000005          00078 SPBRG_38400         EQU     0x05
+  00000002          00079 SPBRG_57600         EQU     0x02
+  00000001          00080 SPBRG_115200        EQU     0x01
+  00000000          00081 SPBRG_230400        EQU     0x00
+                    00082 
+                    00083 
+                    00084 ;
+                    00085 ; Timer reload count values
+                    00086 ; Note: Assumes a clock of 14.7456 Mhz, prescale 1:16
+                    00087 ;
+                    00088 ; TMR2 = 1 millisecond
+                    00089 ;
+                    00090 ; TMR2_PERIOD         EQU     0x73  7.3728 Mhz
+  000000E6          00091 TMR2_PERIOD         EQU     0xE6
+                    00092 
+                    00093 
+                    00094 ;----------------------------------------------------------------------------
+                    00095 ; Port defines
+                    00096 ;----------------------------------------------------------------------------
+                    00097 
+                    00098 ; PORT A BITS
+  00000000          00099 ENABLE_HOLD     EQU     0x00
+  00000001          00100 EEPROM_CS       EQU     0x01
+  00000004          00101 LED             EQU     0x04
+                    00102 
+MPASM 02.01.08 Intermediate    XP-485.ASM   12-16-2002  13:40:08         PAGE  3
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                    00103 ; PORT B BITS
+  00000000          00104 RS232_TXD       EQU     0x00
+  00000001          00105 ADDR_TXD        EQU     0x01
+  00000002          00106 ADDR_RXD        EQU     0x02
+                    00107 
+                    00108 ; PORTA (OUT: 0-7)
+  00000000          00109 PORTA_DIR       EQU     0x00
+                    00110 
+                    00111 ; PORTB (IN: 0,2,4 | OUT: 1, 3-7)
+  00000015          00112 PORTB_DIR       EQU     0x15
+                    00113 
+                    00114 ; PORTC (IN: 4,7,6 | OUT: 0-3, 5)
+  000000D0          00115 PORTC_DIR       EQU     0xD0
+                    00116 
+                    00117 
+                    00118 ;--------------------------------------------------------------------------
+                    00119 ; Variables
+                    00120 ; Set Ram Bank 0 and 1 (Variable memory definitions)
+                    00121 ;--------------------------------------------------------------------------
+  00000020          00122 RamBank0        EQU     0x20
+  00000020          00123 W_TEMP          EQU     RamBank0+0x00
+  00000021          00124 STATUS_TEMP     EQU     RamBank0+0x01
+  00000022          00125 MODULE_ADDRESS  EQU     RamBank0+0x02
+  00000023          00126 TMR1H_SAVE      EQU     RamBank0+0x03
+  00000024          00127 TMR1L_SAVE      EQU     RamBank0+0x04
+  00000025          00128 TMR1H_MIN       EQU     RamBank0+0x05
+  00000026          00129 TMR1L_MIN       EQU     RamBank0+0x06
+                    00130 
+  00000027          00131 ONE_MS_TICK      EQU    RamBank0+0x07
+  00000028          00132 QUARTER_SEC_TICK EQU    RamBank0+0x08
+  00000029          00133 STRING_INDEX     EQU    RamBank0+0x09
+                    00134 
+  0000002A          00135 CUR_SPBRG       EQU     RamBank0+0x0A
+                    00136 
+  0000002C          00137 HEX_TEMP        EQU     RamBank0+0x0C
+  0000002D          00138 CUR_MODE        EQU     RamBank0+0x0D
+  0000002E          00139 OUR_FLAGS       EQU     RamBank0+0x0E
+  0000002F          00140 CUR_BAUD        EQU     RamBank0+0x0F
+  00000030          00141 NEW_BAUD        EQU     RamBank0+0x10
+                    00142 
+  00000031          00143 SCRATCH         EQU     RamBank0+0x11
+                    00144 
+  00000032          00145 TIMEOUTH        EQU     RamBank0+0x12
+  00000033          00146 TIMEOUTL        EQU     RamBank0+0x13
+                    00147 
+  00000036          00148 EEPROM_ADDRESS  EQU     RamBank0+0x16
+                    00149 
+  0000003E          00150 CURRENT_PTR     EQU     RamBank0+0x1E
+  0000003F          00151 RCV_BUFFER_PTR  EQU     RamBank0+0x1F
+  00000040          00152 RCV_BUFFER      EQU     RamBank0+0x20
+  00000050          00153 RCV_LAST_CHAR   EQU     RamBank0+0x30
+                    00154 
+                    00155 
+MPASM 02.01.08 Intermediate    XP-485.ASM   12-16-2002  13:40:08         PAGE  4
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                    00156 ;
+                    00157 ; Bit defines for OUR_FLAGS
+                    00158 ;
+  00000000          00159 TMR1_ROLLOVER   EQU     0
+  00000001          00160 INT_EVENT       EQU     1
+                    00161 
+                    00162 ;--------------------------------------------------------------------------
+                    00163 ; Program Code
+                    00164 ;--------------------------------------------------------------------------
+                    00165 
+                    00166 
+                    00167 
+                    00168 ;----------------------------------------------------------------------------
+                    00169 ; Setup RESET and interrupt vectors.
+                    00170 ;----------------------------------------------------------------------------
+0000                00171         org     0               ; Code start address = 0
+0000 018A           00172         clrf    PCLATH
+0001 2820           00173         goto    Start
+                    00174 
+0004                00175         org     4               ; Irq address = 4
+0004 2B07           00176         goto    Main_Isr
+                    00177 
+                    00178 ;----------------------------------------------------------------------------
+                    00179 
+                    00180 
+                    00181 
+                    00182 ;----------------------------------------------------------------------------
+                    00183 ; Begin code.
+                    00184 ;----------------------------------------------------------------------------
+                    00185 ;
+0020                00186         org     0x20
+                    00187 
+                    00188 ;----------------------------------------------------------------------------
+                    00189 ; Initialization and Start-Up code.
+                    00190 ;----------------------------------------------------------------------------
+0020                00191 Start
+0020 1283           00192         bcf     STATUS, RP0     ; **** select BANK 0
+0021 0185           00193         clrf    PORTA           ; clear PORT A
+0022 0186           00194         clrf    PORTB           ; clear PORT B
+0023 0187           00195         clrf    PORTC           ; clear PORT C
+                    00196 
+0024 1683           00197         bsf     STATUS, RP0     ; **** select BANK 1
+0025 3000           00198         movlw   PORTA_DIR
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0026 0085           00199         movwf   TRISA           ; set direction PORT A
+0027 3015           00200         movlw   PORTB_DIR
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0028 0086           00201         movwf   TRISB           ; set direction PORT B
+0029 30D0           00202         movlw   PORTC_DIR
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+002A 0087           00203         movwf   TRISC           ; set direction PORT C
+002B 30E6           00204         movlw   TMR2_PERIOD     ; set TIMER2 period
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+MPASM 02.01.08 Intermediate    XP-485.ASM   12-16-2002  13:40:08         PAGE  5
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+002C 0092           00205         movwf   PR2
+                    00206 
+002D 1283           00207         bcf     STATUS, RP0     ; **** select BANK 0
+002E 0185           00208         clrf    PORTA           ; clear PORT A
+002F 0186           00209         clrf    PORTB           ; clear PORT B
+0030 0187           00210         clrf    PORTC           ; clear PORT C
+                    00211 
+0031 01AA           00212         clrf    CUR_SPBRG       ; clear registers
+0032 01D0           00213         clrf    RCV_LAST_CHAR
+0033 0180           00214         clrf    TMR1_ROLLOVER
+0034 01A7           00215         clrf    ONE_MS_TICK
+0035 01A8           00216         clrf    QUARTER_SEC_TICK
+0036 01AE           00217         clrf    OUR_FLAGS
+0037 01AF           00218         clrf    CUR_BAUD
+0038 01B0           00219         clrf    NEW_BAUD
+                    00220 
+0039 1485           00221         bsf     PORTA, EEPROM_CS    ; Idle - not enabled
+003A 1405           00222         bsf     PORTA, ENABLE_HOLD  ; Idle - ON
+003B 1486           00223         bsf     PORTB, ADDR_TXD     ; Idle - ON
+                    00224 
+003C 3017           00225         movlw   SPBRG_9600      ; Starting baud rate - for programming mode
+003D 00AA           00226         movwf   CUR_SPBRG       ; Save SPBRG
+                    00227 
+003E 018F           00228         clrf    TMR1H           ; clear TMR1 counters
+003F 018E           00229         clrf    TMR1L
+0040 3001           00230         movlw   0x01            ; Timer1 prescale 1:1, enable Timer1
+0041 0090           00231         movwf   T1CON
+                    00232 
+0042 0091           00233         movwf   TMR2            ; Load Timer2 counter
+0043 3006           00234         movlw   0x06            ; Timer 2 prescale 1:16, enable Timer 2
+0044 0092           00235         movwf   T2CON
+                    00236 
+0045 082A           00237         movfw   CUR_SPBRG       ; Load Baud Rate Generator
+0046 1683           00238         bsf     STATUS, RP0     ; **** select BANK 1
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0047 0099           00239         movwf   SPBRG           ; Load Baud Rate Generator
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0048 140C           00240         bsf     PIE1, TMR1IE    ; Enable Timer1 Interrupt
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0049 148C           00241         bsf     PIE1, TMR2IE    ; Enable Timer2 Interrupt
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+004A 168C           00242         bsf     PIE1, RCIE      ; Enable USART rcv Interrupt
+004B 3020           00243         movlw   0x20            ; TXEN=1, SYNC=0, BRGH=0
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+004C 0098           00244         movwf   TXSTA
+004D 30BF           00245         movlw   0xBF            ; Interrupt - falling edge on INT pin
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+004E 0081           00246         movwf   OPTION_REG
+                    00247 
+004F 1283           00248         bcf     STATUS, RP0     ; **** select BANK 0
+0050 3090           00249         movlw   0x90            ; UART: SPEN=1, CREN=1
+0051 0098           00250         movwf   RCSTA           ; RS-485/232 setup
+                    00251 
+MPASM 02.01.08 Intermediate    XP-485.ASM   12-16-2002  13:40:08         PAGE  6
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0052 3030           00252         movlw   0x30            ; SPI Master mode, CKP=1, Fosc/4
+0053 0094           00253         movwf   SSPCON
+                    00254 
+0054 3040           00255         movlw   RCV_BUFFER      ; Set the RCV buffer pointer
+0055 00BF           00256         movwf   RCV_BUFFER_PTR
+                    00257 
+0056 081A           00258         movfw   RCREG           ; Clear UART interrupts before enabling
+0057 100C           00259         bcf     PIR1, TMR1IF    ; clear Timer 1 Irq
+0058 108C           00260         bcf     PIR1, TMR2IF    ; clear Timer 2 Irq
+                    00261         ;movlw   0xD0            ; Enable interrupts
+0059 30C0           00262         movlw   0xC0
+005A 008B           00263         movwf   INTCON
+                    00264 
+005B 3004           00265         movlw   0x04                ; Is this a silent power up?
+005C 2139           00266         call    Read_EEPROM
+005D 3A00           00267         xorlw   0x00
+005E 1D03           00268         btfss   STATUS, Z
+005F 2869           00269         goto    Wait_For_Key
+                    00270 
+0060 01A9           00271         clrf    STRING_INDEX
+0061                00272 Printf_Startup                      ; Display the startup string
+0061 0829           00273         movfw   STRING_INDEX
+0062 242A           00274         call    Startup_String
+0063 3A00           00275         xorlw   0x00
+0064 1903           00276         btfsc   STATUS, Z
+0065 2869           00277         goto    Printf_Startup_end
+0066 212B           00278         call    Transmit_Char
+Message[305]: Using default destination of 1 (file).
+0067 0AA9           00279         incf    STRING_INDEX
+0068 2861           00280         goto    Printf_Startup
+0069                00281 Printf_Startup_end
+                    00282 
+                    00283 ;
+                    00284 ; Wait a few seconds for the user to hit a key and go into programming mode
+                    00285 ;
+0069                00286 Wait_For_Key
+0069 0064           00287         clrwdt                  ; Kick the dog while waiting for a key
+006A 0850           00288         movfw   RCV_LAST_CHAR
+006B 3A20           00289         xorlw   ' '             ; Look for the Space key
+006C 1D03           00290         btfss   STATUS, Z
+006D 2871           00291         goto    Wait_For_Key1
+                    00292 
+006E 01D0           00293         clrf    RCV_LAST_CHAR   ; Go into programming mode
+006F 2160           00294         call    Programming_Mode
+0070 287A           00295         goto    Printf_Run_Start
+                    00296 
+0071                00297 Wait_For_Key1
+0071 0828           00298         movfw   QUARTER_SEC_TICK    ; Check if a few seconds has elapsed
+0072 3C0C           00299         sublw   0x0C                ; 12 quarter seconds = 3 seconds
+0073 1803           00300         btfsc   STATUS, C
+0074 2869           00301         goto    Wait_For_Key
+                    00302 
+0075                00303 Lets_Run
+MPASM 02.01.08 Intermediate    XP-485.ASM   12-16-2002  13:40:08         PAGE  7
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0075 3004           00304         movlw   0x04                ; Is this a silent power up?
+0076 2139           00305         call    Read_EEPROM
+0077 3A00           00306         xorlw   0x00
+0078 1D03           00307         btfss   STATUS, Z
+0079 2883           00308         goto    Main_Loop_Start
+                    00309 
+007A                00310 Printf_Run_Start
+007A 01A9           00311         clrf    STRING_INDEX
+007B                00312 Printf_Run
+007B 0829           00313         movfw   STRING_INDEX
+007C 246F           00314         call    Run_String
+007D 3A00           00315         xorlw   0x00
+007E 1903           00316         btfsc   STATUS, Z
+007F 2883           00317         goto    Printf_Run_end
+0080 212B           00318         call    Transmit_Char
+Message[305]: Using default destination of 1 (file).
+0081 0AA9           00319         incf    STRING_INDEX
+0082 287B           00320         goto    Printf_Run
+0083                00321 Printf_Run_end
+                    00322 
+                    00323 
+                    00324 ;----------------------------------------------------------------------------
+                    00325 ; Main processing loop.
+                    00326 ;
+0083                00327 Main_Loop_Start
+0083 1683           00328         bsf     STATUS, RP0     ; **** select BANK 1
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0084 108C           00329         bcf     PIE1, TMR2IE    ; Disable Timer2 Interrupt
+0085 1283           00330         bcf     STATUS, RP0     ; **** select BANK 0
+                    00331 
+0086 3000           00332         movlw   0x00            ; Read the mode out of EEPROM
+0087 2139           00333         call    Read_EEPROM
+0088 00AD           00334         movwf   CUR_MODE
+                    00335 
+0089 3001           00336         movlw   0x01            ; Read the baud rate code
+008A 2139           00337         call    Read_EEPROM
+008B 00AF           00338         movwf   CUR_BAUD        ; Save off current BAUD code
+008C 00B0           00339         movwf   NEW_BAUD
+008D 2415           00340         call    Baud_To_SPBRG   ; Convert to the baud rate generator value
+008E 00AA           00341         movwf   CUR_SPBRG
+                    00342 
+008F 082A           00343         movfw   CUR_SPBRG       ; Load Baud Rate Generator
+0090 1683           00344         bsf     STATUS, RP0     ; **** select BANK 1
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0091 0099           00345         movwf   SPBRG           ; Load Baud Rate Generator
+0092 1283           00346         bcf     STATUS, RP0     ; **** select BANK 0
+                    00347 
+0093 082D           00348         movfw   CUR_MODE
+0094 3A00           00349         xorlw   0x00
+0095 1903           00350         btfsc   STATUS, Z
+                    00351 ;        goto    Main_Loop_Mode_0  -- NOTE!!! Not used in v1.01
+0096 28C8           00352         goto    Main_Loop_Mode_1
+0097 082D           00353         movfw   CUR_MODE
+MPASM 02.01.08 Intermediate    XP-485.ASM   12-16-2002  13:40:08         PAGE  8
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0098 3A01           00354         xorlw   0x01
+0099 1903           00355         btfsc   STATUS, Z
+009A 28C8           00356         goto    Main_Loop_Mode_1
+009B 082D           00357         movfw   CUR_MODE
+009C 3A02           00358         xorlw   0x02
+009D 1903           00359         btfsc   STATUS, Z
+009E 2909           00360         goto    Main_Loop_Mode_2
+                    00361 
+                    00362         ; Default is Mode 1
+                    00363 
+009F 28C8           00364         goto    Main_Loop_Mode_1
+                    00365 
+                    00366 ;----------------------------------------------------------------------------
+                    00367 ; Mode 0 - Automatic Baud Rate match
+                    00368 ;
+                    00369 ; INT trigger sets RS-485 enable hold
+                    00370 ; UART interrupt clears RS-485 enable hold (primary)
+                    00371 ; TIMER1 interrupt Rollover clears RS-485 enable hold (fail safe) 35.5 ms
+                    00372 ;
+                    00373 ; Auto Mode:
+                    00374 ; Main loop
+00A0                00375 Main_Loop_Mode_0
+00A0 1683           00376         bsf     STATUS, RP0     ; **** select BANK 1
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+00A1 148C           00377         bsf     PIE1, TMR2IE    ; Enable Timer2 Interrupt
+00A2 1283           00378         bcf     STATUS, RP0     ; **** select BANK 0
+                    00379 
+00A3                00380 Main_Loop_Mode_0H
+00A3 0064           00381         clrwdt                          ; Kick the dog
+00A4 1806           00382         btfsc   PORTB, RS232_TXD        ; Wait for H-L transition of TXD
+00A5 28A3           00383         goto    Main_Loop_Mode_0H
+                    00384 
+00A6 138B           00385         bcf     INTCON, GIE
+00A7 1005           00386         bcf     PORTA, ENABLE_HOLD      ; Hold the RS-485 enable
+00A8 018E           00387         clrf    TMR1L                   ; clear TMR1 counters
+00A9 018F           00388         clrf    TMR1H
+00AA 102E           00389         bcf     OUR_FLAGS, TMR1_ROLLOVER
+                    00390 
+00AB                00391 Main_Loop_Mode_0L
+00AB 0064           00392         clrwdt                          ; Kick the dog
+00AC 1C06           00393         btfss   PORTB, RS232_TXD        ; Wait for L-H transition of TXD
+00AD 28AB           00394         goto    Main_Loop_Mode_0L
+                    00395 
+00AE 080F           00396         movfw   TMR1H                   ; TXD is now HIGH
+00AF 00A3           00397         movwf   TMR1H_SAVE              ; Save TIMER1 count
+00B0 080E           00398         movfw   TMR1L
+00B1 00A4           00399         movwf   TMR1L_SAVE
+00B2 01A7           00400         clrf    ONE_MS_TICK             ; Clear tick count to stop  256 ms rollover
+                    00401 
+00B3 178B           00402         bsf     INTCON, GIE
+                    00403 
+                    00404         ;
+                    00405         ; Check if new minimum count
+MPASM 02.01.08 Intermediate    XP-485.ASM   12-16-2002  13:40:08         PAGE  9
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                    00406         ;
+00B4 182E           00407         btfsc   OUR_FLAGS, TMR1_ROLLOVER    ; Ignore counts when rollover
+00B5 28C4           00408         goto    Main_Loop_Mode_0WAIT
+                    00409 
+00B6 0823           00410         movfw   TMR1H_SAVE                  ; MSB
+00B7 0225           00411         subwf   TMR1H_MIN, W
+00B8 1C03           00412         btfss   STATUS, C
+00B9 28C4           00413         goto    Main_Loop_Mode_0WAIT
+00BA 0824           00414         movfw   TMR1L_SAVE                  ; LSB
+00BB 0226           00415         subwf   TMR1L_MIN, W
+00BC 1C03           00416         btfss   STATUS, C
+00BD 28C4           00417         goto    Main_Loop_Mode_0WAIT
+                    00418 
+00BE 0823           00419         movfw   TMR1H_SAVE                  ; **** New minimum values
+00BF 00A5           00420         movwf   TMR1H_MIN
+00C0 0824           00421         movfw   TMR1L_SAVE
+00C1 00A6           00422         movwf   TMR1L_MIN
+                    00423 
+00C2 2117           00424         call    Get_Baud_From_Count         ; Save off new baud code
+00C3 00B0           00425         movwf   NEW_BAUD
+                    00426 
+                    00427         ;
+                    00428         ; Check if new BAUD and SPBRG (set in TIMER2 ISR)
+                    00429         ; Save in EEPROM
+                    00430 
+00C4                00431 Main_Loop_Mode_0WAIT
+00C4 0064           00432         clrwdt                          ; Kick the dog
+00C5 1C06           00433         btfss   PORTB, RS232_TXD        ;
+00C6 28C4           00434         goto    Main_Loop_Mode_0WAIT
+                    00435 
+00C7 28A3           00436         goto    Main_Loop_Mode_0H
+                    00437 
+                    00438 ;----------------------------------------------------------------------------
+                    00439 ; Mode 1 - Automatic Bit Time Calculated
+                    00440 ;
+                    00441 ; INT trigger sets RS-485 enable hold
+                    00442 ; Main loop clears RS-485 enable hold (primary)
+                    00443 ; TIMER1 interrupt Rollover clears RS-485 enable hold (fail safe)  35.5 ms
+                    00444 ; Note: UART interrupt disabled since it will continuously trigger with errors
+                    00445 ;
+                    00446 ; Auto Mode:
+                    00447 ; Main loop
+00C8                00448 Main_Loop_Mode_1
+00C8 1683           00449         bsf     STATUS, RP0     ; **** select BANK 1
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+00C9 128C           00450         bcf     PIE1, RCIE      ; Disable USART rcv Interrupt
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+00CA 108C           00451         bcf     PIE1, TMR2IE    ; Disable Timer2 Interrupt
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+00CB 100C           00452         bcf     PIE1, TMR1IE    ; Disable Timer1 Interrupt
+00CC 1283           00453         bcf     STATUS, RP0     ; **** select BANK 0
+                    00454 
+00CD                00455 Main_Loop_Mode_1START                   ; Wait for the start bit
+MPASM 02.01.08 Intermediate    XP-485.ASM   12-16-2002  13:40:08         PAGE 10
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+00CD 0064           00456         clrwdt                          ; Kick the dog
+00CE 1806           00457         btfsc   PORTB, RS232_TXD        ; Wait for H-L transition of TXD
+00CF 28CD           00458         goto    Main_Loop_Mode_1START
+                    00459 
+00D0 1005           00460         bcf     PORTA, ENABLE_HOLD      ; Hold the RS-485 enable
+00D1 018E           00461         clrf    TMR1L                   ; clear TMR1 counters
+00D2 018F           00462         clrf    TMR1H
+00D3 30FF           00463         movlw   0xFF                    ; Reset TMR1 minimum time
+00D4 00A5           00464         movwf   TMR1H_MIN
+00D5 00A6           00465         movwf   TMR1L_MIN
+                    00466 
+00D6                00467 Main_Loop_Mode_1L
+00D6 0064           00468         clrwdt                          ; Kick the dog
+00D7 1C06           00469         btfss   PORTB, RS232_TXD        ; Wait for L-H transition of TXD
+00D8 28D6           00470         goto    Main_Loop_Mode_1L
+00D9 20E9           00471         call    Check_New_TMR1_Min
+                    00472 
+00DA                00473 Main_Loop_Mode_1H
+00DA 1806           00474         btfsc   PORTB, RS232_TXD        ; Check for H-L transition of TXD
+00DB 28DE           00475         goto    Main_Loop_Mode_1H_A     ; Still H
+00DC 20E9           00476         call    Check_New_TMR1_Min
+00DD 28D6           00477         goto    Main_Loop_Mode_1L
+                    00478 
+00DE                00479 Main_Loop_Mode_1H_A
+00DE 0064           00480         clrwdt                          ; Kick the dog
+00DF 0832           00481         movfw   TIMEOUTH                ; Check for TIMEOUT - looking at MSB
+00E0 020F           00482         subwf   TMR1H, W
+00E1 1C03           00483         btfss   STATUS, C
+00E2 28DA           00484         goto    Main_Loop_Mode_1H
+00E3 0833           00485         movfw   TIMEOUTL                ; Check for TIMEOUT - looking at LSB
+00E4 020E           00486         subwf   TMR1L, W
+00E5 1C03           00487         btfss   STATUS, C
+00E6 28DA           00488         goto    Main_Loop_Mode_1H
+                    00489 
+00E7                00490 Main_Loop_Mode_1TIMEOUT
+00E7 1405           00491         bsf     PORTA, ENABLE_HOLD      ; Release the RS-485 enable
+00E8 28CD           00492         goto    Main_Loop_Mode_1START
+                    00493 
+                    00494 
+                    00495 ;----------------------------------------------------------------------------
+                    00496 ; Checks new minimum times
+                    00497 ;
+00E9                00498 Check_New_TMR1_Min
+00E9 080E           00499         movfw   TMR1L                   ; TXD is now HIGH
+00EA 00A4           00500         movwf   TMR1L_SAVE              ; Save TIMER1 counts
+00EB 018E           00501         clrf    TMR1L                   ; clear TMR1 counters
+00EC 080F           00502         movfw   TMR1H
+00ED 00A3           00503         movwf   TMR1H_SAVE
+00EE 018F           00504         clrf    TMR1H                   ; clear TMR1 counters
+                    00505 
+00EF 0825           00506         movfw   TMR1H_MIN                   ; MSB
+00F0 0223           00507         subwf   TMR1H_SAVE, W
+00F1 1C03           00508         btfss   STATUS, C
+MPASM 02.01.08 Intermediate    XP-485.ASM   12-16-2002  13:40:08         PAGE 11
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+00F2 28F9           00509         goto    Check_New_TMR1_Min_New      ; Saved < Min
+00F3 1D03           00510         btfss   STATUS, Z
+00F4 2908           00511         goto    Check_New_TMR1_Min_x        ; Saved > Min
+                    00512                                             ; Saved = Min
+00F5 0826           00513         movfw   TMR1L_MIN                   ; LSB
+00F6 0224           00514         subwf   TMR1L_SAVE, W
+00F7 1803           00515         btfsc   STATUS, C
+00F8 2908           00516         goto    Check_New_TMR1_Min_x        ; Saved > Min
+                    00517 
+00F9                00518 Check_New_TMR1_Min_New
+00F9 0823           00519         movfw   TMR1H_SAVE                  ; **** New minimum values
+00FA 00A5           00520         movwf   TMR1H_MIN
+00FB 00B2           00521         movwf   TIMEOUTH
+00FC 0824           00522         movfw   TMR1L_SAVE
+00FD 00A6           00523         movwf   TMR1L_MIN
+00FE 00B3           00524         movwf   TIMEOUTL
+                    00525 
+00FF 1003           00526         bcf     STATUS, C           ; Clear the carry before rotate
+0100 0DB3           00527         rlf     TIMEOUTL, F
+0101 0DB2           00528         rlf     TIMEOUTH, F
+0102 1003           00529         bcf     STATUS, C           ; Clear the carry before rotate
+0103 0DB3           00530         rlf     TIMEOUTL, F
+0104 0DB2           00531         rlf     TIMEOUTH, F
+0105 1003           00532         bcf     STATUS, C           ; Clear the carry before rotate
+0106 0DB3           00533         rlf     TIMEOUTL, F
+0107 0DB2           00534         rlf     TIMEOUTH, F
+                    00535 
+0108                00536 Check_New_TMR1_Min_x
+0108 0008           00537         return
+                    00538 
+                    00539 ;----------------------------------------------------------------------------
+                    00540 ; Mode 2 - Manual Baud Rate
+                    00541 ;
+                    00542 ; INT trigger sets RS-485 enable hold
+                    00543 ; UART interrupt clears RS-485 enable hold (primary)
+                    00544 ; TIMER1 interrupt Rollover clears RS-485 enable hold (fail safe)  35.5 ms
+                    00545 ; Note: TIMER2 interrupt disabled since we're not auto detecting
+0109                00546 Main_Loop_Mode_2
+0109 1683           00547         bsf     STATUS, RP0     ; **** select BANK 1
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+010A 108C           00548         bcf     PIE1, TMR2IE    ; Disable Timer2 Interrupt
+010B 1283           00549         bcf     STATUS, RP0     ; **** select BANK 0
+                    00550 
+010C                00551 Main_Loop_Mode_2H
+010C 0064           00552         clrwdt                          ; Kick the dog
+010D 1806           00553         btfsc   PORTB, RS232_TXD        ; Wait for H-L transition of TXD
+010E 290C           00554         goto    Main_Loop_Mode_2H
+                    00555 
+010F 1005           00556         bcf     PORTA, ENABLE_HOLD      ; Hold the RS-485 enable
+0110 018E           00557         clrf    TMR1L                   ; clear TMR1 counters
+0111 018F           00558         clrf    TMR1H
+0112 102E           00559         bcf     OUR_FLAGS, TMR1_ROLLOVER
+                    00560 
+MPASM 02.01.08 Intermediate    XP-485.ASM   12-16-2002  13:40:08         PAGE 12
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0113                00561 Main_Loop_Mode_2L
+0113 0064           00562         clrwdt                          ; Kick the dog
+0114 1C06           00563         btfss   PORTB, RS232_TXD        ; Wait for L-H transition of TXD
+0115 2913           00564         goto    Main_Loop_Mode_2L
+                    00565 
+0116 290C           00566         goto    Main_Loop_Mode_2H
+                    00567 
+                    00568 
+                    00569 
+0117                00570 Get_Baud_From_Count
+0117 0823           00571         movf    TMR1H_SAVE, 0    ; Check if MSB == 0
+0118 1D03           00572         btfss   STATUS, Z
+0119 292A           00573         goto    Get_Baud_MSB
+011A 0824           00574         movfw   TMR1L_SAVE
+011B 3C18           00575         sublw   0x18            ; Check 115200
+011C 1803           00576         btfsc   STATUS, C
+011D 3408           00577         retlw   8
+011E 0824           00578         movfw   TMR1L_SAVE
+011F 3C24           00579         sublw   0x24            ; Check 57600
+0120 1803           00580         btfsc   STATUS, C
+0121 3407           00581         retlw   7
+0122 0824           00582         movfw   TMR1L_SAVE
+0123 3C48           00583         sublw   0x48            ; Check 38400
+0124 1803           00584         btfsc   STATUS, C
+0125 3406           00585         retlw   6
+0126 0824           00586         movfw   TMR1L_SAVE
+0127 3C90           00587         sublw   0x90            ; Check 19200
+0128 1803           00588         btfsc   STATUS, C
+0129 3405           00589         retlw   5
+012A                00590 Get_Baud_MSB
+                    00591 ;        movfw   TMR1H_SAVE       ; Check 9600 MSB
+012A 3404           00592         retlw   4
+                    00593 
+                    00594 ;----------------------------------------------------------------------------
+                    00595 ; Transmits a single character out the USART
+                    00596 ; W = Character to xmit
+                    00597 ;
+012B                00598 Transmit_Char
+012B 0064           00599         clrwdt                  ; Kick the dog
+012C 0099           00600         movwf   TXREG
+012D 1683           00601         bsf     STATUS, RP0     ; select BANK 1
+012E                00602 Transmit_Pending
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+012E 1C98           00603         btfss   TXSTA, TRMT
+012F 292E           00604         goto    Transmit_Pending
+0130 1283           00605         bcf     STATUS, RP0     ; select BANK 0
+0131 0008           00606         return
+                    00607 
+                    00608 ;----------------------------------------------------------------------------
+                    00609 ; Sends/Receives a byte via the SPI interface
+                    00610 ;
+                    00611 ; Data to transmit in W
+                    00612 ; Received data returned in W
+MPASM 02.01.08 Intermediate    XP-485.ASM   12-16-2002  13:40:08         PAGE 13
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                    00613 ;
+0132                00614 Spi_Send
+0132 0093           00615         movwf   SSPBUF                  ; transmit/receive byte
+0133 1683           00616         bsf     STATUS, RP0             ; select BANK 1
+0134                00617 Spi_Pending
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0134 1C14           00618         btfss   SSPSTAT, BF             ; waiting for byte to send
+0135 2934           00619         goto    Spi_Pending
+0136 1283           00620         bcf     STATUS, RP0             ; select BANK 0
+0137 0813           00621         movfw   SSPBUF                  ; read to empty - return in W
+0138 0008           00622         return
+                    00623 
+                    00624 ;----------------------------------------------------------------------------
+                    00625 ; Reads the EEPROM
+                    00626 ;
+                    00627 ; Address to read in W
+                    00628 ; Value returned in W
+                    00629 ;
+0139                00630 Read_EEPROM
+0139 00B1           00631         movwf   SCRATCH                 ; Save off address
+013A 3030           00632         movlw   0x30                    ; SPI Master mode, CKP=1, Fosc/4
+013B 0094           00633         movwf   SSPCON
+013C 1085           00634         bcf     PORTA, EEPROM_CS        ; Select the EEPROM
+013D 3003           00635         movlw   0x03                    ; READ command, A8=0
+013E 2132           00636         call    Spi_Send
+013F 0831           00637         movfw   SCRATCH                 ; Send ADDRESS byte
+0140 2132           00638         call    Spi_Send
+0141 30FF           00639         movlw   0xFF                    ; Send DUMMY just to receive
+0142 2132           00640         call    Spi_Send
+0143 1485           00641         bsf     PORTA, EEPROM_CS        ; De-Select the EEPROM
+0144 0008           00642         return
+                    00643 
+                    00644 ;----------------------------------------------------------------------------
+                    00645 ; Writes the EEPROM
+                    00646 ;
+                    00647 ; Address in EEPROM_ADDRESS
+                    00648 ; Value in W
+                    00649 ;
+0145                00650 Write_EEPROM
+0145 00B1           00651         movwf   SCRATCH                 ; Save off DATA value
+0146 3030           00652         movlw   0x30                    ; SPI Master mode, CKP=1, Fosc/4
+0147 0094           00653         movwf   SSPCON
+0148 1085           00654         bcf     PORTA, EEPROM_CS        ; Select the EEPROM
+0149 3006           00655         movlw   0x06                    ; WRITE ENABLE command
+014A 2132           00656         call    Spi_Send
+014B 1485           00657         bsf     PORTA, EEPROM_CS        ; De-Select the EEPROM to set WRITE ENABLE
+014C 0000           00658         nop
+014D 1085           00659         bcf     PORTA, EEPROM_CS        ; Select the EEPROM
+014E 3002           00660         movlw   0x02                    ; WRITE command, A8=0
+014F 2132           00661         call    Spi_Send
+0150 0836           00662         movfw   EEPROM_ADDRESS          ; ADDRESS byte
+0151 2132           00663         call    Spi_Send
+0152 0831           00664         movfw   SCRATCH                 ; DATA byte
+MPASM 02.01.08 Intermediate    XP-485.ASM   12-16-2002  13:40:08         PAGE 14
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0153 2132           00665         call    Spi_Send
+0154 1485           00666         bsf     PORTA, EEPROM_CS        ; De-Select the EEPROM
+0155 0000           00667         nop
+0156                00668 Write_EEPROM_Done
+0156 1085           00669         bcf     PORTA, EEPROM_CS        ; Select the EEPROM
+0157 3005           00670         movlw   0x05                    ; READ STATUS REGISTER
+0158 2132           00671         call    Spi_Send
+0159 30FF           00672         movlw   0xFF                    ; Send DUMMY just to receive
+015A 2132           00673         call    Spi_Send
+015B 00B1           00674         movwf   SCRATCH
+015C 1831           00675         btfsc   SCRATCH, 0
+015D 2956           00676         goto    Write_EEPROM_Done
+015E 1485           00677         bsf     PORTA, EEPROM_CS        ; De-Select the EEPROM
+015F 0008           00678         return
+                    00679 
+                    00680 
+                    00681 ;----------------------------------------------------------------------------
+                    00682 ; Unit programming mode
+                    00683 ;
+0160                00684 Programming_Mode
+0160 01A9           00685         clrf    STRING_INDEX
+0161                00686 Printf_Programming
+0161 0829           00687         movfw   STRING_INDEX
+0162 2459           00688         call    Programming_String
+0163 3A00           00689         xorlw   0x00
+0164 1903           00690         btfsc   STATUS, Z
+0165 2969           00691         goto    Printf_Programming_end
+0166 212B           00692         call    Transmit_Char
+Message[305]: Using default destination of 1 (file).
+0167 0AA9           00693         incf    STRING_INDEX
+0168 2961           00694         goto    Printf_Programming
+0169                00695 Printf_Programming_end
+                    00696 
+0169 3040           00697         movlw   RCV_BUFFER      ; Set the RCV buffer pointer to start of buffer
+016A 00BF           00698         movwf   RCV_BUFFER_PTR
+                    00699 
+016B                00700 Programming_Main
+016B 0064           00701         clrwdt                  ; Kick the dog while we're waiting for a character
+016C 0850           00702         movfw   RCV_LAST_CHAR
+016D 3A0D           00703         xorlw   0x0D            ; Is this a CR?
+016E 1D03           00704         btfss   STATUS, Z
+016F 296B           00705         goto    Programming_Main
+                    00706 
+0170 01D0           00707         clrf    RCV_LAST_CHAR   ; delete the CR
+0171 083F           00708         movfw   RCV_BUFFER_PTR  ; Save off Current Buffer ptr (before it moves)
+0172 00BE           00709         movwf   CURRENT_PTR
+                    00710 
+0173                00711 Programming_Check_?
+0173 303F           00712         movlw   '?'                 ; Display Current Settinga
+0174 0640           00713         xorwf   RCV_BUFFER, W
+0175 1D03           00714         btfss   STATUS, Z
+0176 29C6           00715         goto    Programming_Check_W
+0177 3042           00716         movlw   RCV_BUFFER+0x02     ; Check for correct command/packet length
+MPASM 02.01.08 Intermediate    XP-485.ASM   12-16-2002  13:40:08         PAGE 15
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0178 063E           00717         xorwf   CURRENT_PTR, W
+0179 1D03           00718         btfss   STATUS, Z
+017A 2A53           00719         goto    Programming_Error_Response
+                    00720                                     ; Command/Packet OK
+017B 01A9           00721         clrf    STRING_INDEX
+017C                00722 Printf_Startup2                     ; Print the startup string (Firmware Version)
+017C 0829           00723         movfw   STRING_INDEX
+017D 242A           00724         call    Startup_String
+017E 3A00           00725         xorlw   0x00
+017F 1903           00726         btfsc   STATUS, Z
+0180 2984           00727         goto    Printf_Startup2_end
+0181 212B           00728         call    Transmit_Char
+Message[305]: Using default destination of 1 (file).
+0182 0AA9           00729         incf    STRING_INDEX
+0183 297C           00730         goto    Printf_Startup2
+0184                00731 Printf_Startup2_end
+                    00732 
+0184 3053           00733         movlw   'S'                 ; Serial Number
+0185 212B           00734         call    Transmit_Char
+0186 302F           00735         movlw   '/'
+0187 212B           00736         call    Transmit_Char
+0188 304E           00737         movlw   'N'
+0189 212B           00738         call    Transmit_Char
+018A 3020           00739         movlw   ' '
+018B 212B           00740         call    Transmit_Char
+018C 3010           00741         movlw   0x10                ; Get S/N byte 1 EEPROM location 0x10
+018D 2139           00742         call    Read_EEPROM
+018E 2264           00743         call    Print_Hex_Byte
+018F 3011           00744         movlw   0x11                ; Get S/N byte 2 EEPROM location 0x11
+0190 2139           00745         call    Read_EEPROM
+0191 2264           00746         call    Print_Hex_Byte
+0192 3012           00747         movlw   0x12                ; Get S/N byte 3 EEPROM location 0x12
+0193 2139           00748         call    Read_EEPROM
+0194 2264           00749         call    Print_Hex_Byte
+0195 3013           00750         movlw   0x13                ; Get S/N byte 4 EEPROM location 0x13
+0196 2139           00751         call    Read_EEPROM
+0197 2264           00752         call    Print_Hex_Byte
+0198 300D           00753         movlw   0x0D                ; CR
+0199 212B           00754         call    Transmit_Char
+                    00755 
+019A 304D           00756         movlw   'M'                 ; Current mode
+019B 212B           00757         call    Transmit_Char
+019C 306F           00758         movlw   'o'
+019D 212B           00759         call    Transmit_Char
+019E 3064           00760         movlw   'd'
+019F 212B           00761         call    Transmit_Char
+01A0 3065           00762         movlw   'e'
+01A1 212B           00763         call    Transmit_Char
+01A2 3020           00764         movlw   ' '
+01A3 212B           00765         call    Transmit_Char
+01A4 3000           00766         movlw   0x00                ; Get MODE setting EEPROM location 0x00
+01A5 2139           00767         call    Read_EEPROM
+01A6 2264           00768         call    Print_Hex_Byte
+MPASM 02.01.08 Intermediate    XP-485.ASM   12-16-2002  13:40:08         PAGE 16
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+01A7 300D           00769         movlw   0x0D                ; CR
+01A8 212B           00770         call    Transmit_Char
+                    00771 
+01A9 01A9           00772         clrf    STRING_INDEX
+01AA                00773 Printf_Default_Baud                 ; Print the Default Baud Rate
+01AA 0829           00774         movfw   STRING_INDEX
+01AB 2492           00775         call    Default_Baud_String
+01AC 3A00           00776         xorlw   0x00
+01AD 1903           00777         btfsc   STATUS, Z
+01AE 29B2           00778         goto    Printf_Default_Baud_end
+01AF 212B           00779         call    Transmit_Char
+Message[305]: Using default destination of 1 (file).
+01B0 0AA9           00780         incf    STRING_INDEX
+01B1 29AA           00781         goto    Printf_Default_Baud
+01B2                00782 Printf_Default_Baud_end
+01B2 3001           00783         movlw   0x01                ; Get Default Baud Rate EEPROM location 0x01
+01B3 2139           00784         call    Read_EEPROM
+01B4 2264           00785         call    Print_Hex_Byte
+01B5 300D           00786         movlw   0x0D                ; CR
+01B6 212B           00787         call    Transmit_Char
+                    00788 
+01B7 01A9           00789         clrf    STRING_INDEX
+01B8                00790 Printf_Silent                       ; Print the Silent Power up mode
+01B8 0829           00791         movfw   STRING_INDEX
+01B9 247D           00792         call    Silent_String
+01BA 3A00           00793         xorlw   0x00
+01BB 1903           00794         btfsc   STATUS, Z
+01BC 29C0           00795         goto    Printf_Silent_end
+01BD 212B           00796         call    Transmit_Char
+Message[305]: Using default destination of 1 (file).
+01BE 0AA9           00797         incf    STRING_INDEX
+01BF 29B8           00798         goto    Printf_Silent
+01C0                00799 Printf_Silent_end
+01C0 3004           00800         movlw   0x04                ; Get Silent Mode flag EEPROM location 0x04
+01C1 2139           00801         call    Read_EEPROM
+01C2 2264           00802         call    Print_Hex_Byte
+01C3 300D           00803         movlw   0x0D                ; CR
+01C4 212B           00804         call    Transmit_Char
+                    00805 
+01C5 2A5D           00806         goto    Programming_Finish_Command
+                    00807 
+01C6                00808 Programming_Check_W
+01C6 3057           00809         movlw   'W'                 ; WRITE EEPROM command
+01C7 0640           00810         xorwf   RCV_BUFFER, W
+01C8 1D03           00811         btfss   STATUS, Z
+01C9 29EB           00812         goto    Programming_Check_M
+01CA 3046           00813         movlw   RCV_BUFFER+0x06     ; Check for correct command/packet length
+01CB 063E           00814         xorwf   CURRENT_PTR, W
+01CC 1D03           00815         btfss   STATUS, Z
+01CD 2A53           00816         goto    Programming_Error_Response
+                    00817                                     ; Command/Packet OK
+01CE 0841           00818         movfw   RCV_BUFFER+1        ; Get the EEPROM ADDRESS - MSB
+01CF 2273           00819         call    Hex_To_Nibble
+MPASM 02.01.08 Intermediate    XP-485.ASM   12-16-2002  13:40:08         PAGE 17
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+01D0 00B1           00820         movwf   SCRATCH
+01D1 1003           00821         bcf     STATUS, C           ; Clear the carry before rotate
+01D2 0DB1           00822         rlf     SCRATCH, F          ; Rotate to High order nibble
+01D3 0DB1           00823         rlf     SCRATCH, F
+01D4 0DB1           00824         rlf     SCRATCH, F
+01D5 0DB1           00825         rlf     SCRATCH, F
+01D6 0842           00826         movfw   RCV_BUFFER+2        ; Get the EEPROM ADDRESS - LSB
+01D7 2273           00827         call    Hex_To_Nibble
+01D8 0431           00828         iorwf   SCRATCH, W
+01D9 00B6           00829         movwf   EEPROM_ADDRESS
+                    00830 
+01DA 0843           00831         movfw   RCV_BUFFER+3        ; Get the EEPROM VALUE - MSB
+01DB 2273           00832         call    Hex_To_Nibble
+01DC 00B1           00833         movwf   SCRATCH
+01DD 1003           00834         bcf     STATUS, C           ; Clear the carry before rotate
+01DE 0DB1           00835         rlf     SCRATCH, F          ; Rotate to High order nibble
+01DF 0DB1           00836         rlf     SCRATCH, F
+01E0 0DB1           00837         rlf     SCRATCH, F
+01E1 0DB1           00838         rlf     SCRATCH, F
+01E2 0844           00839         movfw   RCV_BUFFER+4        ; Get the EEPROM VALUE - LSB
+01E3 2273           00840         call    Hex_To_Nibble
+01E4 0431           00841         iorwf   SCRATCH, W
+01E5 2145           00842         call    Write_EEPROM        ; Write value to EEPROM
+                    00843 
+01E6 3057           00844         movlw   'W'                 ; EEPROM Write delayed enough already
+01E7 212B           00845         call    Transmit_Char
+01E8 300D           00846         movlw   0x0D                ; CR
+01E9 212B           00847         call    Transmit_Char
+01EA 2A5D           00848         goto    Programming_Finish_Command
+                    00849 
+01EB                00850 Programming_Check_M
+01EB 304D           00851         movlw   'M'                 ; MODE change command
+01EC 0640           00852         xorwf   RCV_BUFFER, W
+01ED 1D03           00853         btfss   STATUS, Z
+01EE 29FF           00854         goto    Programming_Check_B
+01EF 3043           00855         movlw   RCV_BUFFER+0x03     ; Check for correct command/packet length
+01F0 063E           00856         xorwf   CURRENT_PTR, W
+01F1 1D03           00857         btfss   STATUS, Z
+01F2 2A53           00858         goto    Programming_Error_Response
+                    00859                                     ; Command/Packet OK
+01F3 0841           00860         movfw   RCV_BUFFER+1        ; Get the MODE value
+01F4 2273           00861         call    Hex_To_Nibble
+01F5 00B1           00862         movwf   SCRATCH
+01F6 3000           00863         movlw   0x00                ; Mode EEPROM address 0x00
+01F7 00B6           00864         movwf   EEPROM_ADDRESS
+01F8 0831           00865         movfw   SCRATCH
+01F9 2145           00866         call    Write_EEPROM
+                    00867 
+01FA 304D           00868         movlw   'M'
+01FB 212B           00869         call    Transmit_Char
+01FC 300D           00870         movlw   0x0D
+01FD 212B           00871         call    Transmit_Char
+01FE 2A5D           00872         goto    Programming_Finish_Command
+MPASM 02.01.08 Intermediate    XP-485.ASM   12-16-2002  13:40:08         PAGE 18
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                    00873 
+01FF                00874 Programming_Check_B
+01FF 3042           00875         movlw   'B'                 ; BAUD change command
+0200 0640           00876         xorwf   RCV_BUFFER, W
+0201 1D03           00877         btfss   STATUS, Z
+0202 2A13           00878         goto    Programming_Check_S
+0203 3043           00879         movlw   RCV_BUFFER+0x03     ; Check for correct command/packet length
+0204 063E           00880         xorwf   CURRENT_PTR, W
+0205 1D03           00881         btfss   STATUS, Z
+0206 2A53           00882         goto    Programming_Error_Response
+                    00883                                     ; Command/Packet OK
+0207 0841           00884         movfw   RCV_BUFFER+1        ; Get the MODE value
+0208 2273           00885         call    Hex_To_Nibble
+0209 00B1           00886         movwf   SCRATCH
+020A 3001           00887         movlw   0x01                ; BAUD EEPROM address 0x01
+020B 00B6           00888         movwf   EEPROM_ADDRESS
+020C 0831           00889         movfw   SCRATCH
+020D 2145           00890         call    Write_EEPROM
+                    00891 
+020E 3042           00892         movlw   'B'
+020F 212B           00893         call    Transmit_Char
+0210 300D           00894         movlw   0x0D
+0211 212B           00895         call    Transmit_Char
+0212 2A5D           00896         goto    Programming_Finish_Command
+                    00897 
+0213                00898 Programming_Check_S
+0213 3053           00899         movlw   'S'                 ; SILENT POWER UP change command
+0214 0640           00900         xorwf   RCV_BUFFER, W
+0215 1D03           00901         btfss   STATUS, Z
+0216 2A27           00902         goto    Programming_Check_R
+0217 3043           00903         movlw   RCV_BUFFER+0x03     ; Check for correct command/packet length
+0218 063E           00904         xorwf   CURRENT_PTR, W
+0219 1D03           00905         btfss   STATUS, Z
+021A 2A53           00906         goto    Programming_Error_Response
+                    00907                                     ; Command/Packet OK
+021B 0841           00908         movfw   RCV_BUFFER+1        ; Get the MODE value
+021C 2273           00909         call    Hex_To_Nibble
+021D 00B1           00910         movwf   SCRATCH
+021E 3004           00911         movlw   0x04                ; SILENT POWER UP FLAG EEPROM address 0x04
+021F 00B6           00912         movwf   EEPROM_ADDRESS
+0220 0831           00913         movfw   SCRATCH
+0221 2145           00914         call    Write_EEPROM
+                    00915 
+0222 3053           00916         movlw   'S'
+0223 212B           00917         call    Transmit_Char
+0224 300D           00918         movlw   0x0D
+0225 212B           00919         call    Transmit_Char
+0226 2A5D           00920         goto    Programming_Finish_Command
+                    00921 
+0227                00922 Programming_Check_R
+0227 3052           00923         movlw   'R'                 ; READ EEPROM command
+0228 0640           00924         xorwf   RCV_BUFFER, W
+0229 1D03           00925         btfss   STATUS, Z
+MPASM 02.01.08 Intermediate    XP-485.ASM   12-16-2002  13:40:08         PAGE 19
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+022A 2A4F           00926         goto    Programming_Check_Q
+022B 3044           00927         movlw   RCV_BUFFER+0x04     ; Check for correct command/packet length
+022C 063E           00928         xorwf   CURRENT_PTR, W
+022D 1D03           00929         btfss   STATUS, Z
+022E 2A53           00930         goto    Programming_Error_Response
+                    00931                                     ; Command/Packet OK
+022F 0841           00932         movfw   RCV_BUFFER+1        ; Get the EEPROM ADDRESS - MSB
+0230 2273           00933         call    Hex_To_Nibble
+0231 00B1           00934         movwf   SCRATCH
+0232 1003           00935         bcf     STATUS, C           ; Clear the carry before rotate
+0233 0DB1           00936         rlf     SCRATCH, F          ; Rotate to High order nibble
+0234 0DB1           00937         rlf     SCRATCH, F
+0235 0DB1           00938         rlf     SCRATCH, F
+0236 0DB1           00939         rlf     SCRATCH, F
+0237 0842           00940         movfw   RCV_BUFFER+2        ; Get the EEPROM ADDRESS - LSB
+0238 2273           00941         call    Hex_To_Nibble
+0239 0431           00942         iorwf   SCRATCH, W
+023A 2139           00943         call    Read_EEPROM
+023B 00B1           00944         movwf   SCRATCH             ; Save the data
+                    00945 
+023C 3052           00946         movlw   'R'
+023D 212B           00947         call    Transmit_Char
+023E 0831           00948         movfw   SCRATCH             ; Get the saved Data
+023F 39F0           00949         andlw   0xF0                ; Send out the MSB
+0240 00B6           00950         movwf   EEPROM_ADDRESS
+0241 1003           00951         bcf     STATUS, C           ; Clear the carry before rotate
+0242 0CB6           00952         rrf     EEPROM_ADDRESS, F
+0243 0CB6           00953         rrf     EEPROM_ADDRESS, F
+0244 0CB6           00954         rrf     EEPROM_ADDRESS, F
+0245 0C36           00955         rrf     EEPROM_ADDRESS, W
+0246 2400           00956         call    Nibble_To_Hex
+0247 212B           00957         call    Transmit_Char
+0248 0831           00958         movfw   SCRATCH             ; Get the saved Data
+0249 390F           00959         andlw   0x0F                ; Send out the LSB
+024A 2400           00960         call    Nibble_To_Hex
+024B 212B           00961         call    Transmit_Char
+024C 300D           00962         movlw   0x0D
+024D 212B           00963         call    Transmit_Char
+024E 2A5D           00964         goto    Programming_Finish_Command
+                    00965 
+024F                00966 Programming_Check_Q
+024F 3051           00967         movlw   'Q'                 ; QUIT
+0250 0640           00968         xorwf   RCV_BUFFER, W
+0251 1903           00969         btfsc   STATUS, Z
+0252 2A60           00970         goto    Programming_End
+                    00971 
+0253                00972 Programming_Error_Response
+0253 3045           00973         movlw   'E'
+0254 212B           00974         call    Transmit_Char
+0255 3072           00975         movlw   'r'
+0256 212B           00976         call    Transmit_Char
+0257 3072           00977         movlw   'r'
+0258 212B           00978         call    Transmit_Char
+MPASM 02.01.08 Intermediate    XP-485.ASM   12-16-2002  13:40:08         PAGE 20
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0259 3021           00979         movlw   '!'
+025A 212B           00980         call    Transmit_Char
+025B 300D           00981         movlw   0x0D
+025C 212B           00982         call    Transmit_Char
+025D                00983 Programming_Finish_Command
+025D 3040           00984         movlw   RCV_BUFFER      ; Set the RCV buffer pointer to start of buffer
+025E 00BF           00985         movwf   RCV_BUFFER_PTR
+025F 296B           00986         goto    Programming_Main
+                    00987 
+0260                00988 Programming_End
+0260 3040           00989         movlw   RCV_BUFFER      ; Set the RCV buffer pointer to start of buffer
+0261 00BF           00990         movwf   RCV_BUFFER_PTR
+0262 081A           00991         movfw   RCREG           ; Read receive register to clear errors and any data
+0263 0008           00992         return
+                    00993 
+                    00994 
+                    00995 ;----------------------------------------------------------------------------
+                    00996 ; Prints the hexidecimal byte in W
+                    00997 ;
+0264                00998 Print_Hex_Byte
+0264 00B1           00999         movwf   SCRATCH             ; Save the data
+0265 39F0           01000         andlw   0xF0                ; Send out the MSB
+0266 00AC           01001         movwf   HEX_TEMP
+0267 1003           01002         bcf     STATUS, C           ; Clear the carry before rotate
+0268 0CAC           01003         rrf     HEX_TEMP, F
+0269 0CAC           01004         rrf     HEX_TEMP, F
+026A 0CAC           01005         rrf     HEX_TEMP, F
+026B 0C2C           01006         rrf     HEX_TEMP, W
+026C 2400           01007         call    Nibble_To_Hex
+026D 212B           01008         call    Transmit_Char
+026E 0831           01009         movfw   SCRATCH             ; Get the saved Data
+026F 390F           01010         andlw   0x0F                ; Send out the LSB
+0270 2400           01011         call    Nibble_To_Hex
+0271 212B           01012         call    Transmit_Char
+0272 0008           01013         return
+                    01014 
+                    01015 ;----------------------------------------------------------------------------
+                    01016 ; Converts a ASCII Hexadecimal value in W to a binary nibble
+                    01017 ; returned in W. Returns 0 if ASCII outside of Hexdecimal range.
+                    01018 ;
+0273                01019 Hex_To_Nibble
+0273 00AC           01020         movwf   HEX_TEMP
+0274 3A30           01021         xorlw   '0'
+0275 1903           01022         btfsc   STATUS, Z
+0276 3400           01023         retlw   0x00
+0277 082C           01024         movfw   HEX_TEMP
+0278 3A31           01025         xorlw   '1'
+0279 1903           01026         btfsc   STATUS, Z
+027A 3401           01027         retlw   0x01
+027B 082C           01028         movfw   HEX_TEMP
+027C 3A32           01029         xorlw   '2'
+027D 1903           01030         btfsc   STATUS, Z
+027E 3402           01031         retlw   0x02
+MPASM 02.01.08 Intermediate    XP-485.ASM   12-16-2002  13:40:08         PAGE 21
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+027F 082C           01032         movfw   HEX_TEMP
+0280 3A33           01033         xorlw   '3'
+0281 1903           01034         btfsc   STATUS, Z
+0282 3403           01035         retlw   0x03
+0283 082C           01036         movfw   HEX_TEMP
+0284 3A34           01037         xorlw   '4'
+0285 1903           01038         btfsc   STATUS, Z
+0286 3404           01039         retlw   0x04
+0287 082C           01040         movfw   HEX_TEMP
+0288 3A35           01041         xorlw   '5'
+0289 1903           01042         btfsc   STATUS, Z
+028A 3405           01043         retlw   0x05
+028B 082C           01044         movfw   HEX_TEMP
+028C 3A36           01045         xorlw   '6'
+028D 1903           01046         btfsc   STATUS, Z
+028E 3406           01047         retlw   0x06
+028F 082C           01048         movfw   HEX_TEMP
+0290 3A36           01049         xorlw   '6'
+0291 1903           01050         btfsc   STATUS, Z
+0292 3406           01051         retlw   0x06
+0293 082C           01052         movfw   HEX_TEMP
+0294 3A37           01053         xorlw   '7'
+0295 1903           01054         btfsc   STATUS, Z
+0296 3407           01055         retlw   0x07
+0297 082C           01056         movfw   HEX_TEMP
+0298 3A38           01057         xorlw   '8'
+0299 1903           01058         btfsc   STATUS, Z
+029A 3408           01059         retlw   0x08
+029B 082C           01060         movfw   HEX_TEMP
+029C 3A39           01061         xorlw   '9'
+029D 1903           01062         btfsc   STATUS, Z
+029E 3409           01063         retlw   0x09
+029F 082C           01064         movfw   HEX_TEMP
+02A0 3A41           01065         xorlw   'A'
+02A1 1903           01066         btfsc   STATUS, Z
+02A2 340A           01067         retlw   0x0A
+02A3 082C           01068         movfw   HEX_TEMP
+02A4 3A61           01069         xorlw   'a'
+02A5 1903           01070         btfsc   STATUS, Z
+02A6 340A           01071         retlw   0x0A
+02A7 082C           01072         movfw   HEX_TEMP
+02A8 3A42           01073         xorlw   'B'
+02A9 1903           01074         btfsc   STATUS, Z
+02AA 340B           01075         retlw   0x0B
+02AB 082C           01076         movfw   HEX_TEMP
+02AC 3A62           01077         xorlw   'b'
+02AD 1903           01078         btfsc   STATUS, Z
+02AE 340B           01079         retlw   0x0B
+02AF 082C           01080         movfw   HEX_TEMP
+02B0 3A43           01081         xorlw   'C'
+02B1 1903           01082         btfsc   STATUS, Z
+02B2 340C           01083         retlw   0x0C
+02B3 082C           01084         movfw   HEX_TEMP
+MPASM 02.01.08 Intermediate    XP-485.ASM   12-16-2002  13:40:08         PAGE 22
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+02B4 3A63           01085         xorlw   'c'
+02B5 1903           01086         btfsc   STATUS, Z
+02B6 340C           01087         retlw   0x0C
+02B7 082C           01088         movfw   HEX_TEMP
+02B8 3A44           01089         xorlw   'D'
+02B9 1903           01090         btfsc   STATUS, Z
+02BA 340D           01091         retlw   0x0D
+02BB 082C           01092         movfw   HEX_TEMP
+02BC 3A64           01093         xorlw   'd'
+02BD 1903           01094         btfsc   STATUS, Z
+02BE 340D           01095         retlw   0x0D
+02BF 082C           01096         movfw   HEX_TEMP
+02C0 3A45           01097         xorlw   'E'
+02C1 1903           01098         btfsc   STATUS, Z
+02C2 340E           01099         retlw   0x0E
+02C3 082C           01100         movfw   HEX_TEMP
+02C4 3A65           01101         xorlw   'e'
+02C5 1903           01102         btfsc   STATUS, Z
+02C6 340E           01103         retlw   0x0E
+02C7 082C           01104         movfw   HEX_TEMP
+02C8 3A46           01105         xorlw   'F'
+02C9 1903           01106         btfsc   STATUS, Z
+02CA 340F           01107         retlw   0x0F
+02CB 082C           01108         movfw   HEX_TEMP
+02CC 3A66           01109         xorlw   'f'
+02CD 1903           01110         btfsc   STATUS, Z
+02CE 340F           01111         retlw   0x0F
+02CF 3400           01112         retlw   0
+                    01113 
+                    01114 
+                    01115 
+                    01116 ;----------------------------------------------------------------------------
+                    01117 ;
+                    01118 ; Interrupt Service Routines Follow.
+                    01119 ;
+                    01120 ;----------------------------------------------------------------------------
+                    01121 
+                    01122 ;----------------------------------------------------------------------------
+                    01123 ; Timer1_Isr
+                    01124 ;
+                    01125 ; Bump the running time variables
+                    01126 ;----------------------------------------------------------------------------
+                    01127 ;
+02D0                01128 Timer1_Isr
+02D0 1405           01129         bsf     PORTA, ENABLE_HOLD  ; Release the RS-485 enable
+02D1 142E           01130         bsf     OUR_FLAGS, TMR1_ROLLOVER
+02D2 100C           01131         bcf     PIR1, TMR1IF    ; clear the Timer 1 Irq
+02D3 0008           01132         return
+                    01133 
+                    01134 ;----------------------------------------------------------------------------
+                    01135 ; Timer2_Isr
+                    01136 ;
+                    01137 ; Bump the running time variables
+MPASM 02.01.08 Intermediate    XP-485.ASM   12-16-2002  13:40:08         PAGE 23
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                    01138 ;----------------------------------------------------------------------------
+                    01139 ;
+02D4                01140 Timer2_Isr
+Message[305]: Using default destination of 1 (file).
+02D4 0AA7           01141         incf    ONE_MS_TICK         ; Increments every 1 ms
+02D5 1D03           01142         btfss   STATUS, Z
+02D6 2AE4           01143         goto    Timer2_Isr_End
+                    01144 
+Message[305]: Using default destination of 1 (file).
+02D7 0AA8           01145         incf    QUARTER_SEC_TICK    ; Increments every 256 ms
+                    01146 
+                    01147         ;
+                    01148         ;
+02D8 30FF           01149         movlw   0xFF
+02D9 00A5           01150         movwf   TMR1H_MIN
+02DA 00A6           01151         movwf   TMR1L_MIN
+                    01152 
+                    01153         ;
+                    01154         ; Check if new Baud code to save in EEPROM and SPBRG
+                    01155         ;
+02DB 082F           01156         movfw   CUR_BAUD
+02DC 0630           01157         xorwf   NEW_BAUD, W
+02DD 1903           01158         btfsc   STATUS, Z
+02DE 2AE4           01159         goto    Timer2_Isr_End
+                    01160 
+02DF 0830           01161         movfw   NEW_BAUD            ; Save new baud code
+02E0 00AF           01162         movwf   CUR_BAUD
+02E1 2415           01163         call    Baud_To_SPBRG       ; Make it into a new SPBRG
+02E2 00AA           01164         movwf   CUR_SPBRG
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+02E3 0099           01165         movwf   SPBRG
+                    01166 
+02E4                01167 Timer2_Isr_End
+02E4 108C           01168         bcf     PIR1, TMR2IF        ; clear the Timer 2 Irq
+02E5 0008           01169         return
+                    01170 
+                    01171 
+02E6                01172 PortB_Isr
+                    01173 
+02E6 0806           01174         movfw   PORTB               ; Read to clear interrupt
+02E7 100B           01175         bcf     INTCON, RBIF        ; clear the INT flag
+02E8 0008           01176         return
+                    01177 
+                    01178 ;----------------------------------------------------------------------------
+                    01179 ; External Interrupt (INT)
+                    01180 ;
+                    01181 ; Holds the RS-485 enable
+                    01182 ;----------------------------------------------------------------------------
+                    01183 ;
+02E9                01184 Int_Isr
+02E9 1005           01185         bcf     PORTA, ENABLE_HOLD  ; Hold the RS-485 enable
+02EA 14AE           01186         bsf     OUR_FLAGS, INT_EVENT
+02EB 018F           01187         clrf    TMR1H               ; clear TMR1 counters
+MPASM 02.01.08 Intermediate    XP-485.ASM   12-16-2002  13:40:08         PAGE 24
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+02EC 018E           01188         clrf    TMR1L
+02ED 102E           01189         bcf     OUR_FLAGS, TMR1_ROLLOVER
+02EE 108B           01190         bcf     INTCON, INTF        ; clear the INT flag
+02EF 0008           01191         return
+                    01192 
+                    01193 ;----------------------------------------------------------------------------
+                    01194 ; Rcv_Isr
+                    01195 ;
+                    01196 ; Asynchronous data reception ISR
+                    01197 ; Releases RS-485 enable hold any data receive as well as all errors
+                    01198 ;----------------------------------------------------------------------------
+                    01199 ;
+02F0                01200 Rcv_Isr
+02F0 1405           01201         bsf     PORTA, ENABLE_HOLD  ; Release the RS-485 enable
+02F1 1918           01202         btfsc   RCSTA, FERR
+02F2 2AF9           01203         goto    Rcv_Isr_Frame_Error
+02F3 1898           01204         btfsc   RCSTA, OERR
+02F4 2AF6           01205         goto    Rcv_Isr_Over_Error
+02F5 2AFC           01206         goto    Rcv_Isr_Read
+                    01207 
+02F6                01208 Rcv_Isr_Over_Error
+02F6 1218           01209         bcf     RCSTA, CREN         ; Clear CREN to reset receive logic
+02F7 0000           01210         nop
+02F8 1618           01211         bsf     RCSTA, CREN
+02F9                01212 Rcv_Isr_Frame_Error
+                    01213 ;        incf    RCV_ERROR_CNT
+02F9 081A           01214         movfw   RCREG               ; read data byte into W and DUMP
+02FA 01D0           01215         clrf    RCV_LAST_CHAR
+02FB 0008           01216         return
+                    01217 
+02FC                01218 Rcv_Isr_Read
+02FC 081A           01219         movfw   RCREG               ; read data byte into W
+02FD 00D0           01220         movwf   RCV_LAST_CHAR
+                    01221 
+02FE 083F           01222         movfw   RCV_BUFFER_PTR      ; Get RCV buffer pointer
+02FF 0084           01223         movwf   FSR
+0300 0850           01224         movfw   RCV_LAST_CHAR
+0301 0080           01225         movwf   INDF                ; Save off in RCV buffer
+                    01226 
+0302 083F           01227         movfw   RCV_BUFFER_PTR      ; Get RCV buffer pointer
+0303 0A3F           01228         incf    RCV_BUFFER_PTR, W   ; Bump RCV buffer pointer for next read
+0304 394F           01229         andlw   0x4F                ; Prevent Buffer overrun
+0305 00BF           01230         movwf   RCV_BUFFER_PTR
+0306 0008           01231         return
+                    01232 
+                    01233 
+                    01234 ;----------------------------------------------------------------------------
+                    01235 ; Main_Isr
+                    01236 ;
+                    01237 ; Main Interrupt Service routine. Interrupt sources are checked and routed
+                    01238 ; to the proper specific ISR. W and STATUS are saved and restored.
+                    01239 ;----------------------------------------------------------------------------
+                    01240 ;
+MPASM 02.01.08 Intermediate    XP-485.ASM   12-16-2002  13:40:08         PAGE 25
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0307                01241 Main_Isr
+0307 00A0           01242         movwf   W_TEMP          ; save W in either BANK 0 or BANK 1
+0308 0803           01243         movfw   STATUS          ; save STATUS into W
+0309 1283           01244         bcf     STATUS, RP0     ; select BANK 0
+030A 00A1           01245         movwf   STATUS_TEMP     ; save STATUS in temp
+                    01246 
+030B 180C           01247         btfsc   PIR1, TMR1IF    ; Is TMR1IF Set?
+030C 22D0           01248         call    Timer1_Isr
+                    01249 
+030D 188C           01250         btfsc   PIR1, TMR2IF    ; Is TMR2IF Set?
+030E 22D4           01251         call    Timer2_Isr
+                    01252 
+030F 1A8C           01253         btfsc   PIR1, RCIF      ; is bit 5 (RCIF) Set?
+0310 22F0           01254         call    Rcv_Isr
+                    01255 
+0311 180B           01256         btfsc   INTCON, RBIF
+0312 22E6           01257         call    PortB_Isr
+                    01258 
+0313 0821           01259         movfw   STATUS_TEMP     ; move old STATUS into W
+0314 0083           01260         movwf   STATUS          ; restore status
+0315 0EA0           01261         swapf   W_TEMP, F       ; swap it so it will be right in the next instruction.
+0316 0E20           01262         swapf   W_TEMP, W       ; move old W into W
+0317 0009           01263         retfie
+                    01264 ;
+                    01265 ;----------------------------------------------------------------------------
+                    01266 ;
+                    01267 
+0400                01268         ORG     0x400
+                    01269 
+                    01270 ;----------------------------------------------------------------------------
+                    01271 ; Converts a binary nibble in W to an ASCII Hexadecimal value
+                    01272 ; returned in W
+                    01273 ;
+0400                01274 Nibble_To_Hex
+0400 100A           01275         bcf     PCLATH, 0   ; Adjust PCLATH so we're in the same page when
+0401 108A           01276         bcf     PCLATH, 1   ; the add to PCL is done
+0402 150A           01277         bsf     PCLATH, 2
+0403 390F           01278         andlw   0x0F
+0404 0782           01279         addwf   PCL, F
+0405 3430           01280         retlw   '0'
+0406 3431           01281         retlw   '1'
+0407 3432           01282         retlw   '2'
+0408 3433           01283         retlw   '3'
+0409 3434           01284         retlw   '4'
+040A 3435           01285         retlw   '5'
+040B 3436           01286         retlw   '6'
+040C 3437           01287         retlw   '7'
+040D 3438           01288         retlw   '8'
+040E 3439           01289         retlw   '9'
+040F 3441           01290         retlw   'A'
+0410 3442           01291         retlw   'B'
+0411 3443           01292         retlw   'C'
+0412 3444           01293         retlw   'D'
+MPASM 02.01.08 Intermediate    XP-485.ASM   12-16-2002  13:40:08         PAGE 26
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0413 3445           01294         retlw   'E'
+0414 3446           01295         retlw   'F'
+                    01296 
+                    01297 
+                    01298 ;----------------------------------------------------------------------------
+                    01299 ; Converts a Baud rate code in W to baud rate generator value
+                    01300 ; Note: Assumes clock rate 7.3728 Mhz
+                    01301 ;
+0415                01302 Baud_To_SPBRG
+0415 100A           01303         bcf     PCLATH, 0   ; Adjust PCLATH so we're in the same page when
+0416 108A           01304         bcf     PCLATH, 1   ; the add to PCL is done
+0417 150A           01305         bsf     PCLATH, 2
+0418 390F           01306         andlw   0x0F
+0419 0782           01307         addwf   PCL, F
+041A 34BF           01308         retlw   SPBRG_1200      ; 0 = 1200
+041B 34BF           01309         retlw   SPBRG_1200      ; 1 = 1200
+041C 345F           01310         retlw   SPBRG_2400      ; 2 = 2400
+041D 342F           01311         retlw   SPBRG_4800      ; 3 = 4800
+041E 3417           01312         retlw   SPBRG_9600      ; 4 = 9600
+041F 340B           01313         retlw   SPBRG_19200     ; 5 = 19200
+0420 3405           01314         retlw   SPBRG_38400     ; 6 = 38400
+0421 3402           01315         retlw   SPBRG_57600     ; 7 = 57600
+0422 3401           01316         retlw   SPBRG_115200    ; 8 = 115200
+0423 3400           01317         retlw   SPBRG_230400    ; 9 = 230400
+0424 3401           01318         retlw   SPBRG_115200    ; A = Reserved
+0425 3401           01319         retlw   SPBRG_115200    ; B = Reserved
+0426 3401           01320         retlw   SPBRG_115200    ; C = Reserved
+0427 3401           01321         retlw   SPBRG_115200    ; D = Reserved
+0428 3401           01322         retlw   SPBRG_115200    ; E = Reserved
+0429 3401           01323         retlw   SPBRG_115200    ; F = Reserved
+                    01324 
+                    01325 ;----------------------------------------------------------------------------
+                    01326 ;----------------------------------------------------------------------------
+                    01327 ;
+                    01328 ; Strings to print follow
+                    01329 
+                    01330 ; Index is assumed to be in W
+042A                01331 Startup_String
+042A 100A           01332         bcf     PCLATH, 0   ; Adjust PCLATH so we're in the same page when
+042B 108A           01333         bcf     PCLATH, 1   ; the add to PCL is done
+042C 150A           01334         bsf     PCLATH, 2
+042D 0782           01335         addwf   PCL, F
+042E 340D           01336         RETLW   0D
+042F 3449           01337         RETLW   'I'
+0430 346E           01338         RETLW   'n'
+0431 3474           01339         RETLW   't'
+0432 3465           01340         RETLW   'e'
+0433 3467           01341         RETLW   'g'
+0434 3472           01342         RETLW   'r'
+0435 3469           01343         RETLW   'i'
+0436 3474           01344         RETLW   't'
+0437 3479           01345         RETLW   'y'
+0438 3420           01346         RETLW   ' '
+MPASM 02.01.08 Intermediate    XP-485.ASM   12-16-2002  13:40:08         PAGE 27
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0439 3449           01347         RETLW   'I'
+043A 346E           01348         RETLW   'n'
+043B 3473           01349         RETLW   's'
+043C 3474           01350         RETLW   't'
+043D 3472           01351         RETLW   'r'
+043E 3475           01352         RETLW   'u'
+043F 346D           01353         RETLW   'm'
+0440 3465           01354         RETLW   'e'
+0441 346E           01355         RETLW   'n'
+0442 3474           01356         RETLW   't'
+0443 3473           01357         RETLW   's'
+0444 3420           01358         RETLW   ' '
+0445 3458           01359         RETLW   'X'
+0446 3450           01360         RETLW   'P'
+0447 3420           01361         RETLW   ' '
+0448 3443           01362         RETLW   'C'
+0449 346F           01363         RETLW   'o'
+044A 346E           01364         RETLW   'n'
+044B 3476           01365         RETLW   'v'
+044C 3465           01366         RETLW   'e'
+044D 3472           01367         RETLW   'r'
+044E 3474           01368         RETLW   't'
+044F 3465           01369         RETLW   'e'
+0450 3472           01370         RETLW   'r'
+0451 3420           01371         RETLW   ' '
+0452 3476           01372         RETLW   'v'
+0453 3431           01373         RETLW   VERSION_MAJOR
+0454 342E           01374         RETLW   '.'
+0455 3430           01375         RETLW   VERSION_MINOR1
+0456 3431           01376         RETLW   VERSION_MINOR2
+0457 340D           01377         RETLW   0D
+0458 3400           01378         RETLW   00
+                    01379 
+                    01380 ; Index is assumed to be in W
+0459                01381 Programming_String
+0459 100A           01382         bcf     PCLATH, 0   ; Adjust PCLATH so we're in the same page when
+045A 108A           01383         bcf     PCLATH, 1   ; the add to PCL is done
+045B 150A           01384         bsf     PCLATH, 2
+045C 0782           01385         addwf   PCL, F
+045D 3450           01386         RETLW   'P'
+045E 3472           01387         RETLW   'r'
+045F 346F           01388         RETLW   'o'
+0460 3467           01389         RETLW   'g'
+0461 3472           01390         RETLW   'r'
+0462 3461           01391         RETLW   'a'
+0463 346D           01392         RETLW   'm'
+0464 346D           01393         RETLW   'm'
+0465 3469           01394         RETLW   'i'
+0466 346E           01395         RETLW   'n'
+0467 3467           01396         RETLW   'g'
+0468 3420           01397         RETLW   ' '
+0469 346D           01398         RETLW   'm'
+046A 346F           01399         RETLW   'o'
+MPASM 02.01.08 Intermediate    XP-485.ASM   12-16-2002  13:40:08         PAGE 28
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+046B 3464           01400         RETLW   'd'
+046C 3465           01401         RETLW   'e'
+046D 340D           01402         RETLW   0D
+046E 3400           01403         RETLW   00
+                    01404 
+                    01405 ; Index is assumed to be in W
+046F                01406 Run_String
+046F 100A           01407         bcf     PCLATH, 0   ; Adjust PCLATH so we're in the same page when
+0470 108A           01408         bcf     PCLATH, 1   ; the add to PCL is done
+0471 150A           01409         bsf     PCLATH, 2
+0472 0782           01410         addwf   PCL, F
+0473 3452           01411         RETLW   'R'
+0474 3475           01412         RETLW   'u'
+0475 346E           01413         RETLW   'n'
+0476 3420           01414         RETLW   ' '
+0477 346D           01415         RETLW   'm'
+0478 346F           01416         RETLW   'o'
+0479 3464           01417         RETLW   'd'
+047A 3465           01418         RETLW   'e'
+047B 340D           01419         RETLW   0D
+047C 3400           01420         RETLW   00
+                    01421 
+                    01422 ; Index is assumed to be in W
+047D                01423 Silent_String
+047D 100A           01424         bcf     PCLATH, 0   ; Adjust PCLATH so we're in the same page when
+047E 108A           01425         bcf     PCLATH, 1   ; the add to PCL is done
+047F 150A           01426         bsf     PCLATH, 2
+0480 0782           01427         addwf   PCL, F
+0481 3453           01428         RETLW   'S'
+0482 3469           01429         RETLW   'i'
+0483 346C           01430         RETLW   'l'
+0484 3465           01431         RETLW   'e'
+0485 346E           01432         RETLW   'n'
+0486 3474           01433         RETLW   't'
+0487 3420           01434         RETLW   ' '
+0488 3450           01435         RETLW   'P'
+0489 346F           01436         RETLW   'o'
+048A 3477           01437         RETLW   'w'
+048B 3465           01438         RETLW   'e'
+048C 3472           01439         RETLW   'r'
+048D 3420           01440         RETLW   ' '
+048E 3455           01441         RETLW   'U'
+048F 3470           01442         RETLW   'p'
+0490 3420           01443         RETLW   ' '
+0491 3400           01444         RETLW   00
+                    01445 
+                    01446 ; Index is assumed to be in W
+0492                01447 Default_Baud_String
+0492 100A           01448         bcf     PCLATH, 0   ; Adjust PCLATH so we're in the same page when
+0493 108A           01449         bcf     PCLATH, 1   ; the add to PCL is done
+0494 150A           01450         bsf     PCLATH, 2
+0495 0782           01451         addwf   PCL, F
+0496 3444           01452         RETLW   'D'
+MPASM 02.01.08 Intermediate    XP-485.ASM   12-16-2002  13:40:08         PAGE 29
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0497 3465           01453         RETLW   'e'
+0498 3466           01454         RETLW   'f'
+0499 3461           01455         RETLW   'a'
+049A 3475           01456         RETLW   'u'
+049B 346C           01457         RETLW   'l'
+049C 3474           01458         RETLW   't'
+049D 3420           01459         RETLW   ' '
+049E 3442           01460         RETLW   'B'
+049F 3461           01461         RETLW   'a'
+04A0 3475           01462         RETLW   'u'
+04A1 3464           01463         RETLW   'd'
+04A2 3420           01464         RETLW   ' '
+04A3 3400           01465         RETLW   00
+                    01466 
+                    01467 ;
+                    01468 ; End of Code
+                    01469 ;
+                    01470         end
+MPASM 02.01.08 Intermediate    XP-485.ASM   12-16-2002  13:40:08         PAGE 30
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+ADDR_RXD                          00000002
+ADDR_TXD                          00000001
+BF                                00000000
+BRGH                              00000002
+Baud_To_SPBRG                     00000415
+C                                 00000000
+CCP1CON                           00000017
+CCP1IE                            00000002
+CCP1IF                            00000002
+CCP1M0                            00000000
+CCP1M1                            00000001
+CCP1M2                            00000002
+CCP1M3                            00000003
+CCP1X                             00000005
+CCP1Y                             00000004
+CCP2CON                           0000001D
+CCP2IE                            00000000
+CCP2IF                            00000000
+CCP2M0                            00000000
+CCP2M1                            00000001
+CCP2M2                            00000002
+CCP2M3                            00000003
+CCP2X                             00000005
+CCP2Y                             00000004
+CCPR1H                            00000016
+CCPR1L                            00000015
+CCPR2H                            0000001C
+CCPR2L                            0000001B
+CKE                               00000006
+CKP                               00000004
+CREN                              00000004
+CSRC                              00000007
+CURRENT_PTR                       0000003E
+CUR_BAUD                          0000002F
+CUR_MODE                          0000002D
+CUR_SPBRG                         0000002A
+Check_New_TMR1_Min                000000E9
+Check_New_TMR1_Min_New            000000F9
+Check_New_TMR1_Min_x              00000108
+D                                 00000005
+DATA_ADDRESS                      00000005
+DC                                00000001
+D_A                               00000005
+Default_Baud_String               00000492
+EEPROM_ADDRESS                    00000036
+EEPROM_CS                         00000001
+ENABLE_HOLD                       00000000
+F                                 00000001
+FALSE                             00000000
+FERR                              00000002
+FSR                               00000004
+GIE                               00000007
+Get_Baud_From_Count               00000117
+MPASM 02.01.08 Intermediate    XP-485.ASM   12-16-2002  13:40:08         PAGE 31
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+Get_Baud_MSB                      0000012A
+HEX_TEMP                          0000002C
+Hex_To_Nibble                     00000273
+I2C_DATA                          00000005
+I2C_READ                          00000002
+I2C_START                         00000003
+I2C_STOP                          00000004
+INDF                              00000000
+INTCON                            0000000B
+INTE                              00000004
+INTEDG                            00000006
+INTF                              00000001
+INT_EVENT                         00000001
+IRP                               00000007
+Int_Isr                           000002E9
+LED                               00000004
+Lets_Run                          00000075
+MODULE_ADDRESS                    00000022
+Main_Isr                          00000307
+Main_Loop_Mode_0                  000000A0
+Main_Loop_Mode_0H                 000000A3
+Main_Loop_Mode_0L                 000000AB
+Main_Loop_Mode_0WAIT              000000C4
+Main_Loop_Mode_1                  000000C8
+Main_Loop_Mode_1H                 000000DA
+Main_Loop_Mode_1H_A               000000DE
+Main_Loop_Mode_1L                 000000D6
+Main_Loop_Mode_1START             000000CD
+Main_Loop_Mode_1TIMEOUT           000000E7
+Main_Loop_Mode_2                  00000109
+Main_Loop_Mode_2H                 0000010C
+Main_Loop_Mode_2L                 00000113
+Main_Loop_Start                   00000083
+NEW_BAUD                          00000030
+NOT_A                             00000005
+NOT_ADDRESS                       00000005
+NOT_BO                            00000000
+NOT_BOR                           00000000
+NOT_PD                            00000003
+NOT_POR                           00000001
+NOT_RBPU                          00000007
+NOT_RC8                           00000006
+NOT_T1SYNC                        00000002
+NOT_TO                            00000004
+NOT_TX8                           00000006
+NOT_W                             00000002
+NOT_WRITE                         00000002
+Nibble_To_Hex                     00000400
+OERR                              00000001
+ONE_MS_TICK                       00000027
+OPTION_REG                        00000081
+OUR_FLAGS                         0000002E
+P                                 00000004
+MPASM 02.01.08 Intermediate    XP-485.ASM   12-16-2002  13:40:08         PAGE 32
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+PCL                               00000002
+PCLATH                            0000000A
+PCON                              0000008E
+PEIE                              00000006
+PIE1                              0000008C
+PIE2                              0000008D
+PIR1                              0000000C
+PIR2                              0000000D
+PORTA                             00000005
+PORTA_DIR                         00000000
+PORTB                             00000006
+PORTB_DIR                         00000015
+PORTC                             00000007
+PORTC_DIR                         000000D0
+PR2                               00000092
+PS0                               00000000
+PS1                               00000001
+PS2                               00000002
+PSA                               00000003
+PortB_Isr                         000002E6
+Print_Hex_Byte                    00000264
+Printf_Default_Baud               000001AA
+Printf_Default_Baud_end           000001B2
+Printf_Programming                00000161
+Printf_Programming_end            00000169
+Printf_Run                        0000007B
+Printf_Run_Start                  0000007A
+Printf_Run_end                    00000083
+Printf_Silent                     000001B8
+Printf_Silent_end                 000001C0
+Printf_Startup                    00000061
+Printf_Startup2                   0000017C
+Printf_Startup2_end               00000184
+Printf_Startup_end                00000069
+Programming_Check_?               00000173
+Programming_Check_B               000001FF
+Programming_Check_M               000001EB
+Programming_Check_Q               0000024F
+Programming_Check_R               00000227
+Programming_Check_S               00000213
+Programming_Check_W               000001C6
+Programming_End                   00000260
+Programming_Error_Response        00000253
+Programming_Finish_Command        0000025D
+Programming_Main                  0000016B
+Programming_Mode                  00000160
+Programming_String                00000459
+QUARTER_SEC_TICK                  00000028
+R                                 00000002
+RBIE                              00000003
+RBIF                              00000000
+RC8_9                             00000006
+RC9                               00000006
+MPASM 02.01.08 Intermediate    XP-485.ASM   12-16-2002  13:40:08         PAGE 33
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+RCD8                              00000000
+RCIE                              00000005
+RCIF                              00000005
+RCREG                             0000001A
+RCSTA                             00000018
+RCV_BUFFER                        00000040
+RCV_BUFFER_PTR                    0000003F
+RCV_LAST_CHAR                     00000050
+READ_WRITE                        00000002
+RP0                               00000005
+RP1                               00000006
+RS232_TXD                         00000000
+RX9                               00000006
+RX9D                              00000000
+R_W                               00000002
+RamBank0                          00000020
+Rcv_Isr                           000002F0
+Rcv_Isr_Frame_Error               000002F9
+Rcv_Isr_Over_Error                000002F6
+Rcv_Isr_Read                      000002FC
+Read_EEPROM                       00000139
+Run_String                        0000046F
+S                                 00000003
+SCRATCH                           00000031
+SMP                               00000007
+SPBRG                             00000099
+SPBRG_115200                      00000001
+SPBRG_1200                        000000BF
+SPBRG_19200                       0000000B
+SPBRG_230400                      00000000
+SPBRG_2400                        0000005F
+SPBRG_38400                       00000005
+SPBRG_4800                        0000002F
+SPBRG_57600                       00000002
+SPBRG_9600                        00000017
+SPEN                              00000007
+SREN                              00000005
+SSPADD                            00000093
+SSPBUF                            00000013
+SSPCON                            00000014
+SSPEN                             00000005
+SSPIE                             00000003
+SSPIF                             00000003
+SSPM0                             00000000
+SSPM1                             00000001
+SSPM2                             00000002
+SSPM3                             00000003
+SSPOV                             00000006
+SSPSTAT                           00000094
+STATUS                            00000003
+STATUS_TEMP                       00000021
+STRING_INDEX                      00000029
+SYNC                              00000004
+MPASM 02.01.08 Intermediate    XP-485.ASM   12-16-2002  13:40:08         PAGE 34
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+Silent_String                     0000047D
+Spi_Pending                       00000134
+Spi_Send                          00000132
+Start                             00000020
+Startup_String                    0000042A
+T0CS                              00000005
+T0IE                              00000005
+T0IF                              00000002
+T0SE                              00000004
+T1CKPS0                           00000004
+T1CKPS1                           00000005
+T1CON                             00000010
+T1INSYNC                          00000002
+T1OSCEN                           00000003
+T2CKPS0                           00000000
+T2CKPS1                           00000001
+T2CON                             00000012
+TIMEOUTH                          00000032
+TIMEOUTL                          00000033
+TMR0                              00000001
+TMR1CS                            00000001
+TMR1H                             0000000F
+TMR1H_MIN                         00000025
+TMR1H_SAVE                        00000023
+TMR1IE                            00000000
+TMR1IF                            00000000
+TMR1L                             0000000E
+TMR1L_MIN                         00000026
+TMR1L_SAVE                        00000024
+TMR1ON                            00000000
+TMR1_ROLLOVER                     00000000
+TMR2                              00000011
+TMR2IE                            00000001
+TMR2IF                            00000001
+TMR2ON                            00000002
+TMR2_PERIOD                       000000E6
+TOUTPS0                           00000003
+TOUTPS1                           00000004
+TOUTPS2                           00000005
+TOUTPS3                           00000006
+TRISA                             00000085
+TRISB                             00000086
+TRISC                             00000087
+TRMT                              00000001
+TRUE                              00000001
+TX8_9                             00000006
+TX9                               00000006
+TX9D                              00000000
+TXD8                              00000000
+TXEN                              00000005
+TXIE                              00000004
+TXIF                              00000004
+TXREG                             00000019
+MPASM 02.01.08 Intermediate    XP-485.ASM   12-16-2002  13:40:08         PAGE 35
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+TXSTA                             00000098
+Timer1_Isr                        000002D0
+Timer2_Isr                        000002D4
+Timer2_Isr_End                    000002E4
+Transmit_Char                     0000012B
+Transmit_Pending                  0000012E
+UA                                00000001
+VERSION_MAJOR                     00000031
+VERSION_MINOR1                    00000030
+VERSION_MINOR2                    00000031
+W                                 00000000
+WCOL                              00000007
+W_TEMP                            00000020
+Wait_For_Key                      00000069
+Wait_For_Key1                     00000071
+Write_EEPROM                      00000145
+Write_EEPROM_Done                 00000156
+Z                                 00000002
+_BODEN_OFF                        00003FBF
+_BODEN_ON                         00003FFF
+_CP_50                            00002AEF
+_CP_75                            000015DF
+_CP_ALL                           000000CF
+_CP_OFF                           00003FFF
+_HS_OSC                           00003FFE
+_LP_OSC                           00003FFC
+_PWRTE_OFF                        00003FFF
+_PWRTE_ON                         00003FF7
+_RC_OSC                           00003FFF
+_WDT_OFF                          00003FFB
+_WDT_ON                           00003FFF
+_XT_OSC                           00003FFD
+__16C63A                          00000001
+
+
+MEMORY USAGE MAP ('X' = Used,  '-' = Unused)
+
+0000 : XX--X----------- ---------------- XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+0040 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+0080 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+00C0 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+0100 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+0140 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+0180 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+01C0 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+0200 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+MPASM 02.01.08 Intermediate    XP-485.ASM   12-16-2002  13:40:08         PAGE 36
+
+
+MEMORY USAGE MAP ('X' = Used,  '-' = Unused)
+
+
+0240 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+0280 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+02C0 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+0300 : XXXXXXXXXXXXXXXX XXXXXXXX-------- ---------------- ----------------
+0400 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+0440 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+0480 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXX------------ ----------------
+2000 : -------X-------- ---------------- ---------------- ----------------
+
+All other memory blocks unused.
+
+Program Memory Words Used:   927
+Program Memory Words Free:  3169
+
+
+Errors   :     0
+Warnings :     1 reported,     0 suppressed
+Messages :    28 reported,     0 suppressed
+
+

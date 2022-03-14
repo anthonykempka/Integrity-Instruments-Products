@@ -1,0 +1,4675 @@
+CCS PCM C Compiler, Version 3.223, 25645               11-Jul-05 16:05
+
+               Filename: E:\0Jobs\DataAcq\232M300\232M300.LST
+
+               ROM used: 2651 words (65%)
+                         Largest free fragment is 859
+               RAM used: 99 (52%) at main() level
+                         111 (58%) worst case
+               Stack:    5 worst case (3 in main + 2 for interrupts)
+
+*
+0000:  MOVLW  08
+0001:  MOVWF  0A
+0002:  GOTO   000
+0003:  NOP
+0004:  MOVWF  7F
+0005:  SWAPF  03,W
+0006:  CLRF   03
+0007:  MOVWF  26
+0008:  MOVF   7F,W
+0009:  MOVWF  25
+000A:  MOVF   0A,W
+000B:  MOVWF  2D
+000C:  CLRF   0A
+000D:  SWAPF  25,F
+000E:  MOVF   04,W
+000F:  MOVWF  27
+0010:  MOVF   20,W
+0011:  MOVWF  28
+0012:  MOVF   21,W
+0013:  MOVWF  29
+0014:  MOVF   22,W
+0015:  MOVWF  2A
+0016:  MOVF   23,W
+0017:  MOVWF  2B
+0018:  MOVF   24,W
+0019:  MOVWF  2C
+001A:  BCF    03.7
+001B:  BCF    03.5
+001C:  MOVLW  8C
+001D:  MOVWF  04
+001E:  BTFSS  00.5
+001F:  GOTO   022
+0020:  BTFSC  0C.5
+0021:  GOTO   03F
+0022:  MOVLW  8C
+0023:  MOVWF  04
+0024:  BTFSS  00.0
+0025:  GOTO   028
+0026:  BTFSC  0C.0
+0027:  GOTO   041
+0028:  BTFSS  0B.5
+0029:  GOTO   02C
+002A:  BTFSC  0B.2
+002B:  GOTO   043
+002C:  MOVF   27,W
+002D:  MOVWF  04
+002E:  MOVF   28,W
+002F:  MOVWF  20
+0030:  MOVF   29,W
+0031:  MOVWF  21
+0032:  MOVF   2A,W
+0033:  MOVWF  22
+0034:  MOVF   2B,W
+0035:  MOVWF  23
+0036:  MOVF   2C,W
+0037:  MOVWF  24
+0038:  MOVF   2D,W
+0039:  MOVWF  0A
+003A:  SWAPF  26,W
+003B:  MOVWF  03
+003C:  SWAPF  7F,F
+003D:  SWAPF  7F,W
+003E:  RETFIE
+003F:  BCF    0A.3
+0040:  GOTO   0DC
+0041:  BCF    0A.3
+0042:  GOTO   090
+0043:  BCF    0A.3
+0044:  GOTO   07A
+....................  //  
+.................... // Integrity Instruments, Inc.  
+.................... //  
+.................... // 232M300 Module v4.5  
+.................... //  
+.................... // Revision History  
+.................... // ----------------------------------------------------------------------------  
+.................... //  Anthony Kempka      3/25/2004  
+.................... //  
+.................... //  Original 'C' code version. Based on USBM300 code base.  
+.................... //  
+.................... //  
+.................... //  AAK                 5/6/2004  
+.................... //  Fixed the Async Change mode to only output either Digital  
+.................... //  or Pulse Counter outputs (not both on a change of either)  
+.................... //  
+.................... //  TGACK               5/2/2005        4.5  
+.................... //  Fixed startup when pulse counter in is high.  
+.................... //  
+.................... //  TGACK               6/24/2005       4.6  
+.................... //  J and K commands are missing in the Version 4.x series  
+.................... //  Added J and K Commands  
+.................... //  
+.................... //  TGACK               7/11/2005       4.7  
+.................... //  LF characters cause invalid command responses  
+.................... //  Stripped incomming LF (0x0A) characters from stream  
+....................   
+.................... #if defined(__PCM__)  
+....................   
+.................... #include <16F874A.h> 
+....................  //////// Standard Header file for the PIC16F874A device ////////////////  
+.................... #device PIC16F874A  
+.................... #list  
+....................  
+....................   
+.................... // BUGBUG: These two lines are enabled for debugging  
+.................... //#device ICD=TRUE  
+.................... //#fuses HS, NOWDT, NOPROTECT, BROWNOUT, PUT, NOLVP, DEBUG  
+....................   
+.................... //  
+.................... // HS = High Speed osc, PROTECT = code protect, BROWNOUT = brownout protection  
+.................... // PUT = power up timer, NOLVP = no low voltage program,  
+.................... // NOWRT = no write protect, NOCPD = no EEPROM protect  
+.................... #fuses HS, WDT, PROTECT, BROWNOUT, PUT, NOLVP, NOWRT, NOCPD  
+....................   
+.................... // Setup the clock base time and RS-232 Baud rate  
+.................... #use delay(clock=14745600)  
+*
+01FB:  MOVLW  A1
+01FC:  MOVWF  04
+01FD:  MOVF   00,W
+01FE:  BTFSC  03.2
+01FF:  GOTO   20D
+0200:  MOVLW  04
+0201:  MOVWF  21
+0202:  CLRF   20
+0203:  DECFSZ 20,F
+0204:  GOTO   203
+0205:  DECFSZ 21,F
+0206:  GOTO   202
+0207:  MOVLW  C7
+0208:  MOVWF  20
+0209:  DECFSZ 20,F
+020A:  GOTO   209
+020B:  DECFSZ 00,F
+020C:  GOTO   200
+020D:  BCF    0A.3
+020E:  GOTO   21F (RETURN)
+.................... #use rs232(baud=9600, xmit=PIN_C6, rcv=PIN_C7)  
+.................... #endif  
+....................   
+.................... //  
+.................... // Turn off the compiler's caching (virtual port) auto data direction crap  
+.................... //  
+.................... #use fast_io(A)  
+.................... #use fast_io(B)  
+.................... #use fast_io(C)  
+.................... #use fast_io(D)  
+.................... #use fast_io(E)  
+....................   
+.................... // Memory register (port) defines so we can use them in 'C'  
+.................... #byte PORT_A=5  
+.................... #byte PORT_B=6  
+.................... #byte PORT_C=7  
+.................... #byte PORT_D=8  
+.................... #byte PORT_E=9  
+....................   
+.................... #byte EEADR=0x10D  
+.................... #byte EEADRH=0x10F  
+.................... #byte EEDATA=0x10C  
+.................... #byte EEDATH=0x10E  
+.................... #byte EECON1=0x18C  
+.................... #byte EECON2=0x18D  
+....................   
+.................... #byte SSPSTAT=0x94  
+.................... #byte SSPCON=0x14  
+....................   
+.................... //  
+.................... // EEPROM Locations  
+.................... //  
+.................... #define EEPROM_MOD_ADDRESS      0x00  
+.................... #define EEPROM_DIR_PORT1        0x02  
+.................... #define EEPROM_DIR_PORT2        0x03  
+.................... #define EEPROM_ASYNC_MSB        0x04  
+.................... #define EEPROM_ASYNC_LSB        0x05  
+.................... #define EEPROM_POD_PORT1        0x06  
+.................... #define EEPROM_POD_PORT2        0x07  
+.................... #define EEPROM_EXPANDER_FLAG    0x08  
+.................... #define EEPROM_POD_DA_MSB_CH0   0x09  
+.................... #define EEPROM_POD_DA_LSB_CH0   0x0A  
+.................... #define EEPROM_POD_DA_MSB_CH1   0x0B  
+.................... #define EEPROM_POD_DA_LSB_CH1   0x0C  
+.................... #define EEPROM_AD_SAMPLE_CLK    0x0D  
+.................... #define EEPROM_STREAM_AD_COUNT  0x10  
+.................... #define EEPROM_STREAM_AD_START  0x11  
+.................... // EEPROM locations 0x11 to 0x18 A/D sample configuration  
+.................... #define EEPROM_STREAM_DIGITAL   0x19  
+.................... #define EEPROM_STREAM_PULSE     0x1A  
+....................   
+.................... // SPI device chip select lines -- PORTA  
+.................... #define AD_CS           PIN_A0  
+.................... #define DAC_CS          PIN_A5  
+....................   
+.................... // LED defines -- PORTC  
+.................... #define LED_RED         PIN_C1  
+.................... #define LED_GREEN       PIN_C0  
+....................   
+.................... // EEPROM flags used to configure run-time settings  
+.................... #define EXPANDER_FLAG   0x01  
+.................... #define SLOW_ADC_CLOCK  0x02  
+.................... int8    EEFlags = 0;  
+*
+0815:  CLRF   2F
+....................   
+.................... int8    CurrentDip;         // Current DIP switch setting  
+....................   
+.................... // SPI settings for various speeds  
+.................... #define SPI_ADC_FAST    2  
+.................... #define SPI_DAC         2  
+.................... #define SPI_ADC_SLOW    3  
+.................... int8    SpiMode = 0;        // 0 Guarantees that setup_spi_mode() will be called the first time  
+0816:  CLRF   31
+....................   
+.................... // Stream/Async mode variables  
+.................... #define CONTINUOUS_STREAM       0x01  
+.................... #define DIGITAL_PULSE_CHANGE    0x02  
+.................... #define ASYNC_TIMED             0x04  
+.................... #define STREAM_DIGITAL          0x08  
+.................... #define STREAM_PULSE            0x10  
+.................... #define DIGITAL_CHANGE          0x20  
+.................... #define PULSE_CHANGE            0x40  
+....................   
+.................... int8    AsyncStreamFlags = 0;   // See above flag defines for Stream/Async modes  
+0817:  CLRF   32
+.................... int8    AsyncStreamUpdate;  
+.................... int16   AsyncCount = 0;         // Used for ASYNC_TIMED mode  
+0818:  CLRF   34
+0819:  CLRF   35
+.................... int16   AsyncTimeout = 0;  
+081A:  CLRF   36
+081B:  CLRF   37
+.................... int8    StreamADCount = 0;      // Configures stream/async A/D sampling  
+081C:  CLRF   38
+.................... int8    ADSampleConfig[8];      // EEPROM locations 0x11 to 0x18  
+.................... int8    Port1Cur;               // Current Port 1 input - ASYNC_CHANGE  
+.................... int8    Port2Cur;               // Current Port 2 input - ASYNC_CHANGE  
+.................... int32   PulseCountCur;          // Current Pulse Count - ASYNC_CHANGE  
+....................   
+.................... // Led flash control variables  
+.................... int8    LedGreenFlag = 1;  
+081D:  MOVLW  01
+081E:  MOVWF  47
+.................... int16   LedCount = 0;  
+081F:  CLRF   48
+0820:  CLRF   49
+....................   
+.................... // Port direction and D/A shadow variables  
+.................... int8    Port1_Dir = 0;  
+0821:  CLRF   4A
+.................... int8    Port2_Dir = 0;  
+0822:  CLRF   4B
+.................... int16   DAC_CH0 = 0;  
+0823:  CLRF   4C
+0824:  CLRF   4D
+.................... int16   DAC_CH1 = 0;  
+0825:  CLRF   4E
+0826:  CLRF   4F
+....................   
+.................... // 32-bit pulse counter  
+.................... int32   PulseCount = 0;  
+0827:  CLRF   50
+0828:  CLRF   51
+0829:  CLRF   52
+082A:  CLRF   53
+....................   
+.................... //  
+.................... // RS-232 command (receive) and response (transmit) buffers and sizes  
+.................... #define CMDBUFFERSIZE   16  
+.................... char    LastCharRcvd;  
+.................... int8    CommandBufferIndex;  
+.................... char    CommandBuffer[CMDBUFFERSIZE];  
+.................... char    ResponseBuffer[16];  
+....................   
+....................   
+.................... //  
+.................... // RS-232 Communication Error Counter  
+.................... int8    RxCommErr;  
+....................   
+....................   
+.................... //  
+.................... // Forward function declarations  
+.................... //  
+.................... #inline  
+.................... void trigger_led_red(void);  
+.................... void led_on_green(void);  
+....................   
+.................... #include "string.h" 
+....................  ////////////////////////////////////////////////////////////////////////////  
+.................... ////        (C) Copyright 1996,2003 Custom Computer Services            ////  
+.................... //// This source code may only be used by licensed users of the CCS C   ////  
+.................... //// compiler.  This source code may only be distributed to other       ////  
+.................... //// licensed users of the CCS C compiler.  No other use, reproduction  ////  
+.................... //// or distribution is permitted without written permission.           ////  
+.................... //// Derivative programs created using this software in object code     ////  
+.................... //// form are not restricted in any way.                                ////  
+.................... ////////////////////////////////////////////////////////////////////////////  
+....................   
+.................... #ifndef _STRING  
+.................... #define _STRING  
+.................... #include <stddef.h> 
+....................  ///////////////////////////////////////////////////////////////////////////  
+.................... ////        (C) Copyright 1996,2003 Custom Computer Services           ////  
+.................... //// This source code may only be used by licensed users of the CCS C  ////  
+.................... //// compiler.  This source code may only be distributed to other      ////  
+.................... //// licensed users of the CCS C compiler.  No other use, reproduction ////  
+.................... //// or distribution is permitted without written permission.          ////  
+.................... //// Derivative programs created using this software in object code    ////  
+.................... //// form are not restricted in any way.                               ////  
+.................... ///////////////////////////////////////////////////////////////////////////  
+....................   
+.................... #ifndef _STDDEF  
+....................   
+.................... #define _STDDEF  
+....................   
+.................... #if sizeof(int *)==1  
+.................... #define ptrdiff_t int  
+.................... #else  
+.................... #define ptrdiff_t long  
+.................... #endif  
+....................   
+.................... #define size_t int  
+.................... #define wchar_t char  
+.................... #define NULL 0  
+....................   
+.................... #define offsetof(s,f) (offsetofbit(s,f)/8)  
+....................   
+.................... #endif  
+....................  
+.................... #include <ctype.h> 
+....................  ////////////////////////////////////////////////////////////////////////////  
+.................... ////        (C) Copyright 1996,2003 Custom Computer Services            ////  
+.................... //// This source code may only be used by licensed users of the CCS C   ////  
+.................... //// compiler.  This source code may only be distributed to other       ////  
+.................... //// licensed users of the CCS C compiler.  No other use, reproduction  ////  
+.................... //// or distribution is permitted without written permission.           ////  
+.................... //// Derivative programs created using this software in object code     ////  
+.................... //// form are not restricted in any way.                                ////  
+.................... ////////////////////////////////////////////////////////////////////////////  
+....................   
+.................... #ifndef _CTYPE  
+.................... #define _CTYPE  
+....................   
+.................... #define islower(x)  isamong(x,"abcdefghijklmnopqrstuvwxyz")  
+.................... #define isupper(x)  isamong(x,"ABCDEFGHIJKLMNOPQRSTUVWXYZ")  
+.................... #define isalnum(x)  isamong(x,"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz")  
+.................... #define isalpha(x)  isamong(x,"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz")  
+.................... #define isdigit(x)  isamong(x,"0123456789")  
+.................... #define isspace(x)  (x==' ')  
+.................... #define isxdigit(x) isamong(x,"0123456789ABCDEFabcdef")  
+.................... #define iscntrl(x)  (x<' ')  
+.................... #define isprint(x)  (x>=' ')  
+.................... #define isgraph(x)  (x>' ')  
+.................... #define ispunct(x)  ((x>' ')&&!isalnum(x))  
+....................   
+.................... #endif  
+....................   
+....................  
+....................   
+....................   
+....................   
+.................... //////////////////////////////////////////////  
+.................... //// Uncomment the following define to    ////  
+.................... //// allow some functions to use a        ////  
+.................... //// quicker algorithm, but use more ROM  ////  
+.................... ////                                      ////  
+.................... //// #define FASTER_BUT_MORE_ROM          ////  
+.................... //////////////////////////////////////////////  
+....................   
+....................   
+....................   
+.................... /*Copying functions*/  
+.................... /* standard template:  
+....................    void *memmove(void *s1, void *s2, size_t n).  
+....................    Copies max of n characters safely (not following ending '\0')  
+....................    from s2 in s1; if s2 has less than n characters, appends 0 */  
+....................   
+.................... char *memmove(void *s1,char *s2,size_t n)  
+.................... {  
+....................    char *sc1;  
+....................    char *sc2;  
+....................    sc1=s1;  
+....................    sc2=s2;  
+....................    if(sc2<sc1 && sc1 <sc2 +n)  
+....................       for(sc1+=n,sc2+=n;0<n;--n)  
+....................          *--sc1=*--sc2;  
+....................    else  
+....................       for(;0<n;--n)  
+....................          *sc1++=*sc2++;  
+....................   return s1;  
+....................   }  
+....................   
+.................... /* compiler ignored the name 'strcpy()'; perhaps, it's reserved? 
+....................    Standard template: char *strcpy(char *s1, const char *s2)  
+....................    copies the string s2 including the null character to s1*/  
+....................   
+.................... char *strcopy(char *s1, char *s2)  
+.................... {  
+....................   char *s;  
+....................   
+....................   for (s = s1; *s2 != 0; s++, s2++) {  
+.................... 	  *s = *s2;  
+....................   }  
+....................   *s = *s2;  
+....................   return(s1);  
+.................... }  
+....................   
+.................... /* standard template:  
+....................    char *strncpy(char *s1, const char *s2, size_t n).  
+....................    Copies max of n characters (not following ending '\0')  
+....................    from s2 in s1; if s2 has less than n characters, appends 0 */  
+....................   
+.................... char *strncpy(char *s1, char *s2, size_t n)  
+.................... {  
+....................   char *s;  
+....................   
+....................   for (s = s1; n > 0 && *s2 != '\0'; n--)  
+....................      *s++ = *s2++;  
+....................   for (; n > 0; n--)  
+....................      *s++ = '\0';  
+....................   
+....................   return(s1);  
+.................... }  
+.................... /***********************************************************/  
+....................   
+.................... /*concatenation functions*/  
+.................... /* standard template: char *strcat(char *s1, const char *s2)  
+.................... appends s2 to s1*/  
+....................   
+.................... char *strcat(char *s1, char *s2)  
+.................... {  
+....................    char *s;  
+....................   
+....................    for (s = s1; *s != '\0'; ++s);  
+....................    while(*s2 != '\0')  
+....................    {  
+....................       *s = *s2;  
+....................       ++s;  
+....................       ++s2;  
+....................    }  
+....................   
+....................    *s = '\0';  
+....................    return(s1);  
+.................... }  
+.................... /* standard template: char *strncat(char *s1, char *s2,size_t n)  
+.................... appends not more than n characters from s2 to s1*/  
+....................   
+.................... char *strncat(char *s1, char *s2, size_t n)  
+.................... {  
+....................    char *s;  
+....................   
+....................    for (s = s1; *s != '\0'; ++s);  
+....................    while(*s2 != '\0' && 0<n)  
+....................    {  
+....................       *s = *s2;  
+....................       ++s;  
+....................       ++s2;  
+....................       --n;  
+....................    }  
+....................   
+....................    *s = '\0';  
+....................    return(s1);  
+.................... }  
+....................   
+.................... /***********************************************************/  
+....................   
+....................   
+.................... /*comparison functions*/  
+.................... /* standard template: signed int memcmp(void *s1, void *s2).  
+....................    Compares s1 & s2; returns -1 if s1<s2, 0 if s1=s2, 1 if s1>s2 */  
+....................   
+.................... signed int memcmp(void * s1,char *s2,size_t n)  
+.................... {  
+.................... char *su1, *su2;  
+.................... for(su1=s1, su2=s2; 0<n; ++su1, ++su2, --n)  
+.................... {  
+....................    if(*su1!=*su2)  
+....................       return ((*su1<*su2)?1:+1);  
+.................... }  
+.................... return 0;  
+.................... }  
+....................   
+.................... /* standard template: int strcmp(const char *s1, const char *s2).  
+....................    Compares s1 & s2; returns -1 if s1<s2, 0 if s1=s2, 1 if s1>s2 */  
+....................   
+.................... signed int strcmp(char *s1, char *s2)  
+.................... {  
+....................    for (; *s1 == *s2; s1++, s2++)  
+....................       if (*s1 == '\0')  
+....................          return(0);  
+....................    return((*s1 < *s2) ?-1: 1);  
+.................... }  
+.................... /* standard template: int strcoll(const char *s1, const char *s2).  
+....................    Compares s1 & s2; returns -1 if s1<s2, 0 if s1=s2, 1 if s1>s2 */  
+....................   
+.................... signed int strcoll(char *s1, char *s2)  
+.................... {  
+....................    for (; *s1 == *s2; s1++, s2++)  
+....................       if (*s1 == '\0')  
+....................          return(0);  
+....................    return((*s1 < *s2) ?-1: 1);  
+.................... }  
+....................   
+.................... /* standard template:  
+....................    int strncmp(const char *s1, const char *s2, size_t n).  
+....................    Compares max of n characters (not following 0) from s1 to s2;  
+....................    returns same as strcmp */  
+....................   
+.................... signed int strncmp(char *s1, char *s2, size_t n)  
+.................... {  
+....................    for (; n > 0; s1++, s2++, n--)  
+....................       if (*s1 != *s2)  
+....................          return((*s1 <*s2) ?-1: 1);  
+....................       else if (*s1 == '\0')  
+....................          return(0);  
+....................    return(0);  
+.................... }  
+.................... /* standard template:  
+....................    int strxfrm(const char *s1, const char *s2, size_t n).  
+....................    transforms maximum of n characters from s2 and places them into s1*/  
+.................... size_t strxfrm(char *s1, char *s2, size_t n)  
+.................... {  
+....................   char *s;  
+....................   int n1;  
+....................   n1=n;  
+....................   for (s = s1; n > 0 && *s2 != '\0'; n--)  
+....................      *s++ = *s2++;  
+....................   for (; n > 0; n--)  
+....................      *s++ = '\0';  
+....................   
+....................   return(n1);  
+.................... }  
+....................   
+....................   
+....................   
+....................   
+....................   
+.................... /***********************************************************/  
+.................... /*Search functions*/  
+.................... /* standard template: void *memchr(const char *s, int c).  
+....................    Finds first occurrence of c in n characters of s */  
+....................   
+.................... char *memchr(void *s,int c,size_t n)  
+.................... {  
+....................    char uc;  
+....................    char *su;  
+....................    uc=c;  
+....................    for(su=s;0<n;++su,--n)  
+....................       if(*su==uc)  
+....................       return su;  
+....................    return NULL;  
+.................... }  
+....................   
+.................... /* standard template: char *strchr(const char *s, int c).  
+....................    Finds first occurrence of c in s */  
+....................   
+.................... char *strchr(char *s, int c)  
+.................... {  
+....................    for (; *s != c; s++)  
+....................       if (*s == '\0')  
+....................          return(0);  
+....................    return(s);  
+.................... }  
+.................... /* standard template:  
+....................    size_t strcspn(const char *s1, const char *s2).  
+....................    Computes length of max initial segment of s1 that  
+....................    consists entirely of characters NOT from s2*/  
+....................   
+.................... int *strcspn(char *s1, char *s2)  
+.................... {  
+....................    char *sc1, *sc2;  
+....................   
+....................    for (sc1 = s1; *sc1 != 0; sc1++)  
+....................       for (sc2 = s2; *sc2 != 0; sc2++)  
+....................          if (*sc1 == *sc2)  
+....................             return(sc1 - s1);  
+....................    return(sc1 - s1);  
+.................... }  
+.................... /* standard template:  
+....................    char *strpbrk(const char *s1, const char *s2).  
+....................    Locates first occurence of any character from s2 in s1;  
+....................    returns s1 if s2 is empty string */  
+....................   
+.................... char *strpbrk(char *s1, char *s2)  
+.................... {  
+....................    char *sc1, *sc2;  
+....................   
+....................    for (sc1 = s1; *sc1 != 0; sc1++)  
+....................       for (sc2 = s2; *sc2 != 0; sc2++)  
+....................          if (*sc1 == *sc2)  
+....................             return(sc1);  
+....................    return(0);  
+.................... }  
+....................   
+....................   
+.................... /* standard template: char *strrchr(const char *s, int c).  
+....................    Finds last occurrence of c in s */  
+....................   
+.................... char *strrchr(char *s, int c)  
+.................... {  
+....................    char *p;  
+....................   
+....................    for (p = 0; ; s++)  
+....................    {  
+....................       if (*s == c)  
+....................          p = s;  
+....................       if (*s == '\0')  
+....................          return(p);  
+....................    }  
+.................... }  
+.................... /* computes length of max initial segment of s1 consisting  
+....................    entirely of characters from s2 */  
+....................   
+.................... int *strspn(char *s1, char *s2)  
+.................... {  
+....................    char *sc1, *sc2;  
+....................   
+....................    for (sc1 = s1; *sc1 != 0; sc1++)  
+....................       for (sc2 = s2; ; sc2++)  
+.................... 	 if (*sc2 == '\0')  
+.................... 	    return(sc1 - s1);  
+....................          else if (*sc1 == *sc2)  
+....................             break;  
+....................    return(sc1 - s1);  
+.................... }  
+.................... /* standard template:  
+....................    char *strstr(const char *s1, const char *s2);  
+....................    Locates first occurence of character sequence s2 in s1;  
+....................    returns 0 if s2 is empty string  
+....................   
+....................    Uncomment #define FASTER_BUT_MORE_ROM at the top of the  
+....................    file to use the faster algorithm */  
+.................... char *strstr(char *s1, char *s2)  
+.................... {  
+.................... 	char *s, *t;  
+....................   
+....................    #ifdef FASTER_BUT_MORE_ROM  
+....................    if (*s2 == '\0')  
+....................          return(s1);  
+....................    #endif  
+....................   
+.................... 	while (*s1)  
+....................    {  
+....................       for(s = s1, t = s2; *t && *s == *t; ++s, ++t);  
+....................   
+.................... 		if (*t == '\0')  
+.................... 			return s1;  
+....................       ++s1;  
+....................       #ifdef FASTER_BUT_MORE_ROM  
+....................          while(*s1 != '\0' && *s1 != *s2)  
+....................             ++s1;  
+....................       #endif  
+.................... 	}  
+.................... 	return 0;  
+.................... }  
+....................   
+.................... /* standard template: char *strtok(char *s1, const char *s2).  
+....................   
+....................    Finds next token in s1 delimited by a character from separator  
+....................    string s2 (which can be different from call to call).  First call  
+....................    starts at beginning of s1 searching for first character NOT  
+....................    contained in s2; returns 0 if none is found.  
+....................    If one is found, it is the start of first token (return value).  
+....................    Function then searches from there for a character contained in s2.  
+....................    If none is found, current token extends to end of s1, and subsequent  
+....................    searches for a token will return 0.  If one is found, it is  
+....................    overwritten by '\0', which terminates current token.  Function saves  
+....................    pointer to following character from which next search will start.  
+....................    Each subsequent call, with 0 as first argument, starts searching  
+....................    from saved pointer */  
+....................   
+.................... char *strtok(char *s1, char *s2)  
+.................... {  
+....................    char *beg, *end;  
+....................    static char *save;  
+082B:  CLRF   77
+....................   
+....................    beg = (s1)?s1: save;  
+....................    beg += strspn(beg, s2);  
+....................    if (*beg == '\0')  
+....................    {  
+....................       *save = ' ';  
+....................       return(0);  
+....................    }  
+....................    end = strpbrk(beg, s2);  
+....................    if (*end != '\0')  
+....................    {  
+....................       *end = '\0';  
+....................       end++;  
+....................    }  
+....................    save = end;  
+....................    return(beg);  
+.................... }  
+....................   
+.................... /*****************************************************************/  
+.................... /*Miscellaneous functions*/  
+.................... /* standard template  
+.................... maps error number in errnum to an error message string  
+.................... Returns: Pointer to string  
+.................... */  
+.................... #ifdef _ERRNO  
+.................... char * strerror(int errnum)  
+.................... {  
+.................... char s[15];  
+.................... switch( errnum)  
+.................... {  
+.................... case 0:  
+....................    strcpy(s,"no errors");  
+....................    return s;  
+.................... case EDOM :  
+....................    strcpy(s,"domain error");  
+....................    return s;  
+.................... case ERANGE:  
+....................    strcpy(s,"range error");  
+....................    return s;  
+.................... }  
+.................... }  
+.................... #ENDIF  
+.................... /* standard template: size_t strlen(const char *s).  
+....................    Computes length of s1 (preceding terminating 0) */  
+....................   
+.................... int *strlen(char *s)  
+.................... {  
+....................    char *sc;  
+....................   
+....................    for (sc = s; *sc != 0; sc++);  
+....................    return(sc - s);  
+.................... }  
+....................   
+.................... /* standard template: size_t stricmp(const char *s1, const char *s2).  
+....................    Compares s1 to s2 ignoring case (upper vs. lower) */  
+....................   
+.................... signed int stricmp(char *s1, char *s2)  
+.................... {  
+....................  for(; *s1==*s2||(isalpha(*s1)&&isalpha(*s2)&&(*s1==*s2+32||*s2==*s1+32));  
+....................     s1++, s2++)  
+....................     if (*s1 == '\0')  
+....................        return(0);  
+....................  return((*s1 < *s2) ?-1: 1);  
+.................... }  
+....................   
+....................   
+.................... /* standard template: char *strlwr(char *s).  
+....................    Replaces uppercase letters by lowercase;  
+....................    returns pointer to new string s */  
+....................   
+.................... char *strlwr(char *s)  
+.................... {  
+....................    char *p;  
+....................   
+....................    for (p = s; *p != '\0'; p++)  
+....................       if (*p >= 'A' && *p <='Z')  
+....................          *p += 'a' - 'A';  
+....................    return(s);  
+.................... }  
+....................   
+....................   
+.................... /************************************************************/  
+....................   
+....................   
+.................... #endif  
+....................  
+....................   
+....................   
+.................... //-----------------------------------------------------------------------------  
+.................... // setup_spi_fast()  
+.................... //  
+.................... // Used to configure the PIC SPI correctly since the built-in  
+.................... // CCS routines are broken. CLK = Fosc / 16  
+.................... //  
+.................... void setup_spi_fast(void)  
+.................... {  
+....................     SSPCON = 0x21;      // SSPCON: SPEN=1, CKP=0 (idle high), Fosc/16  
+*
+0179:  MOVLW  21
+017A:  BCF    03.5
+017B:  MOVWF  14
+....................     SSPSTAT = 0xC0;     // SSPSTAT: SMP=1 (input sample at end of data output time)  
+017C:  MOVLW  C0
+017D:  BSF    03.5
+017E:  MOVWF  14
+....................                         //          CKE=1 (CKP=1 data transmitted on falling edge of SCK)  
+....................     return;  
+.................... }  
+....................   
+....................   
+.................... //-----------------------------------------------------------------------------  
+.................... // setup_spi_clk64()  
+.................... //  
+.................... // Used to configure the PIC SPI correctly since the built-in  
+.................... // CCS routines are broken. CLK = Fosc / 64  
+.................... //  
+.................... void setup_spi_clk64(void)  
+.................... {  
+....................     SSPCON = 0x22;      // SSPCON: SPEN=1, CKP=0 (idle high), Fosc/64  
+*
+0184:  MOVLW  22
+0185:  BCF    03.5
+0186:  MOVWF  14
+....................     SSPSTAT = 0xC0;     // SSPSTAT: SMP=1 (input sample at end of data output time)  
+0187:  MOVLW  C0
+0188:  BSF    03.5
+0189:  MOVWF  14
+....................                         //          CKE=1 (CKP=1 data transmitted on falling edge of SCK)  
+....................     return;  
+.................... }  
+....................   
+....................   
+.................... //-----------------------------------------------------------------------------  
+.................... // setup_spi_clk64()  
+.................... //  
+.................... // SPI clock/64 Used to configure the PIC SPI correctly since the built-in  
+.................... // CCS routines are broken.  
+.................... //  
+.................... void setup_spi_clk64_org(void)  
+.................... {  
+....................     #asm  
+....................     bcf    0x14,5   ; Disable SPI (SSPCON: SPEN=0)  
+....................     movlw  0x32     ; SSPCON: CKP=1 (idle high), SPEN=1, SPI Master, Fosc/64  
+....................     movwf  0x14  
+....................     movlw  0xC0     ; SSPSTAT: SMP=1 (input sample at end of data output time)  
+....................     bsf    0x03,5   ;          CKE=1 (CKP=1 data transmitted on falling edge of SCK)  
+....................     movwf  0x14  
+....................     bcf    0x03,5  
+....................     #endasm  
+....................     return;  
+.................... }  
+....................   
+....................   
+.................... //-----------------------------------------------------------------------------  
+.................... // setup_spi_mode(int8 mode)  
+.................... //  
+.................... // Used to configure the PIC SPI correctly since the built-in  
+.................... // CCS routines are broken.  
+.................... //  
+.................... #separate  
+.................... void setup_spi_mode(int8 mode)  
+.................... {  
+....................     // SPI_ADC_FAST, SPI_DAC  
+....................     if (mode == SPI_ADC_FAST) {  
+*
+0174:  BSF    03.5
+0175:  MOVF   2E,W
+0176:  SUBLW  02
+0177:  BTFSS  03.2
+0178:  GOTO   184
+....................         setup_spi_fast();  
+....................         SpiMode = SPI_ADC_FAST;  
+*
+017F:  MOVLW  02
+0180:  BCF    03.5
+0181:  MOVWF  31
+....................     } else {  
+0182:  GOTO   18D
+0183:  BSF    03.5
+....................         // SPI_ADC_SLOW  
+....................         setup_spi_clk64();  
+....................         SpiMode = SPI_ADC_SLOW;  
+*
+018A:  MOVLW  03
+018B:  BCF    03.5
+018C:  MOVWF  31
+....................     }  
+....................     return;  
+.................... }  
+018D:  RETLW  00
+....................   
+....................   
+.................... //-----------------------------------------------------------------------------  
+.................... // update_dac()  
+.................... //  
+.................... // Output an updated DAC value in LTC1448  
+.................... // DAC output values in DAC_CH0 and DAC_CH1  
+.................... // These need to be put together into 3 bytes (24 bits) for the DAC  
+.................... //  
+.................... #separate  
+.................... void update_dac(void)  
+.................... {  
+....................     int8    data;  
+....................   
+....................     // Check and set SPI mode  
+....................     if (SpiMode != SPI_DAC)  
+018E:  MOVF   31,W
+018F:  SUBLW  02
+0190:  BTFSC  03.2
+0191:  GOTO   197
+....................         setup_spi_mode(SPI_DAC);  
+0192:  MOVLW  02
+0193:  BSF    03.5
+0194:  MOVWF  2E
+0195:  BCF    03.5
+0196:  CALL   174
+....................   
+....................     output_low(DAC_CS);     // Select the D/A converter  
+0197:  BCF    05.5
+....................   
+....................     data = ((DAC_CH0 & 0x0FF0) >> 4);  
+0198:  MOVF   4C,W
+0199:  ANDLW  F0
+019A:  BSF    03.5
+019B:  MOVWF  21
+019C:  BCF    03.5
+019D:  MOVF   4D,W
+019E:  ANDLW  0F
+019F:  BSF    03.5
+01A0:  MOVWF  22
+01A1:  RRF    22,W
+01A2:  BCF    03.5
+01A3:  MOVWF  23
+01A4:  BSF    03.5
+01A5:  RRF    21,W
+01A6:  BCF    03.5
+01A7:  MOVWF  22
+01A8:  RRF    23,F
+01A9:  RRF    22,F
+01AA:  RRF    23,F
+01AB:  RRF    22,F
+01AC:  RRF    23,F
+01AD:  RRF    22,F
+01AE:  MOVF   22,W
+01AF:  BSF    03.5
+01B0:  MOVWF  20
+....................     spi_write(data);  
+01B1:  BCF    03.5
+01B2:  MOVF   13,W
+01B3:  BSF    03.5
+01B4:  MOVF   20,W
+01B5:  BCF    03.5
+01B6:  MOVWF  13
+01B7:  BSF    03.5
+01B8:  BTFSC  14.0
+01B9:  GOTO   1BC
+01BA:  BCF    03.5
+01BB:  GOTO   1B7
+....................   
+....................     data = ((DAC_CH0 & 0x000F) << 4);  
+01BC:  BCF    03.5
+01BD:  MOVF   4C,W
+01BE:  ANDLW  0F
+01BF:  BSF    03.5
+01C0:  MOVWF  21
+01C1:  CLRF   22
+01C2:  RLF    21,W
+01C3:  BCF    03.5
+01C4:  MOVWF  22
+01C5:  BSF    03.5
+01C6:  RLF    22,W
+01C7:  BCF    03.5
+01C8:  MOVWF  23
+01C9:  RLF    22,F
+01CA:  RLF    23,F
+01CB:  RLF    22,F
+01CC:  RLF    23,F
+01CD:  RLF    22,F
+01CE:  RLF    23,F
+01CF:  MOVLW  F0
+01D0:  ANDWF  22,F
+01D1:  MOVF   22,W
+01D2:  BSF    03.5
+01D3:  MOVWF  20
+....................     data = data | ((DAC_CH1 & 0x0F00) >> 8);  
+01D4:  CLRF   21
+01D5:  BCF    03.5
+01D6:  MOVF   4F,W
+01D7:  ANDLW  0F
+01D8:  BSF    03.5
+01D9:  MOVWF  22
+01DA:  BCF    03.5
+01DB:  CLRF   23
+01DC:  BSF    03.5
+01DD:  IORWF  20,F
+....................     spi_write(data);  
+01DE:  BCF    03.5
+01DF:  MOVF   13,W
+01E0:  BSF    03.5
+01E1:  MOVF   20,W
+01E2:  BCF    03.5
+01E3:  MOVWF  13
+01E4:  BSF    03.5
+01E5:  BTFSC  14.0
+01E6:  GOTO   1E9
+01E7:  BCF    03.5
+01E8:  GOTO   1E4
+....................   
+....................     data = (DAC_CH1 & 0x00FF);  
+01E9:  BCF    03.5
+01EA:  MOVF   4E,W
+01EB:  BSF    03.5
+01EC:  MOVWF  20
+....................     spi_write(data);  
+01ED:  BCF    03.5
+01EE:  MOVF   13,W
+01EF:  BSF    03.5
+01F0:  MOVF   20,W
+01F1:  BCF    03.5
+01F2:  MOVWF  13
+01F3:  BSF    03.5
+01F4:  BTFSC  14.0
+01F5:  GOTO   1F8
+01F6:  BCF    03.5
+01F7:  GOTO   1F3
+....................   
+....................     output_high(DAC_CS);    // De-Select the D/A converter  
+01F8:  BCF    03.5
+01F9:  BSF    05.5
+....................     return;  
+.................... }  
+01FA:  RETLW  00
+....................   
+.................... //-----------------------------------------------------------------------------  
+.................... // int16 acquire_adc(int8 control, int8 unipolar)  
+.................... //  
+.................... // Acquire and A/D value from LTC1296  
+.................... //  
+.................... #separate  
+.................... int16 acquire_adc(int8 control, int8 unipolar)  
+.................... {  
+....................     int16   ad_sample;  
+....................     int8    data;  
+....................   
+....................     // Check and configure SPI if needed  
+....................     if (EEFLags & SLOW_ADC_CLOCK)  
+*
+02E1:  BTFSS  2F.1
+02E2:  GOTO   2ED
+....................     {  
+....................         if (SpiMode != SPI_ADC_SLOW)  
+02E3:  MOVF   31,W
+02E4:  SUBLW  03
+02E5:  BTFSC  03.2
+02E6:  GOTO   2EC
+....................             setup_spi_mode(SPI_ADC_SLOW);  
+02E7:  MOVLW  03
+02E8:  BSF    03.5
+02E9:  MOVWF  2E
+02EA:  BCF    03.5
+02EB:  CALL   174
+....................     } else {  
+02EC:  GOTO   2F6
+....................         if (SpiMode != SPI_ADC_FAST)  
+02ED:  MOVF   31,W
+02EE:  SUBLW  02
+02EF:  BTFSC  03.2
+02F0:  GOTO   2F6
+....................             setup_spi_mode(SPI_ADC_FAST);  
+02F1:  MOVLW  02
+02F2:  BSF    03.5
+02F3:  MOVWF  2E
+02F4:  BCF    03.5
+02F5:  CALL   174
+....................     }  
+....................   
+....................     output_low(AD_CS);              // Select the D/A converter  
+02F6:  BCF    05.0
+....................   
+....................     data = control & 0x0F;          // Mask off lower nibble  
+02F7:  BSF    03.5
+02F8:  MOVF   29,W
+02F9:  ANDLW  0F
+02FA:  MOVWF  2D
+....................     data = data | 0x10;             // OR in the START bit  
+02FB:  BSF    2D.4
+....................     spi_write(data);  
+02FC:  BCF    03.5
+02FD:  MOVF   13,W
+02FE:  BSF    03.5
+02FF:  MOVF   2D,W
+0300:  BCF    03.5
+0301:  MOVWF  13
+0302:  BSF    03.5
+0303:  BTFSC  14.0
+0304:  GOTO   307
+0305:  BCF    03.5
+0306:  GOTO   302
+....................   
+....................     if (unipolar)                   // UNIPOLAR or BIPOLAR sampling  
+0307:  MOVF   2A,F
+0308:  BTFSC  03.2
+0309:  GOTO   318
+....................     {  
+....................         data = spi_read(0xE0);      // UNI=1, MSBF=1, PS=1  
+030A:  BCF    03.5
+030B:  MOVF   13,W
+030C:  MOVLW  E0
+030D:  MOVWF  13
+030E:  BSF    03.5
+030F:  BTFSC  14.0
+0310:  GOTO   313
+0311:  BCF    03.5
+0312:  GOTO   30E
+0313:  BCF    03.5
+0314:  MOVF   13,W
+0315:  BSF    03.5
+0316:  MOVWF  2D
+....................     } else {  
+0317:  GOTO   325
+....................         data = spi_read(0x60);      // UNI=0, MSBF=1, PS=1  
+0318:  BCF    03.5
+0319:  MOVF   13,W
+031A:  MOVLW  60
+031B:  MOVWF  13
+031C:  BSF    03.5
+031D:  BTFSC  14.0
+031E:  GOTO   321
+031F:  BCF    03.5
+0320:  GOTO   31C
+0321:  BCF    03.5
+0322:  MOVF   13,W
+0323:  BSF    03.5
+0324:  MOVWF  2D
+....................     }  
+....................   
+....................     ad_sample = data & 0x0F;        // Upper 4 bits of data conversion  
+0325:  MOVF   2D,W
+0326:  ANDLW  0F
+0327:  MOVWF  2B
+0328:  CLRF   2C
+....................     ad_sample = ad_sample << 8;  
+0329:  MOVF   2B,W
+032A:  MOVWF  2C
+032B:  CLRF   2B
+....................   
+....................     data = spi_read(0);             // Get lower 8 bits of data comnversion  
+032C:  BCF    03.5
+032D:  MOVF   13,W
+032E:  CLRF   13
+032F:  BSF    03.5
+0330:  BTFSC  14.0
+0331:  GOTO   334
+0332:  BCF    03.5
+0333:  GOTO   32F
+0334:  BCF    03.5
+0335:  MOVF   13,W
+0336:  BSF    03.5
+0337:  MOVWF  2D
+....................     ad_sample = ad_sample | data;  
+0338:  MOVF   2D,W
+0339:  IORWF  2B,F
+....................   
+....................     output_high(AD_CS);     // De-Select the D/A converter  
+033A:  BCF    03.5
+033B:  BSF    05.0
+....................     return (ad_sample);  
+033C:  BSF    03.5
+033D:  MOVF   2B,W
+033E:  BCF    03.5
+033F:  MOVWF  21
+0340:  BSF    03.5
+0341:  MOVF   2C,W
+0342:  BCF    03.5
+0343:  MOVWF  22
+.................... }  
+0344:  RETLW  00
+....................   
+....................   
+.................... //-----------------------------------------------------------------------------  
+.................... // int8 rd_eeprom(int8 address)  
+.................... //  
+.................... // Read EEPROM  
+.................... // The 16F847A has an internal EEPROM  
+.................... //  
+.................... #separate  
+.................... int8 rd_eeprom(int8 address)  
+.................... {  
+....................     int8    data;  
+....................   
+....................     EEADRH = 0;         // Upper bits of 10 bit address = 0  
+*
+00F2:  BSF    03.6
+00F3:  CLRF   0F
+....................     EEADR = address;    // Address register  
+00F4:  BSF    03.5
+00F5:  BCF    03.6
+00F6:  MOVF   25,W
+00F7:  BCF    03.5
+00F8:  BSF    03.6
+00F9:  MOVWF  0D
+....................     EECON1 = 0x01;      // Access Data EEPROM, RD=1  
+00FA:  MOVLW  01
+00FB:  BSF    03.5
+00FC:  MOVWF  0C
+....................     data = EEDATA;      // Read the data out of the EEPROM  
+00FD:  BCF    03.5
+00FE:  MOVF   0C,W
+00FF:  BSF    03.5
+0100:  BCF    03.6
+0101:  MOVWF  26
+....................     return (data);  
+0102:  MOVF   26,W
+0103:  BCF    03.5
+0104:  MOVWF  21
+.................... }  
+0105:  RETLW  00
+....................   
+....................   
+.................... //-----------------------------------------------------------------------------  
+.................... // wr_eeprom(int8 address, int8 data)  
+.................... //  
+.................... // Write EEPROM  
+.................... // The 16F847A has an internal EEPROM  
+.................... //  
+.................... #separate  
+.................... void wr_eeprom(int8 address, int8 data)  
+.................... {  
+....................     int8 i;  
+....................   
+....................     EEADRH = 0;         // Upper bits of 10 bit address = 0  
+*
+0129:  BSF    03.6
+012A:  CLRF   0F
+....................     EEADR = address;    // Address register  
+012B:  BSF    03.5
+012C:  BCF    03.6
+012D:  MOVF   21,W
+012E:  BCF    03.5
+012F:  BSF    03.6
+0130:  MOVWF  0D
+....................     EEDATA = data;      // Data to write to the EEPROM  
+0131:  BSF    03.5
+0132:  BCF    03.6
+0133:  MOVF   22,W
+0134:  BCF    03.5
+0135:  BSF    03.6
+0136:  MOVWF  0C
+....................   
+....................     // Do not change a single line in the following #asm block  
+....................     // The assembly output must match the Microchip documentation exactly  
+....................     // and changing anything will screw it up since the compiler shoves  
+....................     // its crap in-line also.  
+.................... #asm  
+....................     bcf     0x0B, 7     ; Disable INT's INTCON GIE  
+0137:  BCF    03.6
+0138:  BCF    0B.7
+....................     bsf     EECON1, 2   ; Write enable - WREN  
+0139:  BSF    03.5
+013A:  BSF    03.6
+013B:  BSF    0C.2
+....................     movlw   0x55        ; Write unlock sequence  
+013C:  MOVLW  55
+....................     movwf   EECON2        ; EECON2  
+013D:  MOVWF  0D
+....................     movlw   0xAA  
+013E:  MOVLW  AA
+....................     movwf   EECON2        ; EECON2  
+013F:  MOVWF  0D
+....................     bsf     EECON1, 1   ; Initiate write - WR  
+0140:  BSF    0C.1
+....................     bsf     0x0B, 7     ; enable INT's - INTCON GIE  
+0141:  BCF    03.5
+0142:  BCF    03.6
+0143:  BSF    0B.7
+.................... #endasm  
+....................   
+....................     //  
+....................     // Wait for WRITE to complete  
+....................     do {  
+....................         delay_cycles(1);  
+0144:  NOP
+....................         i = EECON1;  
+0145:  BSF    03.5
+0146:  BSF    03.6
+0147:  MOVF   0C,W
+0148:  BCF    03.6
+0149:  MOVWF  23
+....................     } while (i & 0x02);         // Bit 1 = WR (write status)  
+014A:  BTFSS  23.1
+014B:  GOTO   14E
+014C:  BCF    03.5
+014D:  GOTO   144
+....................   
+....................     return;  
+.................... }  
+014E:  BCF    03.5
+014F:  RETLW  00
+....................   
+....................   
+.................... //-----------------------------------------------------------------------------  
+.................... // led_on_red(void)  
+.................... //  
+.................... // Turn LED on (RED)  
+.................... //  
+.................... void led_on_red(void)  
+.................... {  
+....................     output_high(LED_RED);  
+*
+008A:  BSF    07.1
+....................     output_low(LED_GREEN);  
+008B:  BCF    07.0
+....................     return;  
+.................... }  
+008C:  RETLW  00
+....................   
+....................   
+.................... //-----------------------------------------------------------------------------  
+.................... // led_on_green(void)  
+.................... //  
+.................... // Turn LED on (GREEN)  
+.................... //  
+.................... void led_on_green(void)  
+.................... {  
+....................     output_high(LED_GREEN);  
+*
+0087:  BSF    07.0
+....................     output_low(LED_RED);  
+0088:  BCF    07.1
+....................     return;  
+.................... }  
+0089:  RETLW  00
+....................   
+....................   
+.................... //-----------------------------------------------------------------------------  
+.................... // led_off(void)  
+.................... //  
+.................... // Turn LED off  
+.................... //  
+.................... void led_off(void)  
+.................... {  
+....................     output_low(LED_RED);  
+*
+008D:  BCF    07.1
+....................     output_low(LED_GREEN);  
+008E:  BCF    07.0
+....................     return;  
+.................... }  
+008F:  RETLW  00
+....................   
+....................   
+.................... //-----------------------------------------------------------------------------  
+.................... // trigger_led_red(void)  
+.................... //  
+.................... // Triggers the RED LED sequence  
+.................... //  
+.................... #inline  
+.................... void trigger_led_red(void)  
+.................... {  
+....................     // Only start the Red sequence if it was Green  
+....................     if (LedGreenFlag)  
+*
+0383:  BCF    03.5
+0384:  MOVF   47,F
+0385:  BTFSC  03.2
+0386:  GOTO   38D
+*
+0859:  BCF    03.5
+085A:  MOVF   47,F
+085B:  BTFSC  03.2
+085C:  GOTO   065
+....................     {  
+....................         LedGreenFlag = 0;  
+*
+0387:  CLRF   47
+*
+085D:  CLRF   47
+....................         LedCount = 900;         // To make a faster Red LED blink, put a value here (0 ... 100)  
+*
+0388:  MOVLW  03
+0389:  MOVWF  49
+038A:  MOVLW  84
+038B:  MOVWF  48
+*
+085E:  MOVLW  03
+085F:  MOVWF  49
+0860:  MOVLW  84
+0861:  MOVWF  48
+....................                                 // Full blink gets a 0  
+....................         led_on_red();  
+*
+038C:  CALL   08A
+*
+0862:  BCF    0A.3
+0863:  CALL   08A
+0864:  BSF    0A.3
+....................     }  
+.................... }  
+....................   
+.................... //-----------------------------------------------------------------------------  
+.................... // write_port1(int8 value)  
+.................... //  
+.................... // Write the digital output to PORT1  
+.................... // BIT 0-7 = PORTB 0-7  
+.................... //  
+.................... #inline  
+.................... void write_port1(int8 value)  
+.................... {  
+....................     // Expander inversion  
+....................     if (EEFlags & EXPANDER_FLAG)  
+*
+0894:  BCF    03.5
+0895:  BTFSS  2F.0
+0896:  GOTO   09B
+*
+09F9:  BCF    03.5
+09FA:  BTFSS  2F.0
+09FB:  GOTO   200
+....................         value = value ^ 0xFF;  
+*
+0897:  MOVLW  FF
+0898:  BSF    03.5
+0899:  XORWF  20,F
+089A:  BCF    03.5
+*
+09FC:  MOVLW  FF
+09FD:  BSF    03.5
+09FE:  XORWF  20,F
+09FF:  BCF    03.5
+....................   
+....................     PORT_B = value;             // bits 0-7 = PORTB 0-7  
+*
+089B:  BSF    03.5
+089C:  MOVF   20,W
+089D:  BCF    03.5
+089E:  MOVWF  06
+*
+0A00:  BSF    03.5
+0A01:  MOVF   20,W
+0A02:  BCF    03.5
+0A03:  MOVWF  06
+....................     return;  
+.................... }  
+....................   
+.................... //-----------------------------------------------------------------------------  
+.................... // int8 read_port1(void)  
+.................... //  
+.................... // Reads the digital input of PORT1  
+.................... // BIT 0-7 = PORTB 0-7  
+.................... //  
+.................... #inline  
+.................... int8 read_port1(void)  
+.................... {  
+....................     int8 value;  
+....................   
+....................     value = PORT_B;             // PORT1 bits 1-7 are PORTB bits 1-7  
+*
+03A7:  MOVF   06,W
+03A8:  BSF    03.5
+03A9:  MOVWF  29
+*
+04A6:  MOVF   06,W
+04A7:  BSF    03.5
+04A8:  MOVWF  29
+*
+093A:  MOVF   06,W
+093B:  BSF    03.5
+093C:  MOVWF  29
+*
+09B3:  MOVF   06,W
+09B4:  BSF    03.5
+09B5:  MOVWF  29
+....................   
+....................     // Expander inversion  
+....................     if (EEFlags & EXPANDER_FLAG)  
+*
+03AA:  BCF    03.5
+03AB:  BTFSS  2F.0
+03AC:  GOTO   3B1
+*
+04A9:  BCF    03.5
+04AA:  BTFSS  2F.0
+04AB:  GOTO   4B0
+*
+093D:  BCF    03.5
+093E:  BTFSS  2F.0
+093F:  GOTO   144
+*
+09B6:  BCF    03.5
+09B7:  BTFSS  2F.0
+09B8:  GOTO   1BD
+....................         value = value ^ 0xFF;  
+*
+03AD:  MOVLW  FF
+03AE:  BSF    03.5
+03AF:  XORWF  29,F
+03B0:  BCF    03.5
+*
+04AC:  MOVLW  FF
+04AD:  BSF    03.5
+04AE:  XORWF  29,F
+04AF:  BCF    03.5
+*
+0940:  MOVLW  FF
+0941:  BSF    03.5
+0942:  XORWF  29,F
+0943:  BCF    03.5
+*
+09B9:  MOVLW  FF
+09BA:  BSF    03.5
+09BB:  XORWF  29,F
+09BC:  BCF    03.5
+....................     return (value);  
+*
+03B1:  BSF    03.5
+03B2:  MOVF   29,W
+03B3:  BCF    03.5
+03B4:  MOVWF  21
+*
+04B0:  BSF    03.5
+04B1:  MOVF   29,W
+04B2:  BCF    03.5
+04B3:  MOVWF  21
+*
+0944:  BSF    03.5
+0945:  MOVF   29,W
+0946:  BCF    03.5
+0947:  MOVWF  21
+*
+09BD:  BSF    03.5
+09BE:  MOVF   29,W
+09BF:  BCF    03.5
+09C0:  MOVWF  21
+.................... }  
+....................   
+.................... //-----------------------------------------------------------------------------  
+.................... // write_port2(int8 value)  
+.................... //  
+.................... // Write the digital output to PORT2  
+.................... // BIT 0-7 = PORTD 0-7  
+.................... //  
+.................... #inline  
+.................... void write_port2(int8 value)  
+.................... {  
+....................     // Expander inversion  
+....................     if (EEFlags & EXPANDER_FLAG)  
+*
+08AB:  BCF    03.5
+08AC:  BTFSS  2F.0
+08AD:  GOTO   0B2
+*
+0A10:  BCF    03.5
+0A11:  BTFSS  2F.0
+0A12:  GOTO   217
+....................         value = value ^ 0xFF;  
+*
+08AE:  MOVLW  FF
+08AF:  BSF    03.5
+08B0:  XORWF  20,F
+08B1:  BCF    03.5
+*
+0A13:  MOVLW  FF
+0A14:  BSF    03.5
+0A15:  XORWF  20,F
+0A16:  BCF    03.5
+....................     PORT_D = value;  
+*
+08B2:  BSF    03.5
+08B3:  MOVF   20,W
+08B4:  BCF    03.5
+08B5:  MOVWF  08
+*
+0A17:  BSF    03.5
+0A18:  MOVF   20,W
+0A19:  BCF    03.5
+0A1A:  MOVWF  08
+....................     return;  
+.................... }  
+....................   
+.................... //-----------------------------------------------------------------------------  
+.................... // int8 read_port2(void)  
+.................... //  
+.................... // Reads the digital input of PORT2  
+.................... // BIT 0-7 = PORTB 0-7  
+.................... //  
+.................... #inline  
+.................... int8 read_port2(void)  
+.................... {  
+....................     int8 value;  
+....................   
+....................     value = PORT_D;             // PORT2 bits 0-7 = PORT_D bits 0-7  
+*
+03C2:  MOVF   08,W
+03C3:  BSF    03.5
+03C4:  MOVWF  29
+*
+04B6:  MOVF   08,W
+04B7:  BSF    03.5
+04B8:  MOVWF  29
+*
+094A:  MOVF   08,W
+094B:  BSF    03.5
+094C:  MOVWF  29
+*
+09CC:  MOVF   08,W
+09CD:  BSF    03.5
+09CE:  MOVWF  29
+....................   
+....................     // Expander inversion  
+....................     if (EEFlags & EXPANDER_FLAG)  
+*
+03C5:  BCF    03.5
+03C6:  BTFSS  2F.0
+03C7:  GOTO   3CC
+*
+04B9:  BCF    03.5
+04BA:  BTFSS  2F.0
+04BB:  GOTO   4C0
+*
+094D:  BCF    03.5
+094E:  BTFSS  2F.0
+094F:  GOTO   154
+*
+09CF:  BCF    03.5
+09D0:  BTFSS  2F.0
+09D1:  GOTO   1D6
+....................         value = value ^ 0xFF;  
+*
+03C8:  MOVLW  FF
+03C9:  BSF    03.5
+03CA:  XORWF  29,F
+03CB:  BCF    03.5
+*
+04BC:  MOVLW  FF
+04BD:  BSF    03.5
+04BE:  XORWF  29,F
+04BF:  BCF    03.5
+*
+0950:  MOVLW  FF
+0951:  BSF    03.5
+0952:  XORWF  29,F
+0953:  BCF    03.5
+*
+09D2:  MOVLW  FF
+09D3:  BSF    03.5
+09D4:  XORWF  29,F
+09D5:  BCF    03.5
+....................     return (value);  
+*
+03CC:  BSF    03.5
+03CD:  MOVF   29,W
+03CE:  BCF    03.5
+03CF:  MOVWF  21
+*
+04C0:  BSF    03.5
+04C1:  MOVF   29,W
+04C2:  BCF    03.5
+04C3:  MOVWF  21
+*
+0954:  BSF    03.5
+0955:  MOVF   29,W
+0956:  BCF    03.5
+0957:  MOVWF  21
+*
+09D6:  BSF    03.5
+09D7:  MOVF   29,W
+09D8:  BCF    03.5
+09D9:  MOVWF  21
+.................... }  
+....................   
+....................   
+.................... //-----------------------------------------------------------------------------  
+.................... // set_dir_port1(int8 direction)  
+.................... //  
+.................... // Set the data direction of PORT1  
+.................... // BIT 0-7 = PORTB 0-7  
+.................... //  
+.................... void set_dir_port1(int8 direction)  
+.................... {  
+....................     Port1_Dir = direction;  
+*
+0150:  BSF    03.5
+0151:  MOVF   20,W
+0152:  BCF    03.5
+0153:  MOVWF  4A
+....................     wr_eeprom(EEPROM_DIR_PORT1, Port1_Dir);  
+0154:  MOVLW  02
+0155:  BSF    03.5
+0156:  MOVWF  21
+0157:  BCF    03.5
+0158:  MOVF   4A,W
+0159:  BSF    03.5
+015A:  MOVWF  22
+015B:  BCF    03.5
+015C:  CALL   129
+....................     set_tris_b(Port1_Dir);  
+015D:  MOVF   4A,W
+015E:  BSF    03.5
+015F:  MOVWF  06
+....................     return;  
+.................... }  
+0160:  BCF    03.5
+0161:  RETLW  00
+....................   
+....................   
+.................... //-----------------------------------------------------------------------------  
+.................... // get_dir_port1()  
+.................... //  
+.................... // Returns the current data direction (input/output) of Port1  
+.................... //  
+.................... int8 get_dir_port1(void)  
+.................... {  
+....................     return (Port1_Dir);  
+*
+05AE:  MOVF   4A,W
+05AF:  MOVWF  21
+.................... }  
+05B0:  BSF    0A.3
+05B1:  GOTO   31A (RETURN)
+....................   
+.................... //-----------------------------------------------------------------------------  
+.................... // set_dir_port2(int8 direction)  
+.................... //  
+.................... // Set the data direction of PORT2  
+.................... // BIT 0-7 = PORTB 0-7  
+.................... //  
+.................... void set_dir_port2(int8 direction)  
+.................... {  
+....................     Port2_Dir = direction;  
+*
+0162:  BSF    03.5
+0163:  MOVF   20,W
+0164:  BCF    03.5
+0165:  MOVWF  4B
+....................     wr_eeprom(EEPROM_DIR_PORT2, Port2_Dir);  
+0166:  MOVLW  03
+0167:  BSF    03.5
+0168:  MOVWF  21
+0169:  BCF    03.5
+016A:  MOVF   4B,W
+016B:  BSF    03.5
+016C:  MOVWF  22
+016D:  BCF    03.5
+016E:  CALL   129
+....................     set_tris_d(Port2_Dir);  
+016F:  MOVF   4B,W
+0170:  BSF    03.5
+0171:  MOVWF  08
+....................     return;  
+.................... }  
+0172:  BCF    03.5
+0173:  RETLW  00
+....................   
+....................   
+.................... //-----------------------------------------------------------------------------  
+.................... // get_dir_port2()  
+.................... //  
+.................... // Returns the current data direction (input/output) of Port2  
+.................... //  
+.................... int8 get_dir_port2(void)  
+.................... {  
+....................     return (Port2_Dir);  
+*
+05B2:  MOVF   4B,W
+05B3:  MOVWF  21
+.................... }  
+05B4:  BSF    0A.3
+05B5:  GOTO   328 (RETURN)
+....................   
+....................   
+.................... //-----------------------------------------------------------------------------  
+.................... // hex_to_bin()  
+.................... //  
+.................... // Converts 2 hexadecimal ASCII characters pointed to *ptr to a binary value  
+.................... //  
+.................... #separate  
+.................... int8 hex_to_bin(int8 *ptr)  
+.................... {  
+....................     int8 value, i;  
+....................     int8 *tmp_ptr;  
+....................   
+....................     tmp_ptr = ptr;  
+*
+053B:  BSF    03.5
+053C:  MOVF   20,W
+053D:  MOVWF  23
+....................     value = 0;  
+053E:  CLRF   21
+....................   
+....................     // Upper nibble conversion  
+....................     if (isdigit(*tmp_ptr))  
+053F:  MOVF   23,W
+0540:  MOVWF  04
+0541:  MOVF   00,W
+0542:  MOVWF  24
+0543:  MOVF   24,W
+0544:  SUBLW  2F
+0545:  BTFSC  03.0
+0546:  GOTO   557
+0547:  MOVF   24,W
+0548:  SUBLW  39
+0549:  BTFSS  03.0
+054A:  GOTO   557
+....................     {  
+....................         value = (*tmp_ptr - '0') << 4;  
+054B:  MOVF   23,W
+054C:  MOVWF  04
+054D:  MOVLW  30
+054E:  SUBWF  00,W
+054F:  BCF    03.5
+0550:  MOVWF  20
+0551:  SWAPF  20,W
+0552:  BSF    03.5
+0553:  MOVWF  21
+0554:  MOVLW  F0
+0555:  ANDWF  21,F
+....................     } else {  
+0556:  GOTO   57C
+....................         if (isupper(*tmp_ptr))  
+0557:  MOVF   23,W
+0558:  MOVWF  04
+0559:  MOVF   00,W
+055A:  MOVWF  24
+055B:  MOVF   24,W
+055C:  SUBLW  40
+055D:  BTFSC  03.0
+055E:  GOTO   570
+055F:  MOVF   24,W
+0560:  SUBLW  5A
+0561:  BTFSS  03.0
+0562:  GOTO   570
+....................         {  
+....................             value = ((*tmp_ptr - 'A') + 0x0A) << 4;  
+0563:  MOVF   23,W
+0564:  MOVWF  04
+0565:  MOVLW  41
+0566:  SUBWF  00,W
+0567:  ADDLW  0A
+0568:  BCF    03.5
+0569:  MOVWF  20
+056A:  SWAPF  20,W
+056B:  BSF    03.5
+056C:  MOVWF  21
+056D:  MOVLW  F0
+056E:  ANDWF  21,F
+....................         } else {  
+056F:  GOTO   57C
+....................             value = ((*tmp_ptr - 'a') + 0x0A) << 4;  
+0570:  MOVF   23,W
+0571:  MOVWF  04
+0572:  MOVLW  61
+0573:  SUBWF  00,W
+0574:  ADDLW  0A
+0575:  BCF    03.5
+0576:  MOVWF  20
+0577:  SWAPF  20,W
+0578:  BSF    03.5
+0579:  MOVWF  21
+057A:  MOVLW  F0
+057B:  ANDWF  21,F
+....................         }  
+....................     }  
+....................   
+....................     // LSB conversion  
+....................     tmp_ptr++;  
+057C:  INCF   23,F
+....................     if (isdigit(*tmp_ptr))  
+057D:  MOVF   23,W
+057E:  MOVWF  04
+057F:  MOVF   00,W
+0580:  MOVWF  24
+0581:  MOVF   24,W
+0582:  SUBLW  2F
+0583:  BTFSC  03.0
+0584:  GOTO   58F
+0585:  MOVF   24,W
+0586:  SUBLW  39
+0587:  BTFSS  03.0
+0588:  GOTO   58F
+....................     {  
+....................         i = (*tmp_ptr - '0');  
+0589:  MOVF   23,W
+058A:  MOVWF  04
+058B:  MOVLW  30
+058C:  SUBWF  00,W
+058D:  MOVWF  22
+....................     } else {  
+058E:  GOTO   5A8
+....................         if (isupper(*tmp_ptr))  
+058F:  MOVF   23,W
+0590:  MOVWF  04
+0591:  MOVF   00,W
+0592:  MOVWF  24
+0593:  MOVF   24,W
+0594:  SUBLW  40
+0595:  BTFSC  03.0
+0596:  GOTO   5A2
+0597:  MOVF   24,W
+0598:  SUBLW  5A
+0599:  BTFSS  03.0
+059A:  GOTO   5A2
+....................         {  
+....................             i = (*tmp_ptr - 'A') + 0x0A;  
+059B:  MOVF   23,W
+059C:  MOVWF  04
+059D:  MOVLW  41
+059E:  SUBWF  00,W
+059F:  ADDLW  0A
+05A0:  MOVWF  22
+....................         } else {  
+05A1:  GOTO   5A8
+....................             i = (*tmp_ptr - 'a') + 0x0A;  
+05A2:  MOVF   23,W
+05A3:  MOVWF  04
+05A4:  MOVLW  61
+05A5:  SUBWF  00,W
+05A6:  ADDLW  0A
+05A7:  MOVWF  22
+....................         }  
+....................     }  
+....................     value = value + i;  
+05A8:  MOVF   22,W
+05A9:  ADDWF  21,F
+....................     return (value);  
+05AA:  MOVF   21,W
+05AB:  BCF    03.5
+05AC:  MOVWF  21
+.................... }  
+05AD:  RETLW  00
+....................   
+....................   
+.................... //-----------------------------------------------------------------------------  
+.................... // bin_to_hex()  
+.................... //  
+.................... // Converts binary value to two hexadecimal ASCII characters  
+.................... //  
+.................... #separate  
+.................... void bin_to_hex(int8 value, int8 *ptr)  
+.................... {  
+....................     int8 digit;  
+....................     int8 *tmp_ptr;  
+....................   
+....................     tmp_ptr = ptr;  
+*
+0345:  BSF    03.5
+0346:  MOVF   2A,W
+0347:  MOVWF  2C
+....................   
+....................     // MSB first  
+....................     digit = ((value & 0xF0) >> 4) + 0x30;  
+0348:  MOVF   29,W
+0349:  ANDLW  F0
+034A:  BCF    03.5
+034B:  MOVWF  20
+034C:  SWAPF  20,F
+034D:  MOVLW  0F
+034E:  ANDWF  20,F
+034F:  MOVF   20,W
+0350:  ADDLW  30
+0351:  BSF    03.5
+0352:  MOVWF  2B
+....................     if (digit > 0x39)  
+0353:  MOVF   2B,W
+0354:  SUBLW  39
+0355:  BTFSC  03.0
+0356:  GOTO   359
+....................         digit += 0x07;  
+0357:  MOVLW  07
+0358:  ADDWF  2B,F
+....................     *tmp_ptr = digit;  
+0359:  MOVF   2C,W
+035A:  MOVWF  04
+035B:  MOVF   2B,W
+035C:  MOVWF  00
+....................   
+....................     // LSB next  
+....................     tmp_ptr++;  
+035D:  INCF   2C,F
+....................     digit = (value & 0x0F) + 0x30;  
+035E:  MOVF   29,W
+035F:  ANDLW  0F
+0360:  ADDLW  30
+0361:  MOVWF  2B
+....................     if (digit > 0x39)  
+0362:  MOVF   2B,W
+0363:  SUBLW  39
+0364:  BTFSC  03.0
+0365:  GOTO   368
+....................         digit += 0x07;  
+0366:  MOVLW  07
+0367:  ADDWF  2B,F
+....................     *tmp_ptr = digit;  
+0368:  MOVF   2C,W
+0369:  MOVWF  04
+036A:  MOVF   2B,W
+036B:  MOVWF  00
+....................   
+....................     return;  
+.................... }  
+036C:  BCF    03.5
+036D:  RETLW  00
+....................   
+....................   
+.................... //-----------------------------------------------------------------------------  
+.................... // timer0_isr()  
+.................... //  
+.................... // RTCC/Timer0 interrupt - pulse counter is redirected to Timer0  
+.................... //  
+.................... #int_timer0  
+.................... void timer0_isr(void)  
+.................... {  
+....................     // Timer0 ISR is triggered on 88 bit overflow (256)  
+....................     PulseCount = PulseCount + 0x100;  
+*
+007A:  MOVLW  01
+007B:  ADDWF  51,F
+007C:  MOVLW  00
+007D:  BTFSC  03.0
+007E:  MOVLW  01
+007F:  ADDWF  52,F
+0080:  MOVLW  00
+0081:  BTFSC  03.0
+0082:  MOVLW  01
+0083:  ADDWF  53,F
+....................     return;  
+.................... }  
+....................   
+....................   
+.................... //-----------------------------------------------------------------------------  
+.................... // timer1_isr()  
+.................... //  
+.................... // Timer1 interrupt - 1 millisecond  
+.................... //  
+0084:  BCF    0B.2
+0085:  BCF    0A.3
+0086:  GOTO   02C
+.................... #int_timer1  
+.................... void timer1_isr(void)  
+.................... {  
+.................... //    set_timer1(0x7000);                     // 10ms = 65536-(.01/(4/14745600)) = 0x7000  
+....................     set_timer1(0xF199);                     // 1ms = 65536-(.001/(4/14745600)) = 0xF199  
+*
+0090:  MOVLW  F1
+0091:  MOVWF  0F
+0092:  MOVLW  99
+0093:  MOVWF  0E
+....................   
+....................     // Kick the dog  
+....................     restart_wdt();  
+0094:  CLRWDT
+....................   
+....................   
+....................     AsyncCount++;                           // One ms Async timer count  
+0095:  INCF   34,F
+0096:  BTFSC  03.2
+0097:  INCF   35,F
+....................     LedCount++;  
+0098:  INCF   48,F
+0099:  BTFSC  03.2
+009A:  INCF   49,F
+....................     if (LedCount < 1000)                    // One second count (LED on)  
+009B:  MOVF   49,W
+009C:  SUBLW  03
+009D:  BTFSS  03.0
+009E:  GOTO   0B6
+009F:  BTFSS  03.2
+00A0:  GOTO   0A5
+00A1:  MOVF   48,W
+00A2:  SUBLW  E7
+00A3:  BTFSS  03.0
+00A4:  GOTO   0B6
+....................     {  
+....................         if (LedCount & 1)  
+00A5:  MOVF   48,W
+00A6:  ANDLW  01
+00A7:  MOVWF  20
+00A8:  CLRF   23
+00A9:  MOVF   20,W
+00AA:  IORWF  23,W
+00AB:  BTFSC  03.2
+00AC:  GOTO   0B4
+....................         {  
+....................             if (LedGreenFlag)               // LED on (Red or Green)  
+00AD:  MOVF   47,F
+00AE:  BTFSC  03.2
+00AF:  GOTO   0B2
+....................                 led_on_green();  
+00B0:  CALL   087
+....................             else  
+00B1:  GOTO   0B3
+....................                 led_on_red();  
+00B2:  CALL   08A
+....................         } else {  
+00B3:  GOTO   0B5
+....................             led_off();                      // Toggle off every other cycle (1000 Hz)  
+00B4:  CALL   08D
+....................         }  
+....................     } else {  
+00B5:  GOTO   0D9
+....................         led_off();  
+00B6:  CALL   08D
+....................         if (LedGreenFlag)  
+00B7:  MOVF   47,F
+00B8:  BTFSC  03.2
+00B9:  GOTO   0CA
+....................         {  
+....................             // Green LED timing  
+....................             if (LedCount > 2000)            // Two second count (LED off)  
+00BA:  MOVF   49,W
+00BB:  SUBLW  06
+00BC:  BTFSC  03.0
+00BD:  GOTO   0C9
+00BE:  XORLW  FF
+00BF:  BTFSS  03.2
+00C0:  GOTO   0C5
+00C1:  MOVF   48,W
+00C2:  SUBLW  D0
+00C3:  BTFSC  03.0
+00C4:  GOTO   0C9
+....................             {  
+....................                 LedCount = 0;  
+00C5:  CLRF   49
+00C6:  CLRF   48
+....................                 LedGreenFlag = 1;  
+00C7:  MOVLW  01
+00C8:  MOVWF  47
+....................             }  
+....................         } else {  
+00C9:  GOTO   0D9
+....................             // Red LED timing  
+....................             if (LedCount > 1100)            // short off phase (250 ms.)  
+00CA:  MOVF   49,W
+00CB:  SUBLW  03
+00CC:  BTFSC  03.0
+00CD:  GOTO   0D9
+00CE:  XORLW  FF
+00CF:  BTFSS  03.2
+00D0:  GOTO   0D5
+00D1:  MOVF   48,W
+00D2:  SUBLW  4C
+00D3:  BTFSC  03.0
+00D4:  GOTO   0D9
+....................             {  
+....................                 LedCount = 0;  
+00D5:  CLRF   49
+00D6:  CLRF   48
+....................                 LedGreenFlag = 1;  
+00D7:  MOVLW  01
+00D8:  MOVWF  47
+....................             }  
+....................         }  
+....................     }  
+....................     return;  
+.................... }  
+....................   
+....................   
+.................... //-----------------------------------------------------------------------------  
+.................... // RDA_isr()  
+.................... //  
+.................... // UART Receive character ISR  
+.................... //  
+00D9:  BCF    0C.0
+00DA:  BCF    0A.3
+00DB:  GOTO   02C
+.................... #int_RDA  
+.................... RDA_isr()  
+.................... {  
+....................     led_on_green();  
+00DC:  CALL   087
+....................     // Get character out of UART and save in receive buffer  
+....................     LastCharRcvd = getc();  
+00DD:  BTFSS  0C.5
+00DE:  GOTO   0DD
+00DF:  MOVF   1A,W
+00E0:  MOVWF  54
+....................   
+....................     if(LastCharRcvd != '\n')        // Strip off newline chars  
+00E1:  MOVF   54,W
+00E2:  SUBLW  0A
+00E3:  BTFSC  03.2
+00E4:  GOTO   0EF
+....................     {  
+....................         // Save character in receive buffer  
+....................         CommandBuffer[CommandBufferIndex] = LastCharRcvd;  
+00E5:  MOVLW  56
+00E6:  ADDWF  55,W
+00E7:  MOVWF  04
+00E8:  MOVF   54,W
+00E9:  MOVWF  00
+....................         CommandBufferIndex++;  
+00EA:  INCF   55,F
+....................         // Check for receive buffer overflow  
+....................         if (CommandBufferIndex >= CMDBUFFERSIZE)  
+00EB:  MOVF   55,W
+00EC:  SUBLW  0F
+00ED:  BTFSS  03.0
+....................             CommandBufferIndex--;  
+00EE:  DECF   55,F
+....................     }  
+....................     return;  
+.................... }  
+....................   
+....................   
+.................... //-----------------------------------------------------------------------------  
+.................... // get_eesettings()  
+.................... //  
+.................... // Reads EEPROM settings and updates the EEPROM based flags and variables  
+.................... //  
+00EF:  BCF    0C.5
+00F0:  BCF    0A.3
+00F1:  GOTO   02C
+.................... #separate  
+.................... void get_eesettings(void)  
+.................... {  
+....................     int8    i;  
+....................   
+....................     // Expander flag  
+....................     i = rd_eeprom(EEPROM_EXPANDER_FLAG);  
+*
+0106:  MOVLW  08
+0107:  BSF    03.5
+0108:  MOVWF  25
+0109:  BCF    03.5
+010A:  CALL   0F2
+010B:  MOVF   21,W
+010C:  BSF    03.5
+010D:  MOVWF  20
+....................     if (i)  
+010E:  MOVF   20,F
+010F:  BTFSC  03.2
+0110:  GOTO   115
+....................     {  
+....................         EEFlags = EEFLags | EXPANDER_FLAG;  
+0111:  BCF    03.5
+0112:  BSF    2F.0
+....................     } else {  
+0113:  GOTO   117
+0114:  BSF    03.5
+....................         EEFlags = EEFLags & (~EXPANDER_FLAG);  
+0115:  BCF    03.5
+0116:  BCF    2F.0
+....................     }  
+....................     // Slow A/D clock flag  
+....................     i = rd_eeprom(EEPROM_AD_SAMPLE_CLK);  
+0117:  MOVLW  0D
+0118:  BSF    03.5
+0119:  MOVWF  25
+011A:  BCF    03.5
+011B:  CALL   0F2
+011C:  MOVF   21,W
+011D:  BSF    03.5
+011E:  MOVWF  20
+....................     if (i)  
+011F:  MOVF   20,F
+0120:  BTFSC  03.2
+0121:  GOTO   126
+....................     {  
+....................         EEFlags = EEFLags | SLOW_ADC_CLOCK;  
+0122:  BCF    03.5
+0123:  BSF    2F.1
+....................     } else {  
+0124:  GOTO   128
+0125:  BSF    03.5
+....................         EEFlags = EEFLags & (~SLOW_ADC_CLOCK);  
+0126:  BCF    03.5
+0127:  BCF    2F.1
+....................     }  
+....................     return;  
+.................... }  
+0128:  RETLW  00
+....................   
+....................   
+.................... //-----------------------------------------------------------------------------  
+.................... // get_async_config()  
+.................... //  
+.................... // Reads EEPROM settings and updates ASYNC stream mode configuration  
+.................... //  
+.................... #separate  
+.................... void get_async_config(void)  
+.................... {  
+....................     int8    i;  
+....................     int16   j;  
+....................   
+....................     // Async configuration  
+....................     j = rd_eeprom(EEPROM_ASYNC_MSB);  
+*
+025F:  MOVLW  04
+0260:  BSF    03.5
+0261:  MOVWF  25
+0262:  BCF    03.5
+0263:  CALL   0F2
+0264:  BSF    03.5
+0265:  CLRF   22
+0266:  BCF    03.5
+0267:  MOVF   21,W
+0268:  BSF    03.5
+0269:  MOVWF  21
+....................     j = j << 8;  
+026A:  MOVF   21,W
+026B:  MOVWF  22
+026C:  CLRF   21
+....................     j = j + rd_eeprom(EEPROM_ASYNC_LSB);  
+026D:  MOVLW  05
+026E:  MOVWF  25
+026F:  BCF    03.5
+0270:  CALL   0F2
+0271:  MOVF   21,W
+0272:  BSF    03.5
+0273:  ADDWF  21,F
+0274:  BTFSC  03.0
+0275:  INCF   22,F
+....................     if (j == 0)  
+0276:  MOVF   21,F
+0277:  BTFSS  03.2
+0278:  GOTO   283
+0279:  MOVF   22,F
+027A:  BTFSS  03.2
+027B:  GOTO   283
+....................     {  
+....................         // Clear Async modes  
+....................         AsyncStreamFlags = AsyncStreamFlags & (~DIGITAL_PULSE_CHANGE);  
+027C:  BCF    03.5
+027D:  BCF    32.1
+....................         AsyncStreamFlags = AsyncStreamFlags & (~ASYNC_TIMED);  
+027E:  BCF    32.2
+....................         // No timeout  
+....................         AsyncTimeout = 0;  
+027F:  CLRF   37
+0280:  CLRF   36
+....................     } else {  
+0281:  GOTO   298
+0282:  BSF    03.5
+....................         if (j == 1)  
+0283:  DECFSZ 21,W
+0284:  GOTO   28C
+0285:  MOVF   22,F
+0286:  BTFSS  03.2
+0287:  GOTO   28C
+....................         {  
+....................             // Digital Change mode  
+....................             AsyncStreamFlags = AsyncStreamFlags | DIGITAL_PULSE_CHANGE;  
+0288:  BCF    03.5
+0289:  BSF    32.1
+....................         } else {  
+028A:  GOTO   298
+028B:  BSF    03.5
+....................             // Timed Async mode  
+....................             AsyncStreamFlags = AsyncStreamFlags | ASYNC_TIMED;  
+028C:  BCF    03.5
+028D:  BSF    32.2
+....................             // Reset count to zero  
+....................             AsyncCount = 0;  
+028E:  CLRF   35
+028F:  CLRF   34
+....................             // Save off new timeout  
+....................             AsyncTimeout = j;  
+0290:  BSF    03.5
+0291:  MOVF   22,W
+0292:  BCF    03.5
+0293:  MOVWF  37
+0294:  BSF    03.5
+0295:  MOVF   21,W
+0296:  BCF    03.5
+0297:  MOVWF  36
+....................         }  
+....................     }  
+....................   
+....................     // Stream digital flag  
+....................     i = rd_eeprom(EEPROM_STREAM_DIGITAL);  
+0298:  MOVLW  19
+0299:  BSF    03.5
+029A:  MOVWF  25
+029B:  BCF    03.5
+029C:  CALL   0F2
+029D:  MOVF   21,W
+029E:  BSF    03.5
+029F:  MOVWF  20
+....................     if (i)  
+02A0:  MOVF   20,F
+02A1:  BTFSC  03.2
+02A2:  GOTO   2A7
+....................     {  
+....................         AsyncStreamFlags = AsyncStreamFlags | STREAM_DIGITAL;  
+02A3:  BCF    03.5
+02A4:  BSF    32.3
+....................     } else {  
+02A5:  GOTO   2A9
+02A6:  BSF    03.5
+....................         AsyncStreamFlags = AsyncStreamFlags & (~STREAM_DIGITAL);  
+02A7:  BCF    03.5
+02A8:  BCF    32.3
+....................     }  
+....................   
+....................     // Stream pulse counter flag  
+....................     i = rd_eeprom(EEPROM_STREAM_PULSE);  
+02A9:  MOVLW  1A
+02AA:  BSF    03.5
+02AB:  MOVWF  25
+02AC:  BCF    03.5
+02AD:  CALL   0F2
+02AE:  MOVF   21,W
+02AF:  BSF    03.5
+02B0:  MOVWF  20
+....................     if (i)  
+02B1:  MOVF   20,F
+02B2:  BTFSC  03.2
+02B3:  GOTO   2B8
+....................     {  
+....................         AsyncStreamFlags = AsyncStreamFlags | STREAM_PULSE;  
+02B4:  BCF    03.5
+02B5:  BSF    32.4
+....................     } else {  
+02B6:  GOTO   2BA
+02B7:  BSF    03.5
+....................         AsyncStreamFlags = AsyncStreamFlags & (~STREAM_PULSE);  
+02B8:  BCF    03.5
+02B9:  BCF    32.4
+....................     }  
+....................     // A/D Stream count -- max 8!  
+....................     StreamADCount = rd_eeprom(EEPROM_STREAM_AD_COUNT);  
+02BA:  MOVLW  10
+02BB:  BSF    03.5
+02BC:  MOVWF  25
+02BD:  BCF    03.5
+02BE:  CALL   0F2
+02BF:  MOVF   21,W
+02C0:  MOVWF  38
+....................     if (StreamADCount > 8)  
+02C1:  MOVF   38,W
+02C2:  SUBLW  08
+02C3:  BTFSC  03.0
+02C4:  GOTO   2C7
+....................     {  
+....................         StreamADCount = 8;  
+02C5:  MOVLW  08
+02C6:  MOVWF  38
+....................     }  
+....................     // A/D Control nibbles. In EEPROM locations 0x11 to 0x18  
+....................     for (i=0; i<8; i++)  
+02C7:  BSF    03.5
+02C8:  CLRF   20
+02C9:  MOVF   20,W
+02CA:  SUBLW  07
+02CB:  BTFSS  03.0
+02CC:  GOTO   2DF
+....................     {  
+....................         ADSampleConfig[i] = rd_eeprom(EEPROM_STREAM_AD_START+i);  
+02CD:  MOVLW  39
+02CE:  ADDWF  20,W
+02CF:  MOVWF  23
+02D0:  MOVLW  11
+02D1:  ADDWF  20,W
+02D2:  MOVWF  24
+02D3:  MOVWF  25
+02D4:  BCF    03.5
+02D5:  CALL   0F2
+02D6:  BSF    03.5
+02D7:  MOVF   23,W
+02D8:  MOVWF  04
+02D9:  BCF    03.5
+02DA:  MOVF   21,W
+02DB:  MOVWF  00
+....................     }  
+02DC:  BSF    03.5
+02DD:  INCF   20,F
+02DE:  GOTO   2C9
+....................   
+....................     return;  
+.................... }  
+02DF:  BCF    03.5
+02E0:  RETLW  00
+....................   
+....................   
+.................... //-----------------------------------------------------------------------------  
+.................... // get_dip_set_baud()  
+.................... //  
+.................... // Get the DIP switch settings and update Baudrate  
+.................... // DIP switch settings:  
+.................... // ---------------------  
+.................... // Pos 1    Pos 2   Baud  
+.................... //   0        0     9600  (DEFAULT)  
+.................... //   1        0     19200  
+.................... //   0        1     57600  
+.................... //   1        1     115200  
+.................... //  
+.................... void get_dip_set_baud(void)  
+.................... {  
+....................     int8 NewDip;  
+....................   
+....................     NewDip = PORT_E & 0x7;  
+*
+020F:  MOVF   09,W
+0210:  ANDLW  07
+0211:  BSF    03.5
+0212:  MOVWF  20
+....................     NewDip = NewDip >> 1;  
+0213:  BCF    03.0
+0214:  RRF    20,F
+....................   
+....................     // Only set UART baud if a change is detected  
+....................     if (NewDip != CurrentDip)  
+0215:  BCF    03.5
+0216:  MOVF   30,W
+0217:  BSF    03.5
+0218:  SUBWF  20,W
+0219:  BTFSC  03.2
+021A:  GOTO   249
+....................     {  
+....................         // Debounce switch with a little time  
+....................         delay_ms(100);  
+021B:  MOVLW  64
+021C:  MOVWF  21
+021D:  BCF    03.5
+021E:  GOTO   1FB
+....................         CurrentDip = NewDip;  
+021F:  BSF    03.5
+0220:  MOVF   20,W
+0221:  BCF    03.5
+0222:  MOVWF  30
+....................         switch (CurrentDip) {  
+0223:  MOVF   30,W
+0224:  XORLW  00
+0225:  BTFSC  03.2
+0226:  GOTO   231
+0227:  XORLW  01
+0228:  BTFSC  03.2
+0229:  GOTO   237
+022A:  XORLW  03
+022B:  BTFSC  03.2
+022C:  GOTO   23D
+022D:  XORLW  01
+022E:  BTFSC  03.2
+022F:  GOTO   243
+0230:  GOTO   231
+....................             case 0:             // 9600  
+....................             default:  
+....................                 set_uart_speed(9600);  
+0231:  MOVLW  17
+0232:  BSF    03.5
+0233:  MOVWF  19
+0234:  MOVLW  22
+0235:  MOVWF  18
+....................                 break;  
+0236:  GOTO   249
+....................             case 1:             // 19200  
+....................                 set_uart_speed(19200);  
+0237:  MOVLW  0B
+0238:  BSF    03.5
+0239:  MOVWF  19
+023A:  MOVLW  22
+023B:  MOVWF  18
+....................                 break;  
+023C:  GOTO   249
+....................             case 2:             // 57600  
+....................                 set_uart_speed(57600);  
+023D:  MOVLW  03
+023E:  BSF    03.5
+023F:  MOVWF  19
+0240:  MOVLW  22
+0241:  MOVWF  18
+....................                 break;  
+0242:  GOTO   249
+....................             case 3:             // 115200  
+....................                 set_uart_speed(115200);  
+0243:  MOVLW  01
+0244:  BSF    03.5
+0245:  MOVWF  19
+0246:  MOVLW  22
+0247:  MOVWF  18
+....................                 break;  
+0248:  GOTO   249
+....................         }  
+....................     }  
+....................     return;  
+.................... }  
+0249:  BCF    03.5
+024A:  RETLW  00
+....................   
+....................   
+.................... //-----------------------------------------------------------------------------  
+.................... // xmit_response()  
+.................... //  
+.................... // Transmits the contents of ResponseBuffer[] out the UART  
+.................... // Expects ResponseBuffer[] to be NULL terminated  
+.................... //  
+.................... #separate  
+.................... void xmit_response(VOID)  
+.................... {  
+....................     char *tmp_ptr;  
+....................   
+....................     tmp_ptr = ResponseBuffer;  
+*
+036E:  MOVLW  66
+036F:  BSF    03.5
+0370:  MOVWF  29
+....................     while (*tmp_ptr)  
+....................     {  
+0371:  MOVF   29,W
+0372:  MOVWF  04
+0373:  MOVF   00,F
+0374:  BTFSC  03.2
+0375:  GOTO   383
+....................         // Out the UART it goes  
+....................         putc(*tmp_ptr);  
+0376:  MOVF   29,W
+0377:  MOVWF  04
+0378:  MOVF   00,W
+0379:  MOVWF  2A
+037A:  BCF    03.5
+037B:  BTFSC  0C.4
+037C:  GOTO   37F
+037D:  BSF    03.5
+037E:  GOTO   37A
+037F:  MOVWF  19
+....................         tmp_ptr++;  
+0380:  BSF    03.5
+0381:  INCF   29,F
+....................     }  
+0382:  GOTO   371
+....................   
+....................     // blinky blinky feedback  
+....................     trigger_led_red();  
+....................   
+....................     return;  
+.................... }  
+*
+038D:  RETLW  00
+....................   
+....................   
+.................... //-----------------------------------------------------------------------------  
+.................... // check_async_stream()  
+.................... //  
+.................... // Checks the current Async and Stream mode configuration and  
+.................... // executes the configured Async/Stream operations.  
+.................... //  
+.................... void check_async_stream(void)  
+.................... {  
+....................     int8    i, j, x;  
+....................     int16   temp;  
+....................     int32   i32;  
+....................   
+....................     // Take at look at the Async Stream flags  
+....................     if (AsyncStreamFlags)  
+038E:  MOVF   32,F
+038F:  BTFSC  03.2
+0390:  GOTO   539
+....................     {  
+....................         // Start with NO async update flag set  
+....................         AsyncStreamUpdate = 0;  
+0391:  CLRF   33
+....................   
+....................         // Check Continuous Stream mode  
+....................         if (AsyncStreamFlags & CONTINUOUS_STREAM)  
+0392:  BTFSS  32.0
+0393:  GOTO   395
+....................         {  
+....................             AsyncStreamUpdate |= CONTINUOUS_STREAM;  
+0394:  BSF    33.0
+....................         }  
+....................   
+....................         // Check Async Timed mode  
+....................         if (AsyncStreamFlags & ASYNC_TIMED)  
+0395:  BTFSS  32.2
+0396:  GOTO   3A4
+....................         {  
+....................             // Check for timeout  
+....................             if (AsyncCount > AsyncTimeout)  
+0397:  MOVF   37,W
+0398:  SUBWF  35,W
+0399:  BTFSS  03.0
+039A:  GOTO   3A4
+039B:  BTFSS  03.2
+039C:  GOTO   3A1
+039D:  MOVF   34,W
+039E:  SUBWF  36,W
+039F:  BTFSC  03.0
+03A0:  GOTO   3A4
+....................             {  
+....................                 // TIMEOUT!  
+....................                 // restart timeout count  
+....................                 AsyncCount = 0;  
+03A1:  CLRF   35
+03A2:  CLRF   34
+....................                 AsyncStreamUpdate |= ASYNC_TIMED;  
+03A3:  BSF    33.2
+....................             }  
+....................         }  
+....................   
+....................         // Check Digital Change mode  
+....................         if (AsyncStreamFlags & DIGITAL_PULSE_CHANGE)  
+03A4:  BTFSS  32.1
+03A5:  GOTO   421
+....................         {  
+....................             AsyncStreamUpdate |= DIGITAL_PULSE_CHANGE;  
+03A6:  BSF    33.1
+....................             // Check for Digital input or Pulse counter change  
+....................             i = read_port1();  
+*
+03B5:  MOVF   21,W
+03B6:  BSF    03.5
+03B7:  MOVWF  20
+....................             if (Port1Cur != i)  
+03B8:  MOVF   20,W
+03B9:  BCF    03.5
+03BA:  SUBWF  41,W
+03BB:  BTFSC  03.2
+03BC:  GOTO   3C2
+....................             {  
+....................                 Port1Cur = i;  
+03BD:  BSF    03.5
+03BE:  MOVF   20,W
+03BF:  BCF    03.5
+03C0:  MOVWF  41
+....................                 AsyncStreamUpdate |= DIGITAL_CHANGE;  
+03C1:  BSF    33.5
+....................             }  
+....................             i = read_port2();  
+*
+03D0:  MOVF   21,W
+03D1:  BSF    03.5
+03D2:  MOVWF  20
+....................             if (Port2Cur != i)  
+03D3:  MOVF   20,W
+03D4:  BCF    03.5
+03D5:  SUBWF  42,W
+03D6:  BTFSC  03.2
+03D7:  GOTO   3DD
+....................             {  
+....................                 Port2Cur = i;  
+03D8:  BSF    03.5
+03D9:  MOVF   20,W
+03DA:  BCF    03.5
+03DB:  MOVWF  42
+....................                 AsyncStreamUpdate |= DIGITAL_CHANGE;  
+03DC:  BSF    33.5
+....................             }  
+....................             // Timer0 keeps LSB of pulse count  
+....................             i32 = PulseCount + get_timer0();  
+03DD:  MOVF   01,W
+03DE:  ADDWF  50,W
+03DF:  BSF    03.5
+03E0:  MOVWF  25
+03E1:  BCF    03.5
+03E2:  MOVF   51,W
+03E3:  BSF    03.5
+03E4:  MOVWF  26
+03E5:  MOVLW  00
+03E6:  BTFSC  03.0
+03E7:  MOVLW  01
+03E8:  ADDWF  26,F
+03E9:  BCF    03.5
+03EA:  MOVF   52,W
+03EB:  BSF    03.5
+03EC:  MOVWF  27
+03ED:  MOVLW  00
+03EE:  BTFSC  03.0
+03EF:  MOVLW  01
+03F0:  ADDWF  27,F
+03F1:  BCF    03.5
+03F2:  MOVF   53,W
+03F3:  BSF    03.5
+03F4:  MOVWF  28
+03F5:  MOVLW  00
+03F6:  BTFSC  03.0
+03F7:  MOVLW  01
+03F8:  ADDWF  28,F
+....................             if (PulseCountCur != i32)  
+03F9:  MOVF   25,W
+03FA:  BCF    03.5
+03FB:  SUBWF  43,W
+03FC:  BTFSS  03.2
+03FD:  GOTO   410
+03FE:  BSF    03.5
+03FF:  MOVF   26,W
+0400:  BCF    03.5
+0401:  SUBWF  44,W
+0402:  BTFSS  03.2
+0403:  GOTO   410
+0404:  BSF    03.5
+0405:  MOVF   27,W
+0406:  BCF    03.5
+0407:  SUBWF  45,W
+0408:  BTFSS  03.2
+0409:  GOTO   410
+040A:  BSF    03.5
+040B:  MOVF   28,W
+040C:  BCF    03.5
+040D:  SUBWF  46,W
+040E:  BTFSC  03.2
+040F:  GOTO   421
+....................             {  
+....................                 PulseCountCur = i32;  
+0410:  BSF    03.5
+0411:  MOVF   28,W
+0412:  BCF    03.5
+0413:  MOVWF  46
+0414:  BSF    03.5
+0415:  MOVF   27,W
+0416:  BCF    03.5
+0417:  MOVWF  45
+0418:  BSF    03.5
+0419:  MOVF   26,W
+041A:  BCF    03.5
+041B:  MOVWF  44
+041C:  BSF    03.5
+041D:  MOVF   25,W
+041E:  BCF    03.5
+041F:  MOVWF  43
+....................                 AsyncStreamUpdate |= PULSE_CHANGE;  
+0420:  BSF    33.6
+....................             }  
+....................         }  
+....................   
+....................         // Do we do Continuous Stream or Digital Change or Async Timed update? 
+....................         if (AsyncStreamUpdate)  
+0421:  MOVF   33,F
+0422:  BTFSC  03.2
+0423:  GOTO   539
+....................         {  
+....................             // Do CONTINUOUS_STREAM or ASYNC_TIMED  
+....................             //    Analog samples first, then check if DIGITAL or PULSE outputs  
+....................             if ((AsyncStreamUpdate & CONTINUOUS_STREAM) ||  
+....................                 (AsyncStreamUpdate & ASYNC_TIMED))  
+0424:  BTFSC  33.0
+0425:  GOTO   428
+0426:  BTFSS  33.2
+0427:  GOTO   4DF
+....................             {  
+....................                 //  
+....................                 // Analog sample  
+....................                 for (x=0; x<StreamADCount; x++)  
+0428:  BSF    03.5
+0429:  CLRF   22
+042A:  BCF    03.5
+042B:  MOVF   38,W
+042C:  BSF    03.5
+042D:  SUBWF  22,W
+042E:  BTFSC  03.0
+042F:  GOTO   4A3
+....................                 {  
+....................                     if (ADSampleConfig[x] & 0x80)  
+0430:  MOVLW  39
+0431:  ADDWF  22,W
+0432:  MOVWF  04
+0433:  BTFSS  00.7
+0434:  GOTO   46C
+....................                     {  
+....................                         //  
+....................                         // Unipolar sample  
+....................                         i = ADSampleConfig[x] & 0x0F;  
+0435:  MOVLW  39
+0436:  ADDWF  22,W
+0437:  MOVWF  04
+0438:  MOVF   00,W
+0439:  ANDLW  0F
+043A:  MOVWF  20
+....................                         temp = acquire_adc(i, 1);  
+043B:  MOVF   20,W
+043C:  MOVWF  29
+043D:  MOVLW  01
+043E:  MOVWF  2A
+043F:  BCF    03.5
+0440:  CALL   2E1
+0441:  MOVF   22,W
+0442:  BSF    03.5
+0443:  MOVWF  24
+0444:  BCF    03.5
+0445:  MOVF   21,W
+0446:  BSF    03.5
+0447:  MOVWF  23
+....................                         ResponseBuffer[0] = 'U';  
+0448:  MOVLW  55
+0449:  BCF    03.5
+044A:  MOVWF  66
+....................                         j = ((temp & 0xFF00) >> 8);  
+044B:  BSF    03.5
+044C:  CLRF   29
+044D:  MOVF   24,W
+044E:  MOVWF  21
+....................                         j = j | (i << 4);                   // Control nibble plus MSB byte of high 12 bits  
+044F:  SWAPF  20,W
+0450:  BCF    03.5
+0451:  MOVWF  20
+0452:  MOVLW  F0
+0453:  ANDWF  20,F
+0454:  MOVF   20,W
+0455:  BSF    03.5
+0456:  IORWF  21,F
+....................                         bin_to_hex(j, &ResponseBuffer[1]);  
+0457:  MOVF   21,W
+0458:  MOVWF  29
+0459:  MOVLW  67
+045A:  MOVWF  2A
+045B:  BCF    03.5
+045C:  CALL   345
+....................                         j = (temp & 0x00FF);                // LSB of 12 bits  
+045D:  BSF    03.5
+045E:  MOVF   23,W
+045F:  MOVWF  21
+....................                         bin_to_hex(j, &ResponseBuffer[3]);  
+0460:  MOVF   21,W
+0461:  MOVWF  29
+0462:  MOVLW  69
+0463:  MOVWF  2A
+0464:  BCF    03.5
+0465:  CALL   345
+....................                         ResponseBuffer[5] = '\r';  
+0466:  MOVLW  0D
+0467:  MOVWF  6B
+....................                         ResponseBuffer[6] = 0;              // Null terminate  
+0468:  CLRF   6C
+....................                         // Send response out UART  
+....................                         xmit_response();  
+0469:  CALL   36E
+....................                     } else {  
+046A:  GOTO   4A0
+046B:  BSF    03.5
+....................                         //  
+....................                         // Bipolar sample  
+....................                         i = ADSampleConfig[x] & 0x0F;  
+046C:  MOVLW  39
+046D:  ADDWF  22,W
+046E:  MOVWF  04
+046F:  MOVF   00,W
+0470:  ANDLW  0F
+0471:  MOVWF  20
+....................                         temp = acquire_adc(i, 0);  
+0472:  MOVF   20,W
+0473:  MOVWF  29
+0474:  CLRF   2A
+0475:  BCF    03.5
+0476:  CALL   2E1
+0477:  MOVF   22,W
+0478:  BSF    03.5
+0479:  MOVWF  24
+047A:  BCF    03.5
+047B:  MOVF   21,W
+047C:  BSF    03.5
+047D:  MOVWF  23
+....................                         ResponseBuffer[0] = 'Q';  
+047E:  MOVLW  51
+047F:  BCF    03.5
+0480:  MOVWF  66
+....................                         j = ((temp & 0xFF00) >> 8);  
+0481:  BSF    03.5
+0482:  CLRF   29
+0483:  MOVF   24,W
+0484:  MOVWF  21
+....................                         j = j | (i << 4);                   // Control nibble plus MSB byte of high 12 bits  
+0485:  SWAPF  20,W
+0486:  BCF    03.5
+0487:  MOVWF  20
+0488:  MOVLW  F0
+0489:  ANDWF  20,F
+048A:  MOVF   20,W
+048B:  BSF    03.5
+048C:  IORWF  21,F
+....................                         bin_to_hex(j, &ResponseBuffer[1]);  
+048D:  MOVF   21,W
+048E:  MOVWF  29
+048F:  MOVLW  67
+0490:  MOVWF  2A
+0491:  BCF    03.5
+0492:  CALL   345
+....................                         j = (temp & 0x00FF);                // LSB of 12 bits  
+0493:  BSF    03.5
+0494:  MOVF   23,W
+0495:  MOVWF  21
+....................                         bin_to_hex(j, &ResponseBuffer[3]);  
+0496:  MOVF   21,W
+0497:  MOVWF  29
+0498:  MOVLW  69
+0499:  MOVWF  2A
+049A:  BCF    03.5
+049B:  CALL   345
+....................                         ResponseBuffer[5] = '\r';  
+049C:  MOVLW  0D
+049D:  MOVWF  6B
+....................                         ResponseBuffer[6] = 0;              // Null terminate  
+049E:  CLRF   6C
+....................                         // Send response out UART  
+....................                         xmit_response();  
+049F:  CALL   36E
+....................                     }  
+....................                 }  
+04A0:  BSF    03.5
+04A1:  INCF   22,F
+04A2:  GOTO   42A
+....................                 // Digital and Pulse outputs after Analog  
+....................                 if (AsyncStreamFlags & STREAM_DIGITAL)  
+04A3:  BCF    03.5
+04A4:  BTFSS  32.3
+04A5:  GOTO   4C7
+....................                 {  
+....................                     Port1Cur = read_port1();  
+*
+04B4:  MOVF   21,W
+04B5:  MOVWF  41
+....................                     Port2Cur = read_port2();  
+*
+04C4:  MOVF   21,W
+04C5:  MOVWF  42
+....................                     AsyncStreamUpdate |= DIGITAL_CHANGE;  
+04C6:  BSF    33.5
+....................                 }  
+....................                 // Pulse count output  
+....................                 if (AsyncStreamFlags & STREAM_PULSE)  
+04C7:  BTFSS  32.4
+04C8:  GOTO   4DF
+....................                 {  
+....................                     PulseCountCur = PulseCount + get_timer0();  
+04C9:  MOVF   01,W
+04CA:  ADDWF  50,W
+04CB:  MOVWF  43
+04CC:  MOVF   51,W
+04CD:  MOVWF  44
+04CE:  MOVLW  00
+04CF:  BTFSC  03.0
+04D0:  MOVLW  01
+04D1:  ADDWF  44,F
+04D2:  MOVF   52,W
+04D3:  MOVWF  45
+04D4:  MOVLW  00
+04D5:  BTFSC  03.0
+04D6:  MOVLW  01
+04D7:  ADDWF  45,F
+04D8:  MOVF   53,W
+04D9:  MOVWF  46
+04DA:  MOVLW  00
+04DB:  BTFSC  03.0
+04DC:  MOVLW  01
+04DD:  ADDWF  46,F
+....................                     AsyncStreamUpdate |= PULSE_CHANGE;  
+04DE:  BSF    33.6
+....................                 }  
+....................             }  
+....................             //  
+....................             // Digital and Pulse outputs after Analog  
+....................             // Note: Using Port1Cur and Port2Cur since count could have changed  
+....................             //        between comparison above and when it is sent here.  
+....................   
+....................             if (AsyncStreamUpdate & DIGITAL_CHANGE)  
+04DF:  BTFSS  33.5
+04E0:  GOTO   4F9
+....................             {  
+....................                 ResponseBuffer[0] = 'I';  
+04E1:  MOVLW  49
+04E2:  MOVWF  66
+....................                 i = Port1Cur;  
+04E3:  MOVF   41,W
+04E4:  BSF    03.5
+04E5:  MOVWF  20
+....................                 bin_to_hex(i, &ResponseBuffer[1]);  
+04E6:  MOVF   20,W
+04E7:  MOVWF  29
+04E8:  MOVLW  67
+04E9:  MOVWF  2A
+04EA:  BCF    03.5
+04EB:  CALL   345
+....................                 j = Port2Cur;  
+04EC:  MOVF   42,W
+04ED:  BSF    03.5
+04EE:  MOVWF  21
+....................                 bin_to_hex(j, &ResponseBuffer[3]);  
+04EF:  MOVF   21,W
+04F0:  MOVWF  29
+04F1:  MOVLW  69
+04F2:  MOVWF  2A
+04F3:  BCF    03.5
+04F4:  CALL   345
+....................                 ResponseBuffer[5] = '\r';  
+04F5:  MOVLW  0D
+04F6:  MOVWF  6B
+....................                 ResponseBuffer[6] = 0;              // Null terminate  
+04F7:  CLRF   6C
+....................                 // Send response out UART  
+....................                 xmit_response();  
+04F8:  CALL   36E
+....................             }  
+....................             // Pulse count output  
+....................             // Note: Using PulseCountCur since count could have changed between  
+....................             //       comparison above and when it is sent here.  
+....................             if (AsyncStreamUpdate & PULSE_CHANGE)  
+04F9:  BTFSS  33.6
+04FA:  GOTO   539
+....................             {  
+....................                 ResponseBuffer[0] = 'N';  
+04FB:  MOVLW  4E
+04FC:  MOVWF  66
+....................                 i = ((PulseCountCur & 0xFF000000) >> 24);  
+04FD:  BSF    03.5
+04FE:  CLRF   29
+04FF:  CLRF   2A
+0500:  CLRF   2B
+0501:  BCF    03.5
+0502:  MOVF   46,W
+0503:  BSF    03.5
+0504:  MOVWF  2C
+0505:  MOVWF  20
+....................                 bin_to_hex(i, &ResponseBuffer[1]);  
+0506:  MOVF   20,W
+0507:  MOVWF  29
+0508:  MOVLW  67
+0509:  MOVWF  2A
+050A:  BCF    03.5
+050B:  CALL   345
+....................                 i = ((PulseCountCur & 0xFF0000) >> 16);  
+050C:  BSF    03.5
+050D:  CLRF   29
+050E:  CLRF   2A
+050F:  BCF    03.5
+0510:  MOVF   45,W
+0511:  BSF    03.5
+0512:  MOVWF  2B
+0513:  CLRF   2C
+0514:  MOVF   2B,W
+0515:  MOVWF  20
+....................                 bin_to_hex(i, &ResponseBuffer[3]);  
+0516:  MOVF   20,W
+0517:  MOVWF  29
+0518:  MOVLW  69
+0519:  MOVWF  2A
+051A:  BCF    03.5
+051B:  CALL   345
+....................                 i = ((PulseCountCur & 0xFF00) >> 8);  
+051C:  BSF    03.5
+051D:  CLRF   29
+051E:  BCF    03.5
+051F:  MOVF   44,W
+0520:  BSF    03.5
+0521:  MOVWF  2A
+0522:  CLRF   2B
+0523:  CLRF   2C
+0524:  MOVF   2A,W
+0525:  MOVWF  20
+....................                 bin_to_hex(i, &ResponseBuffer[5]);  
+0526:  MOVF   20,W
+0527:  MOVWF  29
+0528:  MOVLW  6B
+0529:  MOVWF  2A
+052A:  BCF    03.5
+052B:  CALL   345
+....................                 i = PulseCountCur & 0xFF;  
+052C:  MOVF   43,W
+052D:  BSF    03.5
+052E:  MOVWF  20
+....................                 bin_to_hex(i, &ResponseBuffer[7]);  
+052F:  MOVF   20,W
+0530:  MOVWF  29
+0531:  MOVLW  6D
+0532:  MOVWF  2A
+0533:  BCF    03.5
+0534:  CALL   345
+....................                 ResponseBuffer[9] = '\r';  
+0535:  MOVLW  0D
+0536:  MOVWF  6F
+....................                 ResponseBuffer[10] = 0;             // Null terminate  
+0537:  CLRF   70
+....................                 // Send response out UART  
+....................                 xmit_response();  
+0538:  CALL   36E
+....................             }  
+....................         } // if (AsyncStreamUpdate) {  
+....................     } // if (AsyncStreamFlags) {  
+....................     return;  
+.................... }  
+0539:  BSF    0A.3
+053A:  GOTO   15F (RETURN)
+....................   
+....................   
+.................... //-----------------------------------------------------------------------------  
+.................... // post_message()  
+.................... //  
+.................... // Display the POST message  
+.................... //  
+.................... void post_message(void)  
+.................... {  
+....................     // Welcome message  
+....................     printf("\rIntegrity Instruments, Inc. Model 232M300 v4.6\r");  
+*
+024B:  BSF    03.5
+024C:  CLRF   20
+024D:  MOVF   20,W
+024E:  BCF    03.5
+024F:  CALL   045
+0250:  BSF    03.5
+0251:  INCF   20,F
+0252:  BCF    03.5
+0253:  MOVWF  20
+0254:  MOVF   20,W
+0255:  BTFSS  0C.4
+0256:  GOTO   255
+0257:  MOVWF  19
+0258:  MOVLW  30
+0259:  BSF    03.5
+025A:  SUBWF  20,W
+025B:  BTFSS  03.2
+025C:  GOTO   24D
+....................     return;  
+.................... }  
+025D:  BCF    03.5
+025E:  RETLW  00
+....................   
+....................   
+.................... //-----------------------------------------------------------------------------  
+.................... // Main program entry point.  
+.................... //  
+.................... main()  
+.................... {  
+*
+0800:  CLRF   04
+0801:  MOVLW  1F
+0802:  ANDWF  03,F
+0803:  BSF    03.5
+0804:  BSF    1F.0
+0805:  BSF    1F.1
+0806:  BSF    1F.2
+0807:  BCF    1F.3
+0808:  MOVLW  07
+0809:  MOVWF  1C
+080A:  MOVF   1C,W
+080B:  BCF    03.5
+080C:  BCF    0D.6
+080D:  MOVLW  17
+080E:  BSF    03.5
+080F:  MOVWF  19
+0810:  MOVLW  22
+0811:  MOVWF  18
+0812:  MOVLW  90
+0813:  BCF    03.5
+0814:  MOVWF  18
+....................     int8    i, j, k, x;  
+....................     int16   temp;  
+....................   
+....................     // Shut off built-int ADC. The enables all PORT_A to general purpose I/O  
+....................     setup_adc_ports(NO_ANALOGS);  
+*
+082C:  BSF    03.5
+082D:  BSF    1F.0
+082E:  BSF    1F.1
+082F:  BSF    1F.2
+0830:  BCF    1F.3
+....................     setup_adc(ADC_OFF);  
+0831:  BCF    03.5
+0832:  BCF    1F.0
+....................     // Turn off comparator and comparator reference  
+....................     setup_comparator(NC_NC_NC_NC);  
+0833:  MOVLW  07
+0834:  BSF    03.5
+0835:  MOVWF  1C
+0836:  MOVF   05,W
+0837:  MOVLW  0B
+0838:  BCF    03.5
+0839:  MOVWF  20
+083A:  DECFSZ 20,F
+083B:  GOTO   03A
+083C:  NOP
+083D:  NOP
+083E:  BSF    03.5
+083F:  MOVF   1C,W
+0840:  BCF    03.5
+0841:  BCF    0D.6
+....................     setup_vref(FALSE);  
+0842:  BSF    03.5
+0843:  CLRF   1D
+....................   
+....................     // Configure or shut off remaining PIC/CCS peripherals  
+....................     setup_psp(PSP_DISABLED);  
+0844:  BCF    09.4
+....................     setup_spi(FALSE);  
+0845:  BCF    03.5
+0846:  BCF    14.5
+0847:  MOVLW  00
+0848:  MOVWF  14
+0849:  BSF    03.5
+084A:  MOVWF  14
+....................   
+....................     //  
+....................     // Setup the TRIS registers and initial port outputs  
+....................     // Disable all SPI device chip selects  
+....................     //  
+....................     set_tris_a(0x10);   // A0-3=O, A4=I, A5=O  
+084B:  MOVLW  10
+084C:  MOVWF  05
+....................     output_high(AD_CS);  
+084D:  BCF    03.5
+084E:  BSF    05.0
+....................     output_high(DAC_CS);  
+084F:  BSF    05.5
+....................   
+....................     set_tris_b(0xFF);   // B0-7=I  
+0850:  MOVLW  FF
+0851:  BSF    03.5
+0852:  MOVWF  06
+....................     set_tris_d(0xFF);   // D0-7=I  
+0853:  MOVWF  08
+....................     set_tris_c(0xD0);   // C0-3=O C5=O, C4=I, C6=I, C7=I  
+0854:  MOVLW  D0
+0855:  MOVWF  07
+....................     set_tris_e(0x07);   // E0-2=I  
+0856:  BSF    09.0
+0857:  BSF    09.1
+0858:  BSF    09.2
+....................   
+....................     trigger_led_red();  // Initial Led RED  
+....................   
+....................     // Get EEPROM settings  
+....................     get_eesettings();  
+*
+0865:  BCF    0A.3
+0866:  CALL   106
+0867:  BSF    0A.3
+....................   
+....................     //  
+....................     // Get Port data direction from EEPROM  
+....................     i = rd_eeprom(EEPROM_DIR_PORT1);  
+0868:  MOVLW  02
+0869:  BSF    03.5
+086A:  MOVWF  25
+086B:  BCF    0A.3
+086C:  BCF    03.5
+086D:  CALL   0F2
+086E:  BSF    0A.3
+086F:  MOVF   21,W
+0870:  MOVWF  78
+....................     set_dir_port1(i);  
+0871:  MOVF   78,W
+0872:  BSF    03.5
+0873:  MOVWF  20
+0874:  BCF    0A.3
+0875:  BCF    03.5
+0876:  CALL   150
+0877:  BSF    0A.3
+....................     i = rd_eeprom(EEPROM_DIR_PORT2);  
+0878:  MOVLW  03
+0879:  BSF    03.5
+087A:  MOVWF  25
+087B:  BCF    0A.3
+087C:  BCF    03.5
+087D:  CALL   0F2
+087E:  BSF    0A.3
+087F:  MOVF   21,W
+0880:  MOVWF  78
+....................     set_dir_port2(i);  
+0881:  MOVF   78,W
+0882:  BSF    03.5
+0883:  MOVWF  20
+0884:  BCF    0A.3
+0885:  BCF    03.5
+0886:  CALL   162
+0887:  BSF    0A.3
+....................   
+....................     //  
+....................     // Get power on defaults for I/O ports from EEPROM  
+....................     i = rd_eeprom(EEPROM_POD_PORT1);  
+0888:  MOVLW  06
+0889:  BSF    03.5
+088A:  MOVWF  25
+088B:  BCF    0A.3
+088C:  BCF    03.5
+088D:  CALL   0F2
+088E:  BSF    0A.3
+088F:  MOVF   21,W
+0890:  MOVWF  78
+....................     write_port1(i);  
+0891:  MOVF   78,W
+0892:  BSF    03.5
+0893:  MOVWF  20
+....................     i = rd_eeprom(EEPROM_POD_PORT2);  
+*
+089F:  MOVLW  07
+08A0:  BSF    03.5
+08A1:  MOVWF  25
+08A2:  BCF    0A.3
+08A3:  BCF    03.5
+08A4:  CALL   0F2
+08A5:  BSF    0A.3
+08A6:  MOVF   21,W
+08A7:  MOVWF  78
+....................     write_port2(i);  
+08A8:  MOVF   78,W
+08A9:  BSF    03.5
+08AA:  MOVWF  20
+....................   
+....................     //  
+....................     // Get power on defaults for D/A converter  
+....................     i = rd_eeprom(EEPROM_POD_DA_MSB_CH0);  
+*
+08B6:  MOVLW  09
+08B7:  BSF    03.5
+08B8:  MOVWF  25
+08B9:  BCF    0A.3
+08BA:  BCF    03.5
+08BB:  CALL   0F2
+08BC:  BSF    0A.3
+08BD:  MOVF   21,W
+08BE:  MOVWF  78
+....................     temp = i;  
+08BF:  CLRF   7D
+08C0:  MOVF   78,W
+08C1:  MOVWF  7C
+....................     temp = temp << 8;  
+08C2:  MOVF   7C,W
+08C3:  MOVWF  7D
+08C4:  CLRF   7C
+....................     i = rd_eeprom(EEPROM_POD_DA_LSB_CH0);  
+08C5:  MOVLW  0A
+08C6:  BSF    03.5
+08C7:  MOVWF  25
+08C8:  BCF    0A.3
+08C9:  BCF    03.5
+08CA:  CALL   0F2
+08CB:  BSF    0A.3
+08CC:  MOVF   21,W
+08CD:  MOVWF  78
+....................     temp = temp | i;  
+08CE:  MOVF   78,W
+08CF:  IORWF  7C,F
+....................     DAC_CH0 = temp;  
+08D0:  MOVF   7D,W
+08D1:  MOVWF  4D
+08D2:  MOVF   7C,W
+08D3:  MOVWF  4C
+....................     i = rd_eeprom(EEPROM_POD_DA_MSB_CH1);  
+08D4:  MOVLW  0B
+08D5:  BSF    03.5
+08D6:  MOVWF  25
+08D7:  BCF    0A.3
+08D8:  BCF    03.5
+08D9:  CALL   0F2
+08DA:  BSF    0A.3
+08DB:  MOVF   21,W
+08DC:  MOVWF  78
+....................     temp = i;  
+08DD:  CLRF   7D
+08DE:  MOVF   78,W
+08DF:  MOVWF  7C
+....................     temp = temp << 8;  
+08E0:  MOVF   7C,W
+08E1:  MOVWF  7D
+08E2:  CLRF   7C
+....................     i = rd_eeprom(EEPROM_POD_DA_LSB_CH1);  
+08E3:  MOVLW  0C
+08E4:  BSF    03.5
+08E5:  MOVWF  25
+08E6:  BCF    0A.3
+08E7:  BCF    03.5
+08E8:  CALL   0F2
+08E9:  BSF    0A.3
+08EA:  MOVF   21,W
+08EB:  MOVWF  78
+....................     temp = temp | i;  
+08EC:  MOVF   78,W
+08ED:  IORWF  7C,F
+....................     DAC_CH1 = temp;  
+08EE:  MOVF   7D,W
+08EF:  MOVWF  4F
+08F0:  MOVF   7C,W
+08F1:  MOVWF  4E
+....................   
+....................     // Send the power on default values to the D/A converter  
+....................     update_dac();  
+08F2:  BCF    0A.3
+08F3:  CALL   18E
+08F4:  BSF    0A.3
+....................   
+....................     //  
+....................     // Clear the command buffer, index and last character rcvd  
+....................     CommandBufferIndex = 0;  
+08F5:  CLRF   55
+....................     LastCharRcvd = 0;  
+08F6:  CLRF   54
+....................     for (i=0; i<CMDBUFFERSIZE; i++) {  
+08F7:  CLRF   78
+08F8:  MOVF   78,W
+08F9:  SUBLW  0F
+08FA:  BTFSS  03.0
+08FB:  GOTO   102
+....................         CommandBuffer[i] = 0;  
+08FC:  MOVLW  56
+08FD:  ADDWF  78,W
+08FE:  MOVWF  04
+08FF:  CLRF   00
+....................     }  
+0900:  INCF   78,F
+0901:  GOTO   0F8
+....................   
+....................     // Set initial current DIP switch setting so the UART baud is set  
+....................     // by the first call to get_dip_set_baud();  
+....................     CurrentDip = 0xFF;  
+0902:  MOVLW  FF
+0903:  MOVWF  30
+....................   
+....................   
+....................     //  
+....................     // Initialize timers and interrupts.  
+....................     //  
+....................     set_timer0(0);  
+0904:  CLRF   01
+....................     setup_timer_0(RTCC_EXT_H_TO_L | RTCC_DIV_1);  
+0905:  BSF    03.5
+0906:  MOVF   01,W
+0907:  ANDLW  C7
+0908:  IORLW  38
+0909:  MOVWF  01
+....................     enable_interrupts(int_timer0);              // Timer0 RTCC Pulse counter input  
+090A:  BCF    03.5
+090B:  BSF    0B.5
+....................     setup_timer_1(T1_INTERNAL|T1_DIV_BY_1);     // setup interrupts  
+090C:  MOVLW  85
+090D:  MOVWF  10
+....................     enable_interrupts(int_timer1);              // Timer1 Periodic 1 ms. timer  
+090E:  BSF    03.5
+090F:  BSF    0C.0
+....................     enable_interrupts(INT_RDA);  
+0910:  BSF    0C.5
+....................   
+....................     enable_interrupts(global);                  // All Interrupts on  
+0911:  MOVLW  C0
+0912:  BCF    03.5
+0913:  IORWF  0B,F
+....................   
+....................     // Setup PWM inital settings  
+....................     setup_timer_2 (T2_DIV_BY_1, 0, 1);          // Mode=div/1 Period=0 Postscale=1 (not used)  
+0914:  MOVLW  00
+0915:  MOVWF  21
+0916:  IORLW  04
+0917:  MOVWF  12
+0918:  MOVLW  00
+0919:  BSF    03.5
+091A:  MOVWF  12
+....................     setup_ccp1 (CCP_PWM);                       // Configure CCP1 for PWM  
+091B:  BCF    03.5
+091C:  BCF    07.2
+091D:  MOVLW  0C
+091E:  MOVWF  17
+....................     set_pwm1_duty (0);                          // Initially off  
+091F:  CLRF   15
+....................   
+....................     // Configure watchdog -- 18ms implies not scale through Timer 0  
+....................     setup_wdt(WDT_36MS);  
+0920:  MOVLW  09
+0921:  MOVWF  20
+0922:  MOVLW  07
+0923:  CLRF   01
+0924:  MOVLW  81
+0925:  MOVWF  04
+0926:  MOVF   00,W
+0927:  ANDLW  F0
+0928:  IORLW  07
+0929:  MOVWF  00
+092A:  CLRWDT
+092B:  MOVF   00,W
+092C:  ANDLW  F7
+092D:  BTFSC  20.3
+092E:  ANDLW  F0
+092F:  IORWF  20,W
+0930:  MOVWF  00
+....................   
+....................     // Check DIP switch settings for initial baud rate  
+....................     get_dip_set_baud();  
+0931:  BCF    0A.3
+0932:  CALL   20F
+0933:  BSF    0A.3
+....................   
+....................     // Display POST message  
+....................     post_message();  
+0934:  BCF    0A.3
+0935:  CALL   24B
+0936:  BSF    0A.3
+....................   
+....................     // Get ASYNC continuous stream mode configuration  
+....................     get_async_config();  
+0937:  BCF    0A.3
+0938:  CALL   25F
+0939:  BSF    0A.3
+....................     // Initial ASYNC digital states  
+....................     Port1Cur = read_port1();  
+*
+0948:  MOVF   21,W
+0949:  MOVWF  41
+....................     Port2Cur = read_port2();  
+*
+0958:  MOVF   21,W
+0959:  MOVWF  42
+....................     PulseCountCur = 0;  
+095A:  CLRF   46
+095B:  CLRF   45
+095C:  CLRF   44
+095D:  CLRF   43
+....................     RxCommErr = 0;  
+095E:  CLRF   76
+....................   
+....................   
+....................     //  
+....................     // Main Loop - never exits  
+....................     //  
+....................     while (TRUE)  
+....................     {  
+....................   
+....................         // Kick the dog  
+....................         restart_wdt();  
+095F:  CLRWDT
+....................   
+....................         // Wait for a CR character to be received  
+....................         if (LastCharRcvd != 0x0D)  
+0960:  MOVF   54,W
+0961:  SUBLW  0D
+0962:  BTFSC  03.2
+0963:  GOTO   16A
+....................         {  
+....................             // Check DIP switch settings for new baud rate  
+....................             get_dip_set_baud();  
+0964:  BCF    0A.3
+0965:  CALL   20F
+0966:  BSF    0A.3
+....................   
+....................             // Check continuous stream mode  
+....................             check_async_stream();  
+0967:  BCF    0A.3
+0968:  GOTO   38E
+0969:  BSF    0A.3
+....................   
+....................             continue;  
+....................         } // if (CommandBuffer[0] == 0) {  
+....................   
+....................         // Convert CommandBuffer[0] to UPPERCASE  
+....................         if (islower(CommandBuffer[0]))  
+096A:  MOVF   56,W
+096B:  SUBLW  60
+096C:  BTFSC  03.0
+096D:  GOTO   172
+096E:  MOVF   56,W
+096F:  SUBLW  7A
+0970:  BTFSC  03.0
+....................             CommandBuffer[0] = CommandBuffer[0] & (~0x20);  
+0971:  BCF    56.5
+....................   
+....................         switch (CommandBuffer[0]) {  
+0972:  MOVF   56,W
+0973:  XORLW  49
+0974:  BTFSC  03.2
+0975:  GOTO   1AD
+0976:  XORLW  06
+0977:  BTFSC  03.2
+0978:  GOTO   1E9
+0979:  XORLW  1E
+097A:  BTFSC  03.2
+097B:  GOTO   221
+097C:  XORLW  04
+097D:  BTFSC  03.2
+097E:  GOTO   264
+097F:  XORLW  19
+0980:  BTFSC  03.2
+0981:  GOTO   2A8
+0982:  XORLW  18
+0983:  BTFSC  03.2
+0984:  GOTO   2E8
+0985:  XORLW  13
+0986:  BTFSC  03.2
+0987:  GOTO   312
+0988:  XORLW  09
+0989:  BTFSC  03.2
+098A:  GOTO   338
+098B:  XORLW  1E
+098C:  BTFSC  03.2
+098D:  GOTO   38C
+098E:  XORLW  1D
+098F:  BTFSC  03.2
+0990:  GOTO   3DD
+0991:  XORLW  1A
+0992:  BTFSC  03.2
+0993:  GOTO   3EC
+0994:  XORLW  05
+0995:  BTFSC  03.2
+0996:  GOTO   416
+0997:  XORLW  18
+0998:  BTFSC  03.2
+0999:  GOTO   43B
+099A:  XORLW  01
+099B:  BTFSC  03.2
+099C:  GOTO   446
+099D:  XORLW  18
+099E:  BTFSC  03.2
+099F:  GOTO   459
+09A0:  XORLW  1B
+09A1:  BTFSC  03.2
+09A2:  GOTO   467
+09A3:  XORLW  12
+09A4:  BTFSC  03.2
+09A5:  GOTO   472
+09A6:  XORLW  0C
+09A7:  BTFSC  03.2
+09A8:  GOTO   480
+09A9:  XORLW  69
+09AA:  BTFSC  03.2
+09AB:  GOTO   48E
+09AC:  GOTO   497
+....................             case 'I':                               // Digital Input  
+....................                 if (CommandBufferIndex != 2)        // Check for correct command length  
+09AD:  MOVF   55,W
+09AE:  SUBLW  02
+09AF:  BTFSS  03.2
+....................                     goto error_rsp;  
+09B0:  GOTO   497
+....................                 ResponseBuffer[0] = 'I';  
+09B1:  MOVLW  49
+09B2:  MOVWF  66
+....................                 i = read_port1();  
+*
+09C1:  MOVF   21,W
+09C2:  MOVWF  78
+....................                 bin_to_hex(i, &ResponseBuffer[1]);  
+09C3:  MOVF   78,W
+09C4:  BSF    03.5
+09C5:  MOVWF  29
+09C6:  MOVLW  67
+09C7:  MOVWF  2A
+09C8:  BCF    0A.3
+09C9:  BCF    03.5
+09CA:  CALL   345
+09CB:  BSF    0A.3
+....................                 j = read_port2();  
+*
+09DA:  MOVF   21,W
+09DB:  MOVWF  79
+....................                 bin_to_hex(j, &ResponseBuffer[3]);  
+09DC:  MOVF   79,W
+09DD:  BSF    03.5
+09DE:  MOVWF  29
+09DF:  MOVLW  69
+09E0:  MOVWF  2A
+09E1:  BCF    0A.3
+09E2:  BCF    03.5
+09E3:  CALL   345
+09E4:  BSF    0A.3
+....................                 ResponseBuffer[5] = '\r';  
+09E5:  MOVLW  0D
+09E6:  MOVWF  6B
+....................                 ResponseBuffer[6] = 0;              // Null terminate  
+09E7:  CLRF   6C
+....................                 break;  
+09E8:  GOTO   49E
+....................   
+....................             case 'O':                               // Digital Output  
+....................                 if (CommandBufferIndex != 6)        // Check for correct command length  
+09E9:  MOVF   55,W
+09EA:  SUBLW  06
+09EB:  BTFSS  03.2
+....................                     goto error_rsp;  
+09EC:  GOTO   497
+....................                 i = hex_to_bin(&CommandBuffer[1]);  // PORT1  
+09ED:  MOVLW  57
+09EE:  BSF    03.5
+09EF:  MOVWF  20
+09F0:  BCF    0A.3
+09F1:  BCF    03.5
+09F2:  CALL   53B
+09F3:  BSF    0A.3
+09F4:  MOVF   21,W
+09F5:  MOVWF  78
+....................                 write_port1(i);  
+09F6:  MOVF   78,W
+09F7:  BSF    03.5
+09F8:  MOVWF  20
+....................                 j = hex_to_bin(&CommandBuffer[3]);  // PORT2  
+*
+0A04:  MOVLW  59
+0A05:  BSF    03.5
+0A06:  MOVWF  20
+0A07:  BCF    0A.3
+0A08:  BCF    03.5
+0A09:  CALL   53B
+0A0A:  BSF    0A.3
+0A0B:  MOVF   21,W
+0A0C:  MOVWF  79
+....................                 write_port2(j);  
+0A0D:  MOVF   79,W
+0A0E:  BSF    03.5
+0A0F:  MOVWF  20
+....................                 ResponseBuffer[0] = 'O';  
+*
+0A1B:  MOVLW  4F
+0A1C:  MOVWF  66
+....................                 ResponseBuffer[1] = '\r';  
+0A1D:  MOVLW  0D
+0A1E:  MOVWF  67
+....................                 ResponseBuffer[2] = 0;              // Null terminate  
+0A1F:  CLRF   68
+....................                 break;  
+0A20:  GOTO   49E
+....................   
+....................             case 'Q':                               // Bipolar A/D  
+....................                 if (CommandBufferIndex != 3)        // Check for correct command length  
+0A21:  MOVF   55,W
+0A22:  SUBLW  03
+0A23:  BTFSS  03.2
+....................                     goto error_rsp;  
+0A24:  GOTO   497
+....................                 CommandBuffer[0] = '0';             // Add leading 0 since hex_to_bin() converts two bytes  
+0A25:  MOVLW  30
+0A26:  MOVWF  56
+....................                 i = hex_to_bin(&CommandBuffer[0]);  // Control nibble  
+0A27:  MOVLW  56
+0A28:  BSF    03.5
+0A29:  MOVWF  20
+0A2A:  BCF    0A.3
+0A2B:  BCF    03.5
+0A2C:  CALL   53B
+0A2D:  BSF    0A.3
+0A2E:  MOVF   21,W
+0A2F:  MOVWF  78
+....................                 temp = acquire_adc(i, 0);  
+0A30:  MOVF   78,W
+0A31:  BSF    03.5
+0A32:  MOVWF  29
+0A33:  CLRF   2A
+0A34:  BCF    0A.3
+0A35:  BCF    03.5
+0A36:  CALL   2E1
+0A37:  BSF    0A.3
+0A38:  MOVF   22,W
+0A39:  MOVWF  7D
+0A3A:  MOVF   21,W
+0A3B:  MOVWF  7C
+....................                 ResponseBuffer[0] = 'Q';  
+0A3C:  MOVLW  51
+0A3D:  MOVWF  66
+....................                 j = ((temp & 0xFF00) >> 8);  
+0A3E:  BSF    03.5
+0A3F:  CLRF   20
+0A40:  BCF    03.5
+0A41:  MOVF   7D,W
+0A42:  BSF    03.5
+0A43:  MOVWF  21
+0A44:  BCF    03.5
+0A45:  MOVWF  79
+....................                 j = j | (i << 4);                   // Control nibble plus MSB byte of high 12 bits  
+0A46:  SWAPF  78,W
+0A47:  MOVWF  20
+0A48:  MOVLW  F0
+0A49:  ANDWF  20,F
+0A4A:  MOVF   20,W
+0A4B:  IORWF  79,F
+....................                 bin_to_hex(j, &ResponseBuffer[1]);  
+0A4C:  MOVF   79,W
+0A4D:  BSF    03.5
+0A4E:  MOVWF  29
+0A4F:  MOVLW  67
+0A50:  MOVWF  2A
+0A51:  BCF    0A.3
+0A52:  BCF    03.5
+0A53:  CALL   345
+0A54:  BSF    0A.3
+....................                 j = (temp & 0x00FF);                // LSB of 12 bits  
+0A55:  MOVF   7C,W
+0A56:  MOVWF  79
+....................                 bin_to_hex(j, &ResponseBuffer[3]);  
+0A57:  MOVF   79,W
+0A58:  BSF    03.5
+0A59:  MOVWF  29
+0A5A:  MOVLW  69
+0A5B:  MOVWF  2A
+0A5C:  BCF    0A.3
+0A5D:  BCF    03.5
+0A5E:  CALL   345
+0A5F:  BSF    0A.3
+....................                 ResponseBuffer[5] = '\r';  
+0A60:  MOVLW  0D
+0A61:  MOVWF  6B
+....................                 ResponseBuffer[6] = 0;              // Null terminate  
+0A62:  CLRF   6C
+....................                 break;  
+0A63:  GOTO   49E
+....................   
+....................             case 'U':                               // Unipolar A/D  
+....................                 if (CommandBufferIndex != 3)        // Check for correct command length  
+0A64:  MOVF   55,W
+0A65:  SUBLW  03
+0A66:  BTFSS  03.2
+....................                     goto error_rsp;  
+0A67:  GOTO   497
+....................                 CommandBuffer[0] = '0';             // Add leading 0 since hex_to_bin() converts two bytes  
+0A68:  MOVLW  30
+0A69:  MOVWF  56
+....................                 i = hex_to_bin(&CommandBuffer[0]);  // Control nibble  
+0A6A:  MOVLW  56
+0A6B:  BSF    03.5
+0A6C:  MOVWF  20
+0A6D:  BCF    0A.3
+0A6E:  BCF    03.5
+0A6F:  CALL   53B
+0A70:  BSF    0A.3
+0A71:  MOVF   21,W
+0A72:  MOVWF  78
+....................                 temp = acquire_adc(i, 1);  
+0A73:  MOVF   78,W
+0A74:  BSF    03.5
+0A75:  MOVWF  29
+0A76:  MOVLW  01
+0A77:  MOVWF  2A
+0A78:  BCF    0A.3
+0A79:  BCF    03.5
+0A7A:  CALL   2E1
+0A7B:  BSF    0A.3
+0A7C:  MOVF   22,W
+0A7D:  MOVWF  7D
+0A7E:  MOVF   21,W
+0A7F:  MOVWF  7C
+....................                 ResponseBuffer[0] = 'U';  
+0A80:  MOVLW  55
+0A81:  MOVWF  66
+....................                 j = ((temp & 0xFF00) >> 8);  
+0A82:  BSF    03.5
+0A83:  CLRF   20
+0A84:  BCF    03.5
+0A85:  MOVF   7D,W
+0A86:  BSF    03.5
+0A87:  MOVWF  21
+0A88:  BCF    03.5
+0A89:  MOVWF  79
+....................                 j = j | (i << 4);                   // Control nibble plus MSB byte of high 12 bits  
+0A8A:  SWAPF  78,W
+0A8B:  MOVWF  20
+0A8C:  MOVLW  F0
+0A8D:  ANDWF  20,F
+0A8E:  MOVF   20,W
+0A8F:  IORWF  79,F
+....................                 bin_to_hex(j, &ResponseBuffer[1]);  
+0A90:  MOVF   79,W
+0A91:  BSF    03.5
+0A92:  MOVWF  29
+0A93:  MOVLW  67
+0A94:  MOVWF  2A
+0A95:  BCF    0A.3
+0A96:  BCF    03.5
+0A97:  CALL   345
+0A98:  BSF    0A.3
+....................                 j = (temp & 0x00FF);                // LSB of 12 bits  
+0A99:  MOVF   7C,W
+0A9A:  MOVWF  79
+....................                 bin_to_hex(j, &ResponseBuffer[3]);  
+0A9B:  MOVF   79,W
+0A9C:  BSF    03.5
+0A9D:  MOVWF  29
+0A9E:  MOVLW  69
+0A9F:  MOVWF  2A
+0AA0:  BCF    0A.3
+0AA1:  BCF    03.5
+0AA2:  CALL   345
+0AA3:  BSF    0A.3
+....................                 ResponseBuffer[5] = '\r';  
+0AA4:  MOVLW  0D
+0AA5:  MOVWF  6B
+....................                 ResponseBuffer[6] = 0;              // Null terminate  
+0AA6:  CLRF   6C
+....................                 break;  
+0AA7:  GOTO   49E
+....................   
+....................             case 'L':                               // Output D/A  
+....................                 if (CommandBufferIndex != 6)        // Check for correct command length  
+0AA8:  MOVF   55,W
+0AA9:  SUBLW  06
+0AAA:  BTFSS  03.2
+....................                     goto error_rsp;  
+0AAB:  GOTO   497
+....................                 CommandBuffer[0] = '0';             // Add leading 0 since hex_to_bin() converts two bytes  
+0AAC:  MOVLW  30
+0AAD:  MOVWF  56
+....................                 i = hex_to_bin(&CommandBuffer[0]);  // Control nibble (channel number 0 or 1)  
+0AAE:  MOVLW  56
+0AAF:  BSF    03.5
+0AB0:  MOVWF  20
+0AB1:  BCF    0A.3
+0AB2:  BCF    03.5
+0AB3:  CALL   53B
+0AB4:  BSF    0A.3
+0AB5:  MOVF   21,W
+0AB6:  MOVWF  78
+....................                 CommandBuffer[1] = '0';             // Zero the control nibble since hex_to_bin() converts two bytes  
+0AB7:  MOVLW  30
+0AB8:  MOVWF  57
+....................                 j = hex_to_bin(&CommandBuffer[1]);  // MSB (nibble) of the D/A value  
+0AB9:  MOVLW  57
+0ABA:  BSF    03.5
+0ABB:  MOVWF  20
+0ABC:  BCF    0A.3
+0ABD:  BCF    03.5
+0ABE:  CALL   53B
+0ABF:  BSF    0A.3
+0AC0:  MOVF   21,W
+0AC1:  MOVWF  79
+....................                 temp = j;  
+0AC2:  CLRF   7D
+0AC3:  MOVF   79,W
+0AC4:  MOVWF  7C
+....................                 temp = temp << 8;  
+0AC5:  MOVF   7C,W
+0AC6:  MOVWF  7D
+0AC7:  CLRF   7C
+....................                 j = hex_to_bin(&CommandBuffer[3]);  // LSB (byte) of the D/A value  
+0AC8:  MOVLW  59
+0AC9:  BSF    03.5
+0ACA:  MOVWF  20
+0ACB:  BCF    0A.3
+0ACC:  BCF    03.5
+0ACD:  CALL   53B
+0ACE:  BSF    0A.3
+0ACF:  MOVF   21,W
+0AD0:  MOVWF  79
+....................                 temp = temp | j;  
+0AD1:  MOVF   79,W
+0AD2:  IORWF  7C,F
+....................                 if (i == 0) {                       // Channel 0  
+0AD3:  MOVF   78,F
+0AD4:  BTFSS  03.2
+0AD5:  GOTO   2DB
+....................                     DAC_CH0 = temp;  
+0AD6:  MOVF   7D,W
+0AD7:  MOVWF  4D
+0AD8:  MOVF   7C,W
+0AD9:  MOVWF  4C
+....................                 } else {                            // Channel 1  
+0ADA:  GOTO   2DF
+....................                     DAC_CH1 = temp;  
+0ADB:  MOVF   7D,W
+0ADC:  MOVWF  4F
+0ADD:  MOVF   7C,W
+0ADE:  MOVWF  4E
+....................                 }  
+....................                 update_dac();                       // Send the new values to the D/A converter  
+0ADF:  BCF    0A.3
+0AE0:  CALL   18E
+0AE1:  BSF    0A.3
+....................                 ResponseBuffer[0] = 'L';  
+0AE2:  MOVLW  4C
+0AE3:  MOVWF  66
+....................                 ResponseBuffer[1] = '\r';  
+0AE4:  MOVLW  0D
+0AE5:  MOVWF  67
+....................                 ResponseBuffer[2] = 0;              // Null terminate  
+0AE6:  CLRF   68
+....................                 break;  
+0AE7:  GOTO   49E
+....................   
+....................             case 'T':                               // Set Digital Direction  
+....................                 if (CommandBufferIndex != 6)        // Check for correct command length  
+0AE8:  MOVF   55,W
+0AE9:  SUBLW  06
+0AEA:  BTFSS  03.2
+....................                     goto error_rsp;  
+0AEB:  GOTO   497
+....................                 i = hex_to_bin(&CommandBuffer[1]);  // PORT1  
+0AEC:  MOVLW  57
+0AED:  BSF    03.5
+0AEE:  MOVWF  20
+0AEF:  BCF    0A.3
+0AF0:  BCF    03.5
+0AF1:  CALL   53B
+0AF2:  BSF    0A.3
+0AF3:  MOVF   21,W
+0AF4:  MOVWF  78
+....................                 set_dir_port1(i);  
+0AF5:  MOVF   78,W
+0AF6:  BSF    03.5
+0AF7:  MOVWF  20
+0AF8:  BCF    0A.3
+0AF9:  BCF    03.5
+0AFA:  CALL   150
+0AFB:  BSF    0A.3
+....................                 j = hex_to_bin(&CommandBuffer[3]);  // PORT2  
+0AFC:  MOVLW  59
+0AFD:  BSF    03.5
+0AFE:  MOVWF  20
+0AFF:  BCF    0A.3
+0B00:  BCF    03.5
+0B01:  CALL   53B
+0B02:  BSF    0A.3
+0B03:  MOVF   21,W
+0B04:  MOVWF  79
+....................                 set_dir_port2(j);  
+0B05:  MOVF   79,W
+0B06:  BSF    03.5
+0B07:  MOVWF  20
+0B08:  BCF    0A.3
+0B09:  BCF    03.5
+0B0A:  CALL   162
+0B0B:  BSF    0A.3
+....................                 ResponseBuffer[0] = 'T';  
+0B0C:  MOVLW  54
+0B0D:  MOVWF  66
+....................                 ResponseBuffer[1] = '\r';  
+0B0E:  MOVLW  0D
+0B0F:  MOVWF  67
+....................                 ResponseBuffer[2] = 0;              // Null terminate  
+0B10:  CLRF   68
+....................                 break;  
+0B11:  GOTO   49E
+....................   
+....................             case 'G':                               // Get Digital Direction  
+....................                 if (CommandBufferIndex != 2)        // Check for correct command length  
+0B12:  MOVF   55,W
+0B13:  SUBLW  02
+0B14:  BTFSS  03.2
+....................                     goto error_rsp;  
+0B15:  GOTO   497
+....................                 ResponseBuffer[0] = 'G';  
+0B16:  MOVLW  47
+0B17:  MOVWF  66
+....................                 i = get_dir_port1();  
+0B18:  BCF    0A.3
+0B19:  GOTO   5AE
+0B1A:  BSF    0A.3
+0B1B:  MOVF   21,W
+0B1C:  MOVWF  78
+....................                 bin_to_hex(i, &ResponseBuffer[1]);  
+0B1D:  MOVF   78,W
+0B1E:  BSF    03.5
+0B1F:  MOVWF  29
+0B20:  MOVLW  67
+0B21:  MOVWF  2A
+0B22:  BCF    0A.3
+0B23:  BCF    03.5
+0B24:  CALL   345
+0B25:  BSF    0A.3
+....................                 j = get_dir_port2();  
+0B26:  BCF    0A.3
+0B27:  GOTO   5B2
+0B28:  BSF    0A.3
+0B29:  MOVF   21,W
+0B2A:  MOVWF  79
+....................                 bin_to_hex(j, &ResponseBuffer[3]);  
+0B2B:  MOVF   79,W
+0B2C:  BSF    03.5
+0B2D:  MOVWF  29
+0B2E:  MOVLW  69
+0B2F:  MOVWF  2A
+0B30:  BCF    0A.3
+0B31:  BCF    03.5
+0B32:  CALL   345
+0B33:  BSF    0A.3
+....................                 ResponseBuffer[5] = '\r';  
+0B34:  MOVLW  0D
+0B35:  MOVWF  6B
+....................                 ResponseBuffer[6] = 0;              // Null terminate  
+0B36:  CLRF   6C
+....................                 break;  
+0B37:  GOTO   49E
+....................   
+....................             case 'N':                               // Get Pulse Counter  
+....................                 if (CommandBufferIndex != 2)        // Check for correct command length  
+0B38:  MOVF   55,W
+0B39:  SUBLW  02
+0B3A:  BTFSS  03.2
+....................                     goto error_rsp;  
+0B3B:  GOTO   497
+....................                 ResponseBuffer[0] = 'N';  
+0B3C:  MOVLW  4E
+0B3D:  MOVWF  66
+....................   
+....................                 i = ((PulseCount & 0xFF000000) >> 24);  
+0B3E:  BSF    03.5
+0B3F:  CLRF   20
+0B40:  CLRF   21
+0B41:  CLRF   22
+0B42:  BCF    03.5
+0B43:  MOVF   53,W
+0B44:  BSF    03.5
+0B45:  MOVWF  23
+0B46:  BCF    03.5
+0B47:  MOVWF  78
+....................                 bin_to_hex(i, &ResponseBuffer[1]);  
+0B48:  MOVF   78,W
+0B49:  BSF    03.5
+0B4A:  MOVWF  29
+0B4B:  MOVLW  67
+0B4C:  MOVWF  2A
+0B4D:  BCF    0A.3
+0B4E:  BCF    03.5
+0B4F:  CALL   345
+0B50:  BSF    0A.3
+....................   
+....................                 i = ((PulseCount & 0xFF0000) >> 16);  
+0B51:  BSF    03.5
+0B52:  CLRF   20
+0B53:  CLRF   21
+0B54:  BCF    03.5
+0B55:  MOVF   52,W
+0B56:  BSF    03.5
+0B57:  MOVWF  22
+0B58:  CLRF   23
+0B59:  MOVF   22,W
+0B5A:  BCF    03.5
+0B5B:  MOVWF  78
+....................                 bin_to_hex(i, &ResponseBuffer[3]);  
+0B5C:  MOVF   78,W
+0B5D:  BSF    03.5
+0B5E:  MOVWF  29
+0B5F:  MOVLW  69
+0B60:  MOVWF  2A
+0B61:  BCF    0A.3
+0B62:  BCF    03.5
+0B63:  CALL   345
+0B64:  BSF    0A.3
+....................   
+....................                 i = ((PulseCount & 0xFF00) >> 8);  
+0B65:  BSF    03.5
+0B66:  CLRF   20
+0B67:  BCF    03.5
+0B68:  MOVF   51,W
+0B69:  BSF    03.5
+0B6A:  MOVWF  21
+0B6B:  CLRF   22
+0B6C:  CLRF   23
+0B6D:  MOVF   21,W
+0B6E:  BCF    03.5
+0B6F:  MOVWF  78
+....................                 bin_to_hex(i, &ResponseBuffer[5]);  
+0B70:  MOVF   78,W
+0B71:  BSF    03.5
+0B72:  MOVWF  29
+0B73:  MOVLW  6B
+0B74:  MOVWF  2A
+0B75:  BCF    0A.3
+0B76:  BCF    03.5
+0B77:  CALL   345
+0B78:  BSF    0A.3
+....................   
+....................                 j = PulseCount & 0xFF;              // PulseCount is updated +0x100 in Timer0 ISR  
+0B79:  MOVF   50,W
+0B7A:  MOVWF  79
+....................                 i = get_timer0();                   // Get last 8 bits out of Timer0  
+0B7B:  MOVF   01,W
+0B7C:  MOVWF  78
+....................                 i = i + j;  
+0B7D:  MOVF   79,W
+0B7E:  ADDWF  78,F
+....................                 bin_to_hex(i, &ResponseBuffer[7]);  
+0B7F:  MOVF   78,W
+0B80:  BSF    03.5
+0B81:  MOVWF  29
+0B82:  MOVLW  6D
+0B83:  MOVWF  2A
+0B84:  BCF    0A.3
+0B85:  BCF    03.5
+0B86:  CALL   345
+0B87:  BSF    0A.3
+....................   
+....................                 ResponseBuffer[9] = '\r';  
+0B88:  MOVLW  0D
+0B89:  MOVWF  6F
+....................                 ResponseBuffer[10] = 0;             // Null terminate  
+0B8A:  CLRF   70
+....................                 break;  
+0B8B:  GOTO   49E
+....................   
+....................             case 'P':                               // PWM  
+....................                 if (CommandBufferIndex != 7)        // Check for correct command length  
+0B8C:  MOVF   55,W
+0B8D:  SUBLW  07
+0B8E:  BTFSS  03.2
+....................                     goto error_rsp;  
+0B8F:  GOTO   497
+....................                 i = hex_to_bin(&CommandBuffer[1]);  // Frequency (PWM period)  
+0B90:  MOVLW  57
+0B91:  BSF    03.5
+0B92:  MOVWF  20
+0B93:  BCF    0A.3
+0B94:  BCF    03.5
+0B95:  CALL   53B
+0B96:  BSF    0A.3
+0B97:  MOVF   21,W
+0B98:  MOVWF  78
+....................                 setup_timer_2 (T2_DIV_BY_1, i, 1);  // Mode=div/1 Period=i Postscale=1 (not used)  
+0B99:  MOVLW  00
+0B9A:  MOVWF  21
+0B9B:  IORLW  04
+0B9C:  MOVWF  12
+0B9D:  MOVF   78,W
+0B9E:  BSF    03.5
+0B9F:  MOVWF  12
+....................   
+....................                 j = hex_to_bin(&CommandBuffer[3]);  // Duty - MSB  
+0BA0:  MOVLW  59
+0BA1:  MOVWF  20
+0BA2:  BCF    0A.3
+0BA3:  BCF    03.5
+0BA4:  CALL   53B
+0BA5:  BSF    0A.3
+0BA6:  MOVF   21,W
+0BA7:  MOVWF  79
+....................                 temp = j;  
+0BA8:  CLRF   7D
+0BA9:  MOVF   79,W
+0BAA:  MOVWF  7C
+....................                 temp = temp << 4;  
+0BAB:  RLF    7C,F
+0BAC:  RLF    7D,F
+0BAD:  RLF    7C,F
+0BAE:  RLF    7D,F
+0BAF:  RLF    7C,F
+0BB0:  RLF    7D,F
+0BB1:  RLF    7C,F
+0BB2:  RLF    7D,F
+0BB3:  MOVLW  F0
+0BB4:  ANDWF  7C,F
+....................                 CommandBuffer[4] = '0';             // 3 nibbles, insert 0  
+0BB5:  MOVLW  30
+0BB6:  MOVWF  5A
+....................                 j = hex_to_bin(&CommandBuffer[4]);  // Duty - LSB  
+0BB7:  MOVLW  5A
+0BB8:  BSF    03.5
+0BB9:  MOVWF  20
+0BBA:  BCF    0A.3
+0BBB:  BCF    03.5
+0BBC:  CALL   53B
+0BBD:  BSF    0A.3
+0BBE:  MOVF   21,W
+0BBF:  MOVWF  79
+....................                 temp = temp + j;  
+0BC0:  MOVF   79,W
+0BC1:  ADDWF  7C,F
+0BC2:  BTFSC  03.0
+0BC3:  INCF   7D,F
+....................                 set_pwm1_duty (temp);               // Set 10 bits duty  
+0BC4:  MOVF   7D,W
+0BC5:  MOVWF  22
+0BC6:  MOVF   7C,W
+0BC7:  MOVWF  21
+0BC8:  RRF    22,F
+0BC9:  RRF    21,F
+0BCA:  RRF    22,F
+0BCB:  RRF    21,F
+0BCC:  RRF    22,F
+0BCD:  MOVF   21,W
+0BCE:  MOVWF  15
+0BCF:  RRF    22,F
+0BD0:  RRF    22,W
+0BD1:  ANDLW  30
+0BD2:  MOVWF  20
+0BD3:  MOVF   17,W
+0BD4:  ANDLW  CF
+0BD5:  IORWF  20,W
+0BD6:  MOVWF  17
+....................   
+....................                 ResponseBuffer[0] = 'P';  
+0BD7:  MOVLW  50
+0BD8:  MOVWF  66
+....................                 ResponseBuffer[1] = '\r';  
+0BD9:  MOVLW  0D
+0BDA:  MOVWF  67
+....................                 ResponseBuffer[2] = 0;              // Null terminate  
+0BDB:  CLRF   68
+....................                 break;  
+0BDC:  GOTO   49E
+....................   
+....................             case 'M':                               // Clear Pulse Counter  
+....................                 if (CommandBufferIndex != 2)        // Check for correct command length  
+0BDD:  MOVF   55,W
+0BDE:  SUBLW  02
+0BDF:  BTFSS  03.2
+....................                     goto error_rsp;  
+0BE0:  GOTO   497
+....................                 set_timer0(0);                      // Clear Timer0 and the count  
+0BE1:  CLRF   01
+....................                 PulseCount = 0;  
+0BE2:  CLRF   53
+0BE3:  CLRF   52
+0BE4:  CLRF   51
+0BE5:  CLRF   50
+....................                 ResponseBuffer[0] = 'M';  
+0BE6:  MOVLW  4D
+0BE7:  MOVWF  66
+....................                 ResponseBuffer[1] = '\r';  
+0BE8:  MOVLW  0D
+0BE9:  MOVWF  67
+....................                 ResponseBuffer[2] = 0;              // Null terminate  
+0BEA:  CLRF   68
+....................                 break;  
+0BEB:  GOTO   49E
+....................   
+....................             case 'W':                               // Write EEPROM  
+....................                 if (CommandBufferIndex != 6)        // Check for correct command length  
+0BEC:  MOVF   55,W
+0BED:  SUBLW  06
+0BEE:  BTFSS  03.2
+....................                     goto error_rsp;  
+0BEF:  GOTO   497
+....................                 i = hex_to_bin(&CommandBuffer[1]);  // EEPROM Address  
+0BF0:  MOVLW  57
+0BF1:  BSF    03.5
+0BF2:  MOVWF  20
+0BF3:  BCF    0A.3
+0BF4:  BCF    03.5
+0BF5:  CALL   53B
+0BF6:  BSF    0A.3
+0BF7:  MOVF   21,W
+0BF8:  MOVWF  78
+....................                 j = hex_to_bin(&CommandBuffer[3]);  // EEPROM Value  
+0BF9:  MOVLW  59
+0BFA:  BSF    03.5
+0BFB:  MOVWF  20
+0BFC:  BCF    0A.3
+0BFD:  BCF    03.5
+0BFE:  CALL   53B
+0BFF:  BSF    0A.3
+0C00:  MOVF   21,W
+0C01:  MOVWF  79
+....................                 wr_eeprom(i, j);  
+0C02:  MOVF   78,W
+0C03:  BSF    03.5
+0C04:  MOVWF  21
+0C05:  BCF    03.5
+0C06:  MOVF   79,W
+0C07:  BSF    03.5
+0C08:  MOVWF  22
+0C09:  BCF    0A.3
+0C0A:  BCF    03.5
+0C0B:  CALL   129
+0C0C:  BSF    0A.3
+....................   
+....................                 //  
+....................                 // Get new EEPROM settings  
+....................                 //  
+....................                 get_eesettings();  
+0C0D:  BCF    0A.3
+0C0E:  CALL   106
+0C0F:  BSF    0A.3
+....................   
+....................                 ResponseBuffer[0] = 'W';  
+0C10:  MOVLW  57
+0C11:  MOVWF  66
+....................                 ResponseBuffer[1] = '\r';  
+0C12:  MOVLW  0D
+0C13:  MOVWF  67
+....................                 ResponseBuffer[2] = 0;              // Null terminate  
+0C14:  CLRF   68
+....................                 break;  
+0C15:  GOTO   49E
+....................   
+....................             case 'R':                               // Read EEPROM  
+....................                 if (CommandBufferIndex != 4)        // Check for correct command length  
+0C16:  MOVF   55,W
+0C17:  SUBLW  04
+0C18:  BTFSS  03.2
+....................                     goto error_rsp;  
+0C19:  GOTO   497
+....................                 i = hex_to_bin(&CommandBuffer[1]);  // EEPROM Address  
+0C1A:  MOVLW  57
+0C1B:  BSF    03.5
+0C1C:  MOVWF  20
+0C1D:  BCF    0A.3
+0C1E:  BCF    03.5
+0C1F:  CALL   53B
+0C20:  BSF    0A.3
+0C21:  MOVF   21,W
+0C22:  MOVWF  78
+....................                 j = rd_eeprom(i);  
+0C23:  MOVF   78,W
+0C24:  BSF    03.5
+0C25:  MOVWF  25
+0C26:  BCF    0A.3
+0C27:  BCF    03.5
+0C28:  CALL   0F2
+0C29:  BSF    0A.3
+0C2A:  MOVF   21,W
+0C2B:  MOVWF  79
+....................                 ResponseBuffer[0] = 'R';  
+0C2C:  MOVLW  52
+0C2D:  MOVWF  66
+....................                 bin_to_hex(j, &ResponseBuffer[1]);  
+0C2E:  MOVF   79,W
+0C2F:  BSF    03.5
+0C30:  MOVWF  29
+0C31:  MOVLW  67
+0C32:  MOVWF  2A
+0C33:  BCF    0A.3
+0C34:  BCF    03.5
+0C35:  CALL   345
+0C36:  BSF    0A.3
+....................                 ResponseBuffer[3] = '\r';  
+0C37:  MOVLW  0D
+0C38:  MOVWF  69
+....................                 ResponseBuffer[4] = 0;              // Null terminate  
+0C39:  CLRF   6A
+....................                 break;  
+0C3A:  GOTO   49E
+....................   
+....................             case 'J':                               // Clear Comm Error Counter  
+....................                 if(CommandBufferIndex != 2)         // Check command length  
+0C3B:  MOVF   55,W
+0C3C:  SUBLW  02
+0C3D:  BTFSS  03.2
+....................                     goto error_rsp;                 // ... oops exit command  
+0C3E:  GOTO   497
+....................   
+....................                 RxCommErr = 0;                      // Clear Comm Error  
+0C3F:  CLRF   76
+....................                 ResponseBuffer[0] = 'J';  
+0C40:  MOVLW  4A
+0C41:  MOVWF  66
+....................                 ResponseBuffer[1] = '\r';  
+0C42:  MOVLW  0D
+0C43:  MOVWF  67
+....................                 ResponseBuffer[2] = 0;  
+0C44:  CLRF   68
+....................                 break;  
+0C45:  GOTO   49E
+....................   
+....................   
+....................             case 'K':                               // Comm Error Counter  
+....................                 if(CommandBufferIndex != 2)         // Check command length  
+0C46:  MOVF   55,W
+0C47:  SUBLW  02
+0C48:  BTFSS  03.2
+....................                     goto error_rsp;                 // ... oops exit command  
+0C49:  GOTO   497
+....................                 ResponseBuffer[0] = 'K';  
+0C4A:  MOVLW  4B
+0C4B:  MOVWF  66
+....................                 bin_to_hex(RxCommErr, &ResponseBuffer[1]);  
+0C4C:  MOVF   76,W
+0C4D:  BSF    03.5
+0C4E:  MOVWF  29
+0C4F:  MOVLW  67
+0C50:  MOVWF  2A
+0C51:  BCF    0A.3
+0C52:  BCF    03.5
+0C53:  CALL   345
+0C54:  BSF    0A.3
+....................                 ResponseBuffer[3] = '\r';  
+0C55:  MOVLW  0D
+0C56:  MOVWF  69
+....................                 ResponseBuffer[4] = 0;              // Null terminate  
+0C57:  CLRF   6A
+....................                 break;  
+0C58:  GOTO   49E
+....................   
+....................             case 'S':                               // Stream Start  
+....................                 if (CommandBufferIndex != 2)        // Check for correct command length  
+0C59:  MOVF   55,W
+0C5A:  SUBLW  02
+0C5B:  BTFSS  03.2
+....................                     goto error_rsp;  
+0C5C:  GOTO   497
+....................                 // Set continuous stream mode flag  
+....................                 AsyncStreamFlags = AsyncStreamFlags | CONTINUOUS_STREAM;  
+0C5D:  BSF    32.0
+....................                 get_async_config();  
+0C5E:  BCF    0A.3
+0C5F:  CALL   25F
+0C60:  BSF    0A.3
+....................                 ResponseBuffer[0] = 'S';  
+0C61:  MOVLW  53
+0C62:  MOVWF  66
+....................                 ResponseBuffer[1] = '\r';  
+0C63:  MOVLW  0D
+0C64:  MOVWF  67
+....................                 ResponseBuffer[2] = 0;              // Null terminate  
+0C65:  CLRF   68
+....................                 break;  
+0C66:  GOTO   49E
+....................   
+....................             case 'H':                               // Stream Halt  
+....................                 if (CommandBufferIndex != 2)        // Check for correct command length  
+0C67:  MOVF   55,W
+0C68:  SUBLW  02
+0C69:  BTFSS  03.2
+....................                     goto error_rsp;  
+0C6A:  GOTO   497
+....................                 // Clear continuous stream mode flag  
+....................                 AsyncStreamFlags = AsyncStreamFlags & (~CONTINUOUS_STREAM);  
+0C6B:  BCF    32.0
+....................                 ResponseBuffer[0] = 'H';  
+0C6C:  MOVLW  48
+0C6D:  MOVWF  66
+....................                 ResponseBuffer[1] = '\r';  
+0C6E:  MOVLW  0D
+0C6F:  MOVWF  67
+....................                 ResponseBuffer[2] = 0;              // Null terminate  
+0C70:  CLRF   68
+....................                 break;  
+0C71:  GOTO   49E
+....................   
+....................   
+....................             case 'Z':                               // Reset  
+....................                 ResponseBuffer[0] = 'Z';  
+0C72:  MOVLW  5A
+0C73:  MOVWF  66
+....................                 ResponseBuffer[1] = '\r';  
+0C74:  MOVLW  0D
+0C75:  MOVWF  67
+....................                 ResponseBuffer[2] = 0;              // Null terminate  
+0C76:  CLRF   68
+....................                 // Write response string out UART  
+....................                 xmit_response();  
+0C77:  BCF    0A.3
+0C78:  CALL   36E
+0C79:  BSF    0A.3
+....................   
+....................                 while (1) {                         // Force CPU reset by causing WDT  
+....................                     disable_interrupts(GLOBAL);  
+0C7A:  BCF    0B.6
+0C7B:  BCF    0B.7
+0C7C:  BTFSC  0B.7
+0C7D:  GOTO   47B
+....................                 }  
+0C7E:  GOTO   47A
+....................   
+.................... //                reset_cpu();                        // Force CPU reset  
+....................                 break;  
+0C7F:  GOTO   49E
+....................   
+....................             case 'V':                               // Version  
+....................                 if (CommandBufferIndex != 2)        // Check for correct command length  
+0C80:  MOVF   55,W
+0C81:  SUBLW  02
+0C82:  BTFSS  03.2
+....................                     goto error_rsp;  
+0C83:  GOTO   497
+....................                 ResponseBuffer[0] = 'V';  
+0C84:  MOVLW  56
+0C85:  MOVWF  66
+....................                 ResponseBuffer[1] = '4';  
+0C86:  MOVLW  34
+0C87:  MOVWF  67
+....................                 ResponseBuffer[2] = '7';  
+0C88:  MOVLW  37
+0C89:  MOVWF  68
+....................                 ResponseBuffer[3] = '\r';  
+0C8A:  MOVLW  0D
+0C8B:  MOVWF  69
+....................                 ResponseBuffer[4] = 0;              // Null terminate  
+0C8C:  CLRF   6A
+....................                 break;  
+0C8D:  GOTO   49E
+....................   
+....................             case '?:                               // Display POST message  
+....................                 if (CommandBufferIndex != 2)        // Check for correct command length  
+0C8E:  MOVF   55,W
+0C8F:  SUBLW  02
+0C90:  BTFSS  03.2
+....................                     goto error_rsp;  
+0C91:  GOTO   497
+....................                 post_message();  
+0C92:  BCF    0A.3
+0C93:  CALL   24B
+0C94:  BSF    0A.3
+....................                 ResponseBuffer[0] = 0;              // Null terminate  
+0C95:  CLRF   66
+....................                 break;  
+0C96:  GOTO   49E
+....................   
+....................             default:                                // Unknown Command  
+.................... error_rsp:      // ERROR response  
+....................                 ResponseBuffer[0] = 'X';  
+0C97:  MOVLW  58
+0C98:  MOVWF  66
+....................                 ResponseBuffer[1] = '\r';  
+0C99:  MOVLW  0D
+0C9A:  MOVWF  67
+....................                 ResponseBuffer[2] = 0;              // Null terminate  
+0C9B:  CLRF   68
+....................                 RxCommErr++;  
+0C9C:  INCF   76,F
+....................                 break;  
+0C9D:  GOTO   49E
+....................   
+....................         } // switch (CommandChar)  
+....................   
+....................         // Clear the command buffer index and last character rcvd for next command  
+....................         CommandBufferIndex = 0;  
+0C9E:  CLRF   55
+....................         LastCharRcvd = 0;  
+0C9F:  CLRF   54
+....................   
+....................         // Write response string out UART  
+....................         xmit_response();  
+0CA0:  BCF    0A.3
+0CA1:  CALL   36E
+0CA2:  BSF    0A.3
+....................   
+....................     } // while (TRUE)  -- never exit  
+0CA3:  GOTO   15F
+.................... }  
+....................  
+0CA4:  SLEEP
+
+Configuration Fuses:
+   Word  1: 1F76   HS WDT PUT PROTECT NODEBUG NOLVP NOCPD NOWRT BROWNOUT

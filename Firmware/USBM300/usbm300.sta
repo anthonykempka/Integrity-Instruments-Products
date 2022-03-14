@@ -1,0 +1,82 @@
+
+ROM used: 4936 (60%)
+          2048 (25%) including unused fragments
+
+          1 Average locations per line
+          4 Average locations per statement
+
+RAM used: 90 (51%) at main() level
+          110 (63%) worst case
+
+Lines Stmts  %   Files
+----- ----- ---  -----
+ 1021   401  36  e:\data\piccode\usbm300 code\usbm300.c
+  213     0   0  E:\PICTOOLS\PICC\devices\16c67.h
+  423   127   8  E:\PICTOOLS\PICC\drivers\string.h
+   28     0   0  E:\PICTOOLS\PICC\drivers\stddef.h
+   28     0   0  E:\PICTOOLS\PICC\drivers\ctype.h
+ 1295   559  34  e:\data\piccode\usbm300 code\usbn9603.c
+  271    19   1  e:\data\piccode\usbm300 code\USBM300_desc.h
+  211    19   1  e:\data\piccode\usbm300 code\usbn9603_reg.h
+----- -----
+ 6980  2250 Total
+
+Page ROM  %  RAM  Functions:
+---- --- --- ---  ----------
+0     19   0   1  @delay_ms1
+0     20   0   0  @const50
+0     13   0   3  strlen
+0     14   0   0  setup_spi_adc_fast
+0      8   0   0  setup_spi_clk64
+0     30   1   1  setup_spi_mode
+0     22   0   0  @const158
+0     50   1   0  @const160
+0      8   0   0  @const162
+0     58   1   0  @const164
+0     57   1   0  @const166
+0     50   1   0  @const168
+0     50   1   0  @const170
+0     31   1   3  endpoint_status_init
+0     77   2   0  reset_usb
+0    313   6   4  XmitOnUSB0
+0    842  17   2  handle_setup
+1    810  16   3  usb_isr
+0     38   1   2  usbn_write
+0     42   1   2  usbn_read
+0     47   1   2  read_eeprom
+1     85   2   3  write_eeprom
+0      3   0   0  led_on_red
+0      3   0   0  led_off
+0      5   0   0  trigger_led_red
+0     13   0   1  write_port1
+0     18   0   2  read_port1
+0      7   0   1  write_port2
+0     11   0   1  read_port2
+0      5   0   0  get_dir_port1
+0      5   0   0  get_dir_port2
+1     50   1   5  hex_to_bin
+1     31   1   5  bin_to_hex
+0     14   0   0  timer0_isr
+0     33   1   0  timer1_isr
+2   1914  39  10  main
+0      8   0   0  @const11220
+0      6   0   0  @const11230
+0      6   0   0  @const11237
+0      6   0   0  @const11251
+0      6   0   0  @const11271
+0     11   0   0  @const11276
+0      6   0   0  @const11287
+0      6   0   0  @const11294
+0      6   0   0  @const11301
+0      6   0   0  @const11308
+0      6   0   0  @const11320
+
+ Segment   Used  Free
+---------  ----  ----
+00000-00003     4  0
+00004-00042    63  0
+00043-007FF  1979  2
+00800-00FFF   976  1072
+01000-017FF  1914  134
+01800-01FFF     0  2048
+

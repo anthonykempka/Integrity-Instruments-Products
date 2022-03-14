@@ -1,0 +1,143 @@
+00E     TMR1L
+00F     TMR1H
+015-016 CCP_1
+015     CCP_1_LOW
+016     CCP_1_HIGH
+01F.6   C1OUT
+01F.7   C2OUT
+020     @INTERRUPT_AREA
+021     @INTERRUPT_AREA
+022     @INTERRUPT_AREA
+023     @INTERRUPT_AREA
+024     @INTERRUPT_AREA
+025     @INTERRUPT_AREA
+026     @INTERRUPT_AREA
+027     @INTERRUPT_AREA
+028     @INTERRUPT_AREA
+029     LastCharRcvd
+02A-031 RcvBuffer
+032     RcvBufferIndex
+033-04B XmitBuffer
+04C     DontBufferRcv
+04D     ByteRcvd
+04E-04F OneMsCount
+050-051 MinBitTime
+052-053 EnableTimeout
+054     strtok.save
+055     main.Mode_Value
+056     Mode_Bit_Time.done
+056     ProgramMode.Quit
+056-057 Mode_Manual.HoldDelay
+056     main.@SCRATCH
+057-058 check_new_min.i
+057-058 check_timeout.i
+057     ProgramMode.i
+058     ProgramMode.j
+058-059 Mode_Manual.DelayCount
+059     print_mode.i
+059     wr_eeprom.address
+059     @delay_ms1.P1
+059     print_baud.BaudCode
+059     hex_to_bin.ptr
+059     ProgramMode.@SCRATCH
+05A     @PRINTF_X_9600_50_49.P1
+05A     hex_to_bin.value
+05A-05D print_baud.BaudRate
+05A     wr_eeprom.data
+05A     set_baud.BaudCode
+05A     print_mode.@SCRATCH
+05A     ProgramMode.@SCRATCH
+05B-05C set_baud.RtnVal
+05B     wr_eeprom.i
+05B     hex_to_bin.i
+05B     @PRINTF_X_9600_50_49.P1
+05B     ProgramMode.@SCRATCH
+05C     hex_to_bin.tmp_ptr
+05D     hex_to_bin.@SCRATCH
+05E     rd_eeprom.address
+05E-061 @PRINTF_L32U_9600_50_49.P1
+05E     hex_to_bin.@SCRATCH
+05E     print_baud.@SCRATCH
+05F     rd_eeprom.data
+05F     hex_to_bin.@SCRATCH
+062     @PRINTF_L32U_9600_50_49.@SCRATCH
+063     @PRINTF_L32U_9600_50_49.@SCRATCH
+064     @PRINTF_L32U_9600_50_49.@SCRATCH
+065     @PRINTF_L32U_9600_50_49.@SCRATCH
+066     @PRINTF_L32U_9600_50_49.@SCRATCH
+067     @PRINTF_L32U_9600_50_49.@SCRATCH
+068-06B @DIV3232.P1
+06C-06F @DIV3232.P1
+070     @DIV3232.@SCRATCH
+071     @DIV3232.@SCRATCH
+072     @DIV3232.@SCRATCH
+073     @DIV3232.@SCRATCH
+074     @DIV3232.@SCRATCH
+075     RDA_isr.@SCRATCH
+077     @SCRATCH
+078     @SCRATCH
+078     _RETURN_
+079     @SCRATCH
+07A     @SCRATCH
+07B     @SCRATCH
+09A     EEDATA
+09B     EEADR
+09C     EECON1
+09D     EECON2
+
+030C  @delay_ms1
+01B9  rd_eeprom
+02F2  wr_eeprom
+0287  hex_to_bin
+0198  EXT_isr
+019C  RDA_isr
+01B3  TIMER2_isr
+040D  print_baud
+003F  @const10494
+01E7  @DIV3232
+0229  @PRINTF_L32U_9600_50_49
+03B5  print_mode
+004D  @const10525
+0065  @const10533
+031F  ProgramMode
+0075  @const10555
+01C4  @PRINTF_X_9600_50_49
+007E  @const10581
+009E  @const10588
+00C2  @const10602
+00EF  @const10610
+011E  @const10666
+0128  @const10672
+056A  set_baud
+060C  check_new_min
+0651  check_timeout
+0633  Mode_Bit_Time
+0563  Mode_Manual
+067D  main
+0132  @const10780
+0161  @const10793
+0180  @const10810
+067D  @cinit
+0551  error_rsp
+
+Project Files:
+    E:\Data\PicCode\XP FLASH\xp-flash.c
+    E:\PICTOOLS\PICC\devices\16f628a.h
+    E:\PICTOOLS\PICC\drivers\string.h
+    E:\PICTOOLS\PICC\drivers\stddef.h
+    E:\PICTOOLS\PICC\drivers\ctype.h
+
+Compiler Settings:
+    Processor:      PIC16F628A
+    Pointer Size:   8
+    Opt Level:      9
+    Short,Int,Long: 1,8,16
+
+Output Files:
+    Errors:      E:\Data\PicCode\XP FLASH\xp-flash.err
+    INHX8:       E:\Data\PicCode\XP FLASH\xp-flash.HEX
+    Symbols:     E:\Data\PicCode\XP FLASH\xp-flash.SYM
+    List:        E:\Data\PicCode\XP FLASH\xp-flash.LST
+    Debug/COFF:  E:\Data\PicCode\XP FLASH\xp-flash.cof
+    Call Tree:   E:\Data\PicCode\XP FLASH\xp-flash.tre
+    Statistics:  E:\Data\PicCode\XP FLASH\xp-flash.sta

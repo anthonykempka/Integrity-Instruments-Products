@@ -1,0 +1,82 @@
+[PROJECT]
+Target=usbm400.hex
+Development_Mode=
+Processor=0xA652
+ToolSuite=CCS
+Processor_Text=PIC18F6520
+
+[Directories]
+Include=C:\Program Files\PICC\Drivers;C:\Program Files\PICC\Devices;
+Library=
+LinkerScript=
+
+[Target Data]
+FileList=C:\Data\PicCode\USBM400 FW\usbm400.c
+BuildTool=C-COMPILER
+OptionString=+FH
+AdditionalOptionString=
+BuildRequired=1
+
+[usbm400.c]
+Type=4
+Path=
+FileList=
+BuildTool=
+OptionString=
+AdditionalOptionString=
+
+[mru-list]
+1=usbm400.c
+
+[Windows]
+0=0000 %S 0 0 796 451 3 0
+
+[Opened Files]
+1=C:\Data\PicCode\USBM400 FW\usbm400.c
+2=C:\Data\PicCode\USBM400 FW\usbm400_desc.h
+3=
+4=
+5=E:\Data\PicCode\USBM400 FW\usbm400.sta
+6=E:\Data\PicCode\USBM400 FW\usbm400.lst
+7=
+[debugperif]
+selected=Analog/Digital Conv
+[debugram]
+autoread=1
+[debugeedata]
+autoread=1
+[debugbreak]
+count=1
+f1=C:\Data\PicCode\USBM400 FW\usbm400.c
+l1=653
+a.1=4446
+[pcwdebug]
+watchcol0=75
+[debugwatch]
+count=1
+e1=ResponseBuffer
+[debugexpr]
+expr=
+sideeffects=0
+[debugsfr]
+autoread=1
+[defines]
+enabled=0
+D1=
+V1=
+[fileformats]
+forcecoff=0
+debug=4
+error=2
+object=0
+list=0
+scratch=0
+sta=1
+tre=1
+allerrors=1
+allwarnings=1
+stayupne=3
+stayupoe=0
+[Units]
+Count=1
+1=usbm400.c (main)

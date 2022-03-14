@@ -1,0 +1,29 @@
+Building: e:\data\piccode\485m30~1\485m300.tpr
+ 
+==== NODE 1 ====
+485m300.asm PASSED to ROOT NODE
+ 
+==== NODE 0 ====
+Building Project....
+  Warning[217] E:\DATA\PICCODE\485M30~1\485M300.ASM 36 : Hex file format specified on command line.
+  Message[302] E:\DATA\PICCODE\485M30~1\485M300.ASM 252 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+  Message[302] E:\DATA\PICCODE\485M30~1\485M300.ASM 254 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+  Message[302] E:\DATA\PICCODE\485M30~1\485M300.ASM 256 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+  Message[302] E:\DATA\PICCODE\485M30~1\485M300.ASM 258 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+  Message[302] E:\DATA\PICCODE\485M30~1\485M300.ASM 260 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+  Message[302] E:\DATA\PICCODE\485M30~1\485M300.ASM 261 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+  Message[302] E:\DATA\PICCODE\485M30~1\485M300.ASM 317 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+  Message[302] E:\DATA\PICCODE\485M30~1\485M300.ASM 318 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+  Message[302] E:\DATA\PICCODE\485M30~1\485M300.ASM 321 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+  Message[302] E:\DATA\PICCODE\485M30~1\485M300.ASM 323 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+  Message[302] E:\DATA\PICCODE\485M30~1\485M300.ASM 356 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+  Message[302] E:\DATA\PICCODE\485M30~1\485M300.ASM 363 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+  Message[302] E:\DATA\PICCODE\485M30~1\485M300.ASM 818 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+  Message[302] E:\DATA\PICCODE\485M30~1\485M300.ASM 830 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+  Message[302] E:\DATA\PICCODE\485M30~1\485M300.ASM 905 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+  Message[302] E:\DATA\PICCODE\485M30~1\485M300.ASM 1241 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+  Message[302] E:\DATA\PICCODE\485M30~1\485M300.ASM 1257 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+  Message[302] E:\DATA\PICCODE\485M30~1\485M300.ASM 1407 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Loading SYMBOLs
+Project Build Complete
+Saving log to: e:\data\piccode\485m30~1\buildlog.tde

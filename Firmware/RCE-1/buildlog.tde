@@ -1,0 +1,10 @@
+Building: e:\data\piccode\rce-1c~1\rce-1.tpr
+ 
+==== NODE 1 ====
+rce-1.asm PASSED to ROOT NODE
+ 
+==== NODE 0 ====
+Building Project....
+Loading SYMBOLs
+Project Build Complete
+Saving log to: e:\data\piccode\rce-1c~1\buildlog.tde

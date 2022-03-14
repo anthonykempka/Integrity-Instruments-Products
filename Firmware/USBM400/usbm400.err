@@ -1,0 +1,6 @@
+>>> Warning 216 "usbm400.c" Line 1094(0,1): Interrupts disabled during call to prevent re-entrancy:  (usbn_read)
+>>> Warning 216 "usbm400.c" Line 1094(0,1): Interrupts disabled during call to prevent re-entrancy:  (usbn_write)
+>>> Warning 216 "usbm400.c" Line 1094(0,1): Interrupts disabled during call to prevent re-entrancy:  (reset_usb)
+>>> Warning 216 "usbm400.c" Line 1094(0,1): Interrupts disabled during call to prevent re-entrancy:  (@delay_ms1)
+      Memory usage:   ROM=24%      RAM=10% - 11%
+      0 Errors,  4 Warnings.

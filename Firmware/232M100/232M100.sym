@@ -1,0 +1,257 @@
+000     @SCRATCH
+001     @SCRATCH
+001     _RETURN_
+002     @SCRATCH
+003     @SCRATCH
+004     @SCRATCH
+005     @INTERRUPT_AREA
+005     PORT_A
+006     @INTERRUPT_AREA
+006     PORT_B
+007     @INTERRUPT_AREA
+007     PORT_C
+008     @INTERRUPT_AREA
+008     PORT_D
+009     @INTERRUPT_AREA
+009     PORT_E
+00A     @INTERRUPT_AREA
+00B     @INTERRUPT_AREA
+00C     @INTERRUPT_AREA
+00D     @INTERRUPT_AREA
+00E     @INTERRUPT_AREA
+00F     @INTERRUPT_AREA
+010     @INTERRUPT_AREA
+011     @INTERRUPT_AREA
+012     @INTERRUPT_AREA
+013     @INTERRUPT_AREA
+014     @INTERRUPT_AREA
+014     SSPCON
+015     @INTERRUPT_AREA
+016     @INTERRUPT_AREA
+017     @INTERRUPT_AREA
+018     @INTERRUPT_AREA
+019-01A strtok.save
+01B     EEFlags
+01C     CurrentDip
+01D     AsyncStreamFlags
+01E     AsyncStreamUpdate
+01F-020 AsyncCount
+021-022 AsyncTimeout
+023     StreamADCount
+024-02B ADSampleConfig
+02C     Port2Cur
+02D-030 PulseCountCur
+031     LedGreenFlag
+032-033 LedCount
+034     Port2_Dir
+035-038 PulseCount
+039     LastCharRcvd
+03A     CommandBufferIndex
+03B-04A CommandBuffer
+04B-06A ResponseBuffer
+06B     RxCommErr
+06C-08B AD_Calibration
+08C-08F AD_Value
+090-0AF AD_Value_Str
+094     SSPSTAT
+0B0-0B1 @sprintf_string
+0B2     MAIN.i
+0B3     MAIN.j
+0B4-0B5 MAIN.temp
+0B6     get_eesettings.PowerUpMode
+0B6     get_async_config.i
+0B6     get_dip_set_baud.NewDip
+0B6-0B7 hex_to_bin.ptr
+0B6     check_async_stream.i
+0B6     post_message.@SCRATCH1
+0B6     commands.@SCRATCH1
+0B6     MAIN.@SCRATCH1
+0B7-0B8 get_async_config.j
+0B7     check_async_stream.j
+0B7     get_eesettings.i
+0B7     @delay_ms1.P1
+0B7     get_dip_set_baud.@SCRATCH1
+0B7     post_message.@SCRATCH2
+0B7     MAIN.@SCRATCH2
+0B8     get_eesettings.j
+0B8     hex_to_bin.value
+0B8     check_async_stream.x
+0B8     post_message.@SCRATCH3
+0B8     MAIN.@SCRATCH3
+0B9-0BA get_eesettings.pPtr
+0B9     hex_to_bin.i
+0B9-0BA check_async_stream.temp
+0B9     get_async_config.@SCRATCH1
+0B9     MAIN.@SCRATCH4
+0BA-0BB hex_to_bin.tmp_ptr
+0BA     get_async_config.@SCRATCH2
+0BA     MAIN.@SCRATCH5
+0BB     write_port2.value
+0BB-0BE check_async_stream.i32
+0BB     set_dir_port2.direction
+0BB     get_eesettings.@SCRATCH1
+0BB     get_async_config.@SCRATCH3
+0BC     wr_eeprom.address
+0BC     hex_to_bin.@SCRATCH1
+0BC     get_eesettings.@SCRATCH2
+0BD     wr_eeprom.data
+0BD     hex_to_bin.@SCRATCH2
+0BD     get_eesettings.@SCRATCH3
+0BE     rd_eeprom.address
+0BE     wr_eeprom.i
+0BE     hex_to_bin.@SCRATCH3
+0BF     rd_eeprom.data
+0BF     bin_to_hex.value
+0BF     acquire_adc.control
+0BF     read_port2.value
+0BF-0C0 xmit_response.tmp_ptr
+0BF     check_async_stream.@SCRATCH1
+0C0-0C1 acquire_adc.ad_sample
+0C0-0C1 bin_to_hex.ptr
+0C0     check_async_stream.@SCRATCH2
+0C1     xmit_response.@SCRATCH1
+0C1     check_async_stream.@SCRATCH3
+0C2     acquire_adc.ad_control
+0C2     bin_to_hex.digit
+0C2     check_async_stream.@SCRATCH4
+0C3-0C6 @PRINTF_L32D_209FPFPF.P1
+0C3-0C6 @SFTOI.P2
+0C3-0C4 bin_to_hex.tmp_ptr
+0C3     acquire_adc.@SCRATCH1
+0C3     check_async_stream.@SCRATCH5
+0C4     acquire_adc.@SCRATCH2
+0C5     acquire_adc.@SCRATCH3
+0C5     bin_to_hex.@SCRATCH1
+0C6     acquire_adc.@SCRATCH4
+0C6     bin_to_hex.@SCRATCH2
+0C7     @PRINTF_L32D_209FPFPF.P1
+0C7-0C8 @ITOF.P2
+0C8     @PRINTF_L32D_209FPFPF.@SCRATCH1
+0C9     @PRINTF_L32D_209FPFPF.@SCRATCH2
+0CA     @PRINTF_L32D_209FPFPF.@SCRATCH3
+0CB     @PRINTF_L32D_209FPFPF.@SCRATCH4
+0CC     @PRINTF_L32D_209FPFPF.@SCRATCH5
+0CD     @PRINTF_L32D_209FPFPF.@SCRATCH6
+0CE     @PRINTF_L32D_209FPFPF.@SCRATCH7
+0CF     @PRINTF_L32D_209FPFPF.@SCRATCH8
+0D0-0D3 @FTOSD.P1
+0D0-0D3 @DIV3232.P2
+0D0     @SPRINTF.P3
+0D0-0D3 @MULFF.P4
+0D4-0D7 @DIV3232.P1
+0D4-0D7 @MULFF.P2
+0D4     @FTOSD.@SCRATCH1
+0D8     @MULFF.@SCRATCH1
+0D8     @DIV3232.@SCRATCH1
+0D9     @MULFF.@SCRATCH2
+0D9     @DIV3232.@SCRATCH2
+0DA     @MULFF.@SCRATCH3
+0DA     @DIV3232.@SCRATCH3
+0DB     @DIV3232.@SCRATCH4
+0DC     @DIV3232.@SCRATCH5
+0DD     RDA_isr.@SCRATCH1
+0DE     RDA_isr.@SCRATCH2
+10E     EEDATH
+10F     EEADRH
+F83     PSP_DATA
+FA6     EECON1
+FA7     EECON2
+FA8     EEDATA
+FA9     EEADR
+FAB     RCSTA
+FB4.6   C1OUT
+FB4.7   C2OUT
+FBB     CCP_2_LOW
+FBB-FBC CCP_2
+FBC     CCP_2_HIGH
+FBE-FBF CCP_1
+FBE     CCP_1_LOW
+FBF     CCP_1_HIGH
+FE9-FEA @READ_PROGRAM_MEMORY.P1
+FE9-FEA @WRITE_PROGRAM_MEMORY.P2
+FF2     INTCON
+FF6-FF8 @WRITE_PROGRAM_MEMORY.P1
+FF6-FF8 @READ_PROGRAM_MEMORY.P2
+
+ROM Allocation:
+06F8  @delay_ms1
+0CA2  acquire_adc
+0DD8  @goto10398
+08E8  @ITOF
+0920  @MULFF
+0A12  @SFTOI
+0B06  @SPRINTF
+0A4C  @FTOSD
+0A8C  @DIV3232
+0B22  @PRINTF_L32D_209FPFPF
+0592  rd_eeprom
+05A6  wr_eeprom
+04C2  led_on_red
+04BC  led_on_green
+04C8  led_off
+1310  trigger_led_red
+1490  write_port2
+1450  read_port2
+05CA  set_dir_port2
+117E  get_dir_port2
+1078  hex_to_bin
+0E0C  bin_to_hex
+04AC  timer0_isr
+04CE  timer1_isr
+054E  RDA_isr
+05DE  get_eesettings
+078E  get_async_config
+0720  get_dip_set_baud
+0E62  xmit_response
+0EAC  check_async_stream
+084E  post_message
+00B6  @const271
+0102  @const272
+0130  @const273
+0154  @const274
+1186  commands
+0178  @const276
+01E2  @const277
+0230  @const278
+0284  @const279
+02CE  @const280
+0322  @const281
+037C  @const282
+03C4  @const283
+0412  @const284
+0464  @const285
+128E  MAIN
+128E  @cinit
+0C1D  error_rsp
+
+Project Directory:
+    C:\data\piccode\232M100\232M100\
+
+Project Files:
+    232M100.c
+    ..\..\..\..\Program Files\PICC\devices\18F4455.h
+    ..\..\..\..\Program Files\PICC\Drivers\string.h
+    ..\..\..\..\Program Files\PICC\Drivers\stddef.h
+    ..\..\..\..\Program Files\PICC\Drivers\ctype.h
+
+Units:
+    C:\data\piccode\232M100\232M100\232M100.c (main)
+
+Compiler Settings:
+    Processor:      PIC18F4455
+    Pointer Size:   16
+    ADC Range:      0-1023
+    Opt Level:      9
+    Short,Int,Long: UNSIGNED: 1,8,16
+    Float,Double:   32,32
+
+Output Files:
+    Errors:      232M100.err
+    Ext Symbols: 232M100.esym
+    INHX32:      232M100.hex
+    Symbols:     232M100.sym
+    List:        232M100.lst
+    Debug/COFF:  232M100.cof
+    Project:     232M100.PJT
+    Call Tree:   232M100.tre
+    Statistics:  232M100.sta
