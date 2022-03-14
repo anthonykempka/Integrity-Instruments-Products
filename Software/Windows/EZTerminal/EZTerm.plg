@@ -1,0 +1,48 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: EZTerm - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating command line "rc.exe /l 0x409 /fo"Release/EZTerm.res" /d "NDEBUG" "C:\0Jobs\Integrity Instruments\EZTerm\EZTerminal\EZTerm.rc"" 
+Creating temporary file "C:\DOCUME~1\TIMOTH~1.DEV\LOCALS~1\Temp\RSP3C.tmp" with contents
+[
+/nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /Fp"Release/EZTerm.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"C:\0Jobs\Integrity Instruments\EZTerm\EZTerminal\EZTermView.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\TIMOTH~1.DEV\LOCALS~1\Temp\RSP3C.tmp" 
+Creating temporary file "C:\DOCUME~1\TIMOTH~1.DEV\LOCALS~1\Temp\RSP3D.tmp" with contents
+[
+/nologo /subsystem:windows /incremental:no /pdb:"Release/EZTerminal.pdb" /machine:I386 /out:"Release/EZTerminal.exe" 
+".\Release\comdlg.obj"
+".\Release\Comm32.obj"
+".\Release\Connection.obj"
+".\Release\ConsoleData.obj"
+".\Release\DlgKeyLog.obj"
+".\Release\EZTerm.obj"
+".\Release\EZTermDoc.obj"
+".\Release\EZTermView.obj"
+".\Release\MainFrm.obj"
+".\Release\RtsControlDlg.obj"
+".\Release\SelectColor.obj"
+".\Release\Splash.obj"
+".\Release\StdAfx.obj"
+".\Release\terminaldlg.obj"
+".\Release\EZTerm.res"
+]
+Creating command line "link.exe @C:\DOCUME~1\TIMOTH~1.DEV\LOCALS~1\Temp\RSP3D.tmp"
+<h3>Output Window</h3>
+Compiling resources...
+Compiling...
+EZTermView.cpp
+Linking...
+
+
+
+<h3>Results</h3>
+EZTerminal.exe - 0 error(s), 0 warning(s)
+</pre>
+</body>
+</html>

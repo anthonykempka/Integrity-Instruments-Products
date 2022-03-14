@@ -1,0 +1,105 @@
+<html>
+<head>
+<title>Testpoint</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
+
+<body bgcolor="#FFFFCC">
+<h1>Testpoint Example</h1>
+<table width="68%" border="0" align="left">
+  <tr> 
+    <td width="13%"><a href="index.html">Home</a></td>
+    <td width="20%"><a href="vbexample.html">Visual Basic</a></td>
+    <td width="21%"><a href="vcplusplusexample.html">Visual C++</a> </td>
+    <td width="18%"><a href="testpointexample.html">Testpoint</a> </td>
+    <td width="28%">&nbsp;</td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+<hr align="left">
+<blockquote> 
+  <p>This example was created using the Demo version of Testpoint version 4.0. 
+    The writer of this document assumes that the reader has a basic working knowledge 
+    of the Testpoint. It is also assumed that the ADC-xxx module is connection 
+    to the computers COM1 serial port and that the ADC-xxx module communication 
+    speed is set to 115200 Baud (<i>SW1 1 &amp; 2 set to the on position</i>).</p>
+  <p>&nbsp;</p>
+  <h2>Step 1 - Create a new blank project.</h2>
+  <p><img src="Images/tpproj1.jpg" width="639" height="544"></p>
+  <h2>Setp 2 - Add the Integrity IO ActiveX module to Panel 1</h2>
+  <blockquote> 
+    <p>Drag an OCX 32 object to Panel 1</p>
+    <p><img src="Images/tpproj2.jpg" width="412" height="335"></p>
+    <p>Press the Load OCX button on the settings screen, select the <i>IntegrityIO 
+      Control</i> modle and press OK.</p>
+    <p><img src="Images/tpproj3.jpg" width="639" height="544"></p>
+    <p>... and set the objects name to <b>IIComm</b></p>
+  </blockquote>
+  <h2>Step 3 - Add a Start button to Panel 1.</h2>
+  <h2><img src="Images/tpproj4.jpg" width="639" height="544"></h2>
+  <p>Drag a button to Panel 1 and set the Name property to <b>Start.</b></p>
+  <p><img src="Images/tpproj5.jpg" width="639" height="544"></p>
+  <p>Right click the IIComm object and select settings. Drag the <i>lnComPort</i>, 
+    <i>lnBaudRate</i>, and <i>bPortOpen</i> properties to the actions tab for 
+    the Start object. Set the <i>lnComPort</i> property to <b>1</b>, the <i>lnBaudRate</i> 
+    property to <b>115200</b> and the <i>bPortOpen</i> property to <b>1</b>.Drag 
+    the IIComm object icon from Panel 1 to the Start object action list and select 
+    <i>SetDIOBitDDR. </i>Set the <i>bitValue </i>parameter to <b>0</b> and the 
+    <i>bitPosition</i> parameter to <b>8</b>. This will set Port 1 Bit 0 to be 
+    an output. Drag the IIComm object icon from Panel 1 to the <i>Start</i> object 
+    action list and select <i>SetDIOBitDDR</i>. Set the <i>bitValue</i> parameter 
+    to <b>1</b> and the <i>bitPosition</i> parameter to <b>0</b>. This will set 
+    Port 2 bit 0 to be an input. Right click the IIComm object and select settings. 
+    Drag the lnDigitalPort property to the Start object action list and set it 
+    to 0. This will set all set the Digital I/O Port 1 pins to 0.</p>
+  <h2>Step 4 - Add a stop button.</h2>
+  <p><img src="Images/tpproj6.jpg" width="639" height="544"></p>
+  <p>Set the Pushbutton1 object Name to <i>Stop. </i></p>
+  <p><img src="Images/tpproj7.jpg" width="639" height="544"></p>
+  <p>Click on the Actions tab.Right click on the <b>IIComm</b> object and select 
+    settings. Drag the <b>bPortOpen</b> property from <b>IIComm</b> settings to 
+    the <i>Stop</i> button action list. Set the property to <b>0</b>.</p>
+  <h2>Step 5 - Add Digital Port I/O Control and Display.</h2>
+  <h2><img src="Images/tpproj8.jpg" width="639" height="544"></h2>
+  <p>Drag a switch to Panel 1 and set the name property to <b>Port1Bit0.</b></p>
+  <p><img src="Images/tpproj9.jpg" width="639" height="544"></p>
+  <p>Now drag an indicator to Panel 1. Set the <i>Name</i> to <b>Port2Bit0</b>, 
+    set the <i>Initial Value</i> to <b>0, </b><i>Label 0 </i> to <b>Off, </b> 
+    and <i>Label 1 </i> to <b>On.</b></p>
+  <h2>Step 6 - Connect the switch to Port 1 Bit 0 and the Indicator to Port 2 
+    Bit 0 </h2>
+  <h2><img src="Images/tpproj10.jpg" width="639" height="544"></h2>
+  <p>Right click the <b>Port1Bit0</b> object and select <i>Action List</i>. Drag 
+    the <b>IIComm</b> object into this action list and select <b>SetDIOBit</b>. 
+    Drag the <b>Port1Bit0</b> object into the <i>bitValue</i> field, and set the 
+    <i>bitPosition</i> to <b>8</b>. Next, drag the <b>IIComm</b> object into the<b> 
+    Action List</b> and selelect <b>GetDIOBit</b>. Set this <i>bitPosition</i> 
+    to <b>0</b>. Drag the <b>IIComm</b> object to the <i>Actions list </i>and 
+    select <b>Get last result</b>. Drag the <b>Port2Bit0</b> object to the <i>Actions 
+    list </i>and drag the <b>IIComm</b> object into its <i>to field</i>.</p>
+  <h2>Step 7 - Add the Analog I/O Control and Input Display.</h2>
+  <h2><img src="Images/tpproj11.jpg" width="639" height="544"></h2>
+  <p>Drag a <b>Knob</b> obeject and an <b>LED Display</b> object to Panel 1. Change 
+    the <b>Knob</b> object name to <b>DAC0</b>, set its<i> ScaleMaxValue</i> to 
+    <b>5</b>, and its <i>TicStopValue</i> to <b>5</b>. Change the <b>LED Display</b> 
+    object name to <b>ADC0</b>, set its <i>FixedDecimal</i> property to <b>True</b>, 
+    and its <i>Decimals</i> propery to <b>3</b>.</p>
+  <h2>Step 8 - Connect the Knob to D/A Output 0 and the LED Display to Analog 
+    input 0. </h2>
+  <p><img src="Images/tpproj12.jpg" width="639" height="544"></p>
+  <p>Right click on the <b>DAC0</b> object and select <i>Action list</i>. Right 
+    click the <b>IIComm</b> object and select S<i>ettings</i>. Drag the <b>lnDACControl</b> 
+    object to the <b>DAC0</b> object list and set the value to <b>0</b>. Right 
+    click the <b>IIComm</b> object and select<i> Settings</i>. Drag the <b>dDACOutput</b> 
+    to the <b>DAC0</b> object list. Drag the <b>DAC0</b> object to its parameter 
+    field. Right click the <b>IIComm</b> object and select S<i>ettings</i>. Drag 
+    the <b>lnADCControl</b> setting to the <b>DAC0</b> action list. Set it to 
+    <b>8</b>. Drag the <b>ADC0</b> object to the <b>DAC0</b> action list and select 
+    <i>Set</i>. Right click the <i>IIComm</i> object and select S<i>ettings</i>. 
+    Drag the <b>dADCUnipolar</b> setting to the <b>ADC0</b> input.</p>
+  <h2>&nbsp;</h2>
+  <h2>&nbsp;</h2>
+  <p>&nbsp;</p>
+</blockquote>
+</body>
+</html>

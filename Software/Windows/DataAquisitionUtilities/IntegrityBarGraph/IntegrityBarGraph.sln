@@ -1,0 +1,29 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "IntegrityBarGraph", "IntegrityBarGraph.vcproj", "{22EB0867-08C1-4B60-B84B-B118147D117C}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GraphTest", "..\GraphTest\GraphTest.vcproj", "{27A7EB14-F2A2-4B57-B785-82F43C10EC56}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{22EB0867-08C1-4B60-B84B-B118147D117C}.Debug.ActiveCfg = Debug|Win32
+		{22EB0867-08C1-4B60-B84B-B118147D117C}.Debug.Build.0 = Debug|Win32
+		{22EB0867-08C1-4B60-B84B-B118147D117C}.Release.ActiveCfg = Release|Win32
+		{22EB0867-08C1-4B60-B84B-B118147D117C}.Release.Build.0 = Release|Win32
+		{27A7EB14-F2A2-4B57-B785-82F43C10EC56}.Debug.ActiveCfg = Debug|Win32
+		{27A7EB14-F2A2-4B57-B785-82F43C10EC56}.Debug.Build.0 = Debug|Win32
+		{27A7EB14-F2A2-4B57-B785-82F43C10EC56}.Release.ActiveCfg = Release|Win32
+		{27A7EB14-F2A2-4B57-B785-82F43C10EC56}.Release.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal

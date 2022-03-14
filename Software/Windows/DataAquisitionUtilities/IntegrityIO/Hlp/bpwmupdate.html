@@ -1,0 +1,39 @@
+<html>
+<head>
+<title>bPWMUpdate</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
+
+<body bgcolor="#FFFFCC">
+<h1>Integrity I/O Module</h1>
+<table width="25%" border="0" align="left">
+  <tr> 
+    <td height="20"><a href="properties.html">Properties</a></td>
+    <td height="20"><a href="methods.html">Methods</a></td>
+    <td height="20"><a href="index.html">Home</a></td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+<hr>
+<h2>BOOL bPWMUpdate</h2>
+<blockquote> 
+  <p>Update the PWM registers.</p>
+</blockquote>
+<h2>Syntax</h2>
+<blockquote> 
+  <p>object.<b>bDialogDisable = </b><i>value</i></p>
+</blockquote>
+<h2>Dependencies</h2>
+<blockquote> <a href="lnpwmfreq.html">lnPWMFreq</a>, <a href="lnpwmduty.html">lnPWMDuty</a></blockquote>
+<p><b><i>Remarks:</i></b></p>
+<blockquote> 
+  <p>Property hasWrite only attributes.</p>
+  <p>Writing any value to this property will cause the control to construct the 
+    &quot;P&quot; command (See hardware users manual) and send it to the unit. 
+    This function uses the current settings of the <a href="lnpwmfreq.html">lnPWMFreq</a> 
+    and <a href="lnpwmduty.html">lnPWMDuty</a> properties.</p>
+  <p>&nbsp;</p>
+</blockquote>
+<p>&nbsp;</p>
+</body>
+</html>

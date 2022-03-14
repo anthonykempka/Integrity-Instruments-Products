@@ -1,0 +1,22 @@
+[OPTIONS]
+Compatibility=1.1 or later
+Compiled file=damhelp.chm
+Contents file=Table of Contents.hhc
+Default topic=Getting Started.htm
+Display compile progress=No
+Full-text search=Yes
+Index file=Index.hhk
+Language=0x409 English (United States)
+Title=DAMUtils
+
+
+[FILES]
+Getting Started.htm
+Parameter settings.htm
+File functions.htm
+Hexadecimal conversion chart.htm
+USBM400 Special Considerations.htm
+Data Logger.htm
+
+[INFOTYPES]
+

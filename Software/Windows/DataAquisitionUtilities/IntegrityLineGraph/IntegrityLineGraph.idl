@@ -1,0 +1,62 @@
+// IntegrityLineGraph.idl : type library source for ActiveX Control project.
+
+// This file will be processed by the MIDL compiler tool to
+// produce the type library (IntegrityLineGraph.tlb) that will become a resource in
+// IntegrityLineGraph.ocx.
+
+#include <olectl.h>
+#include <idispids.h>
+
+[ uuid(9CDEC8B9-5777-4029-9F02-FA4713A488C8), version(1.0),
+  helpfile("IntegrityLineGraph.hlp"),
+  helpstring("IntegrityLineGraph ActiveX Control module"),
+  control ]
+library IntegrityLineGraphLib
+{
+	importlib(STDOLE_TLB);
+
+	//  Primary dispatch interface for CIntegrityLineGraphCtrl
+
+	[ uuid(97EFD0FF-4A44-43C6-B2BC-965B3BEABACA),
+	  helpstring("Dispatch interface for IntegrityLineGraph Control")]
+	dispinterface _DIntegrityLineGraph
+	{
+		properties:
+		[id(3), helpstring("property dblMaxValue")] DOUBLE dblMaxValue;
+		[id(4), helpstring("property dblMinValue")] DOUBLE dblMinValue;
+		[id(5), helpstring("property lnNumElements")] LONG lnNumElements;
+methods:
+
+			[id(DISPID_ABOUTBOX)] void AboutBox();
+			[id(1), propget, helpstring("property dElement")] DOUBLE dElement(USHORT index);
+			[id(1), propput, helpstring("property dElement")] void dElement(USHORT index, DOUBLE newVal);
+			[id(2), propget, helpstring("property strElement")] BSTR strElement(USHORT index);
+			[id(2), propput, helpstring("property strElement")] void strElement(USHORT index, BSTR newVal);
+			[id(6), propget, helpstring("property ulElementColor")] ULONG ulElementColor(SHORT index);
+			[id(6), propput, helpstring("property ulElementColor")] void ulElementColor(SHORT index, ULONG newVal);
+			[id(7), helpstring("method RemoveAll")] void RemoveAll(void);
+	};
+
+	//  Event dispatch interface for CIntegrityLineGraphCtrl
+
+	[ uuid(7F5C1214-301A-4244-81C2-30DB796A386E),
+	  helpstring("Event interface for IntegrityLineGraph Control") ]
+	dispinterface _DIntegrityLineGraphEvents
+	{
+		properties:
+			//  Event interface has no properties
+
+		methods:
+	};
+
+	//  Class information for CIntegrityLineGraphCtrl
+
+	[ uuid(B68EE2FB-A4D5-4580-931C-3D43E85D724D),
+	  helpstring("IntegrityLineGraph Control"), control ]
+	coclass IntegrityLineGraph
+	{
+		[default] dispinterface _DIntegrityLineGraph;
+		[default, source] dispinterface _DIntegrityLineGraphEvents;
+	};
+
+};

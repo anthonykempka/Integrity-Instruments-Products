@@ -1,0 +1,620 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif\r\n"
+    "#include ""res\\Module Setup.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\Module Setup.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOG DISCARDABLE  0, 0, 217, 74
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About Module Setup"
+FONT 8, "MS Sans Serif"
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,11,17,21,20
+    LTEXT           "Module Setup Version 3.0",IDC_STATIC,39,7,119,8,
+                    SS_NOPREFIX
+    LTEXT           "Copyright (C) 1999-2002  Integrity Instruments, Inc.",
+                    IDC_STATIC,39,33,170,8
+    DEFPUSHBUTTON   "OK",IDOK,178,7,32,14,WS_GROUP
+    LTEXT           "http://www.integrityusa.com ",IDC_STATIC_INTEGRITY_WEB,
+                    39,59,122,8
+    LTEXT           "Build: xx/xx/xxxx",IDC_STATIC_BUILD_DATE,39,20,133,8,
+                    SS_NOPREFIX
+    LTEXT           "Tel: 800-450-2001    Tel: 218-587-3175",IDC_STATIC,39,
+                    46,161,8
+END
+
+IDD_MODULESETUP_DIALOG DIALOGEX 0, 0, 373, 314
+STYLE DS_MODALFRAME | WS_MINIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | 
+    WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "Module Setup - Integrity Instruments I/O Modules v3.0"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "Read Current",IDC_READ_CURRENT,316,7,50,14
+    PUSHBUTTON      "Configure",IDOK,316,31,50,14
+    PUSHBUTTON      "Defaults",IDC_DEFAULT,316,55,50,14
+    PUSHBUTTON      "Comm Setup",IDC_COM_SETUP,316,79,50,14
+    PUSHBUTTON      "Exit",IDCANCEL,316,127,50,14
+    CONTROL         "RS485 ",IDC_RS485_Radio,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP | WS_TABSTOP,120,113,68,8
+    CONTROL         "RS232 ",IDC_RS232_Radio,"Button",BS_AUTORADIOBUTTON | 
+                    WS_TABSTOP,25,113,68,8
+    CONTROL         "USB ",IDC_USB_Radio,"Button",BS_AUTORADIOBUTTON | 
+                    WS_TABSTOP,215,113,68,8
+    EDITTEXT        IDC_MODULE_ADDRESS,77,10,60,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_DATA_DIRECTION,77,32,60,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_ASYNC_CONFIG,47,162,60,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_PORT1_DEFAULT,233,7,60,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_PORT2_DEFAULT,233,29,60,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_DA_CH0_DEFAULT,233,51,60,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_DA_CH1_DEFAULT,233,74,60,14,ES_AUTOHSCROLL
+    CONTROL         "EXP-x attached (invert digital I/O)",IDC_EXPANDER,
+                    "Button",BS_AUTOCHECKBOX | BS_LEFTTEXT | WS_TABSTOP,7,53,
+                    129,10
+    CONTROL         "Enable Digital Status",IDC_STREAM_I,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,208,184,110,10
+    CONTROL         "Enable Pulse Counter Status",IDC_STREAM_N,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,48,184,108,10
+    EDITTEXT        IDC_STREAM_ANALOG,47,200,60,14,ES_AUTOHSCROLL
+    COMBOBOX        IDC_SAMPLE1,48,223,59,83,CBS_DROPDOWN | CBS_AUTOHSCROLL | 
+                    WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Unipolar",IDC_UNI_SAMPLE1,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,111,223,42,12
+    COMBOBOX        IDC_SAMPLE2,48,244,59,83,CBS_DROPDOWN | CBS_AUTOHSCROLL | 
+                    WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Unipolar",IDC_UNI_SAMPLE2,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,111,244,42,12
+    COMBOBOX        IDC_SAMPLE3,48,265,59,83,CBS_DROPDOWN | CBS_AUTOHSCROLL | 
+                    WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Unipolar",IDC_UNI_SAMPLE3,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,111,265,43,12
+    COMBOBOX        IDC_SAMPLE4,48,285,59,83,CBS_DROPDOWN | CBS_AUTOHSCROLL | 
+                    WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Unipolar",IDC_UNI_SAMPLE4,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,111,285,43,12
+    COMBOBOX        IDC_SAMPLE5,209,223,59,83,CBS_DROPDOWN | CBS_AUTOHSCROLL | 
+                    WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Unipolar",IDC_UNI_SAMPLE5,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,272,223,39,12
+    COMBOBOX        IDC_SAMPLE6,209,244,59,83,CBS_DROPDOWN | CBS_AUTOHSCROLL | 
+                    WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Unipolar",IDC_UNI_SAMPLE6,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,272,244,39,12
+    COMBOBOX        IDC_SAMPLE7,209,265,59,83,CBS_DROPDOWN | CBS_AUTOHSCROLL | 
+                    WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Unipolar",IDC_UNI_SAMPLE7,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,272,265,39,12
+    COMBOBOX        IDC_SAMPLE8,209,284,59,83,CBS_DROPDOWN | CBS_AUTOHSCROLL | 
+                    WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Unipolar",IDC_UNI_SAMPLE8,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,272,285,39,12
+    LTEXT           "Module Address:",IDC_STATIC,8,13,65,8
+    LTEXT           "Digital I/O Direction:",IDC_STATIC,8,35,65,8
+    GROUPBOX        "Asynchronous and Stream Mode configuration (RS232 and USB modules only)",
+                    IDC_STATIC,7,145,359,161
+    LTEXT           "Sample 1:",IDC_STATIC,13,225,34,11
+    LTEXT           "Analog Count:",IDC_STATIC,14,199,27,19
+    CTEXT           "(Hexadecimal values used in edit boxes)",IDC_STATIC_HEX,
+                    7,84,132,8,SS_CENTERIMAGE
+    LTEXT           "0 = No analog samples:  1...8 = # analog samples taken",
+                    IDC_STATIC,115,202,189,11
+    GROUPBOX        "Communication Interface",IDC_STATIC,7,99,291,41
+    LTEXT           "Sample 2:",IDC_STATIC,13,246,33,11
+    LTEXT           "Sample 3:",IDC_STATIC,13,267,34,11
+    LTEXT           "Sample 4:",IDC_STATIC,13,287,34,11
+    LTEXT           "Sample 5:",IDC_STATIC,174,225,33,11
+    LTEXT           "Sample 6:",IDC_STATIC,174,246,34,11
+    LTEXT           "Sample 7:",IDC_STATIC,174,267,33,11
+    LTEXT           "Sample 8:",IDC_STATIC,174,287,33,11
+    LTEXT           "Port1 Power Up:",IDC_STATIC,164,10,65,9
+    LTEXT           "Port2 Power Up:",IDC_STATIC,164,32,65,9
+    LTEXT           "D/A CH0 Power Up:",IDC_STATIC,164,54,65,9
+    LTEXT           "D/A CH1 Power Up:",IDC_STATIC,164,76,65,9
+    LTEXT           "Config:",IDC_STATIC,13,164,27,11
+    CONTROL         "Slow A/D clock (high Z inputs)",IDC_SLOW_ADC,"Button",
+                    BS_AUTOCHECKBOX | BS_LEFTTEXT | WS_TABSTOP,7,69,129,10
+    PUSHBUTTON      "About",IDC_ABOUT_US,316,103,50,14
+    LTEXT           "0x0000 = Disabled,  0x0001 = Update on digital or pulse counter change",
+                    IDC_STATIC,114,160,229,8
+    LTEXT           "0x0002 ... 0xFFFF = milliseconds between automatic timed updates",
+                    IDC_STATIC,114,169,211,8
+    CONTROL         "232M200 Module",IDC_232M200_CHECK,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,26,126,80,10
+END
+
+IDD_COMM_DIALOG DIALOG DISCARDABLE  0, 0, 186, 95
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Comm Setup"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,129,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,129,27,50,14
+    COMBOBOX        IDC_COMPORT,7,25,92,54,CBS_DROPDOWN | CBS_AUTOHSCROLL | 
+                    WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_BAUD_RATE,7,62,91,54,CBS_DROPDOWN | CBS_AUTOHSCROLL | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Comport",IDC_STATIC,7,14,92,11
+    LTEXT           "Baud Rate",IDC_STATIC,7,51,92,11
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 3,0,0,0
+ PRODUCTVERSION 3,0,0,0
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "Comments", "By: Anthony Kempka\0"
+            VALUE "CompanyName", "Integrity Instruments, Inc.\0"
+            VALUE "FileDescription", "RS232/RS485/USB Module Setup\0"
+            VALUE "FileVersion", "3, 0, 0, 0\0"
+            VALUE "InternalName", "Module Setup\0"
+            VALUE "LegalCopyright", "Copyright (C) 1999-2002 Integrity Instruments, Inc.\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "Module Setup.EXE\0"
+            VALUE "PrivateBuild", "\0"
+            VALUE "ProductName", "Module Setup Software\0"
+            VALUE "ProductVersion", "3, 0, 0, 0\0"
+            VALUE "SpecialBuild", "\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 210
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 67
+    END
+
+    IDD_MODULESETUP_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 366
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 306
+    END
+
+    IDD_COMM_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 179
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 88
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_COMM_DIALOG DLGINIT
+BEGIN
+    IDC_COMPORT, 0x403, 5, 0
+0x4f43, 0x314d, "\000" 
+    IDC_COMPORT, 0x403, 5, 0
+0x4f43, 0x324d, "\000" 
+    IDC_COMPORT, 0x403, 5, 0
+0x4f43, 0x334d, "\000" 
+    IDC_COMPORT, 0x403, 5, 0
+0x4f43, 0x344d, "\000" 
+    IDC_BAUD_RATE, 0x403, 7, 0
+0x3131, 0x3235, 0x3030, "\000" 
+    IDC_BAUD_RATE, 0x403, 6, 0
+0x3735, 0x3036, 0x0030, 
+    IDC_BAUD_RATE, 0x403, 6, 0
+0x3931, 0x3032, 0x0030, 
+    IDC_BAUD_RATE, 0x403, 5, 0
+0x3639, 0x3030, "\000" 
+    0
+END
+
+IDD_MODULESETUP_DIALOG DLGINIT
+BEGIN
+    IDC_SAMPLE1, 0x403, 4, 0
+0x4843, 0x0030, 
+    IDC_SAMPLE1, 0x403, 4, 0
+0x4843, 0x0031, 
+    IDC_SAMPLE1, 0x403, 4, 0
+0x4843, 0x0032, 
+    IDC_SAMPLE1, 0x403, 4, 0
+0x4843, 0x0033, 
+    IDC_SAMPLE1, 0x403, 4, 0
+0x4843, 0x0034, 
+    IDC_SAMPLE1, 0x403, 4, 0
+0x4843, 0x0035, 
+    IDC_SAMPLE1, 0x403, 4, 0
+0x4843, 0x0036, 
+    IDC_SAMPLE1, 0x403, 4, 0
+0x4843, 0x0037, 
+    IDC_SAMPLE1, 0x403, 11, 0
+0x432b, 0x3048, 0x2020, 0x432d, 0x3148, "\000" 
+    IDC_SAMPLE1, 0x403, 11, 0
+0x432d, 0x3048, 0x2020, 0x432b, 0x3148, "\000" 
+    IDC_SAMPLE1, 0x403, 11, 0
+0x432b, 0x3248, 0x2020, 0x432d, 0x3348, "\000" 
+    IDC_SAMPLE1, 0x403, 11, 0
+0x432d, 0x3248, 0x2020, 0x432b, 0x3348, "\000" 
+    IDC_SAMPLE1, 0x403, 11, 0
+0x432b, 0x3448, 0x2020, 0x432d, 0x3548, "\000" 
+    IDC_SAMPLE1, 0x403, 11, 0
+0x432d, 0x3448, 0x2020, 0x432b, 0x3548, "\000" 
+    IDC_SAMPLE1, 0x403, 11, 0
+0x432b, 0x3648, 0x2020, 0x432d, 0x3748, "\000" 
+    IDC_SAMPLE1, 0x403, 11, 0
+0x432d, 0x3648, 0x2020, 0x432b, 0x3748, "\000" 
+    IDC_SAMPLE2, 0x403, 4, 0
+0x4843, 0x0030, 
+    IDC_SAMPLE2, 0x403, 4, 0
+0x4843, 0x0031, 
+    IDC_SAMPLE2, 0x403, 4, 0
+0x4843, 0x0032, 
+    IDC_SAMPLE2, 0x403, 4, 0
+0x4843, 0x0033, 
+    IDC_SAMPLE2, 0x403, 4, 0
+0x4843, 0x0034, 
+    IDC_SAMPLE2, 0x403, 4, 0
+0x4843, 0x0035, 
+    IDC_SAMPLE2, 0x403, 4, 0
+0x4843, 0x0036, 
+    IDC_SAMPLE2, 0x403, 4, 0
+0x4843, 0x0037, 
+    IDC_SAMPLE2, 0x403, 11, 0
+0x432b, 0x3048, 0x2020, 0x432d, 0x3148, "\000" 
+    IDC_SAMPLE2, 0x403, 11, 0
+0x432d, 0x3048, 0x2020, 0x432b, 0x3148, "\000" 
+    IDC_SAMPLE2, 0x403, 11, 0
+0x432b, 0x3248, 0x2020, 0x432d, 0x3348, "\000" 
+    IDC_SAMPLE2, 0x403, 11, 0
+0x432d, 0x3248, 0x2020, 0x432b, 0x3348, "\000" 
+    IDC_SAMPLE2, 0x403, 11, 0
+0x432b, 0x3448, 0x2020, 0x432d, 0x3548, "\000" 
+    IDC_SAMPLE2, 0x403, 11, 0
+0x432d, 0x3448, 0x2020, 0x432b, 0x3548, "\000" 
+    IDC_SAMPLE2, 0x403, 11, 0
+0x432b, 0x3648, 0x2020, 0x432d, 0x3748, "\000" 
+    IDC_SAMPLE2, 0x403, 11, 0
+0x432d, 0x3648, 0x2020, 0x432b, 0x3748, "\000" 
+    IDC_SAMPLE3, 0x403, 4, 0
+0x4843, 0x0030, 
+    IDC_SAMPLE3, 0x403, 4, 0
+0x4843, 0x0031, 
+    IDC_SAMPLE3, 0x403, 4, 0
+0x4843, 0x0032, 
+    IDC_SAMPLE3, 0x403, 4, 0
+0x4843, 0x0033, 
+    IDC_SAMPLE3, 0x403, 4, 0
+0x4843, 0x0034, 
+    IDC_SAMPLE3, 0x403, 4, 0
+0x4843, 0x0035, 
+    IDC_SAMPLE3, 0x403, 4, 0
+0x4843, 0x0036, 
+    IDC_SAMPLE3, 0x403, 4, 0
+0x4843, 0x0037, 
+    IDC_SAMPLE3, 0x403, 11, 0
+0x432b, 0x3048, 0x2020, 0x432d, 0x3148, "\000" 
+    IDC_SAMPLE3, 0x403, 11, 0
+0x432d, 0x3048, 0x2020, 0x432b, 0x3148, "\000" 
+    IDC_SAMPLE3, 0x403, 11, 0
+0x432b, 0x3248, 0x2020, 0x432d, 0x3348, "\000" 
+    IDC_SAMPLE3, 0x403, 11, 0
+0x432d, 0x3248, 0x2020, 0x432b, 0x3348, "\000" 
+    IDC_SAMPLE3, 0x403, 11, 0
+0x432b, 0x3448, 0x2020, 0x432d, 0x3548, "\000" 
+    IDC_SAMPLE3, 0x403, 11, 0
+0x432d, 0x3448, 0x2020, 0x432b, 0x3548, "\000" 
+    IDC_SAMPLE3, 0x403, 11, 0
+0x432b, 0x3648, 0x2020, 0x432d, 0x3748, "\000" 
+    IDC_SAMPLE3, 0x403, 11, 0
+0x432d, 0x3648, 0x2020, 0x432b, 0x3748, "\000" 
+    IDC_SAMPLE4, 0x403, 4, 0
+0x4843, 0x0030, 
+    IDC_SAMPLE4, 0x403, 4, 0
+0x4843, 0x0031, 
+    IDC_SAMPLE4, 0x403, 4, 0
+0x4843, 0x0032, 
+    IDC_SAMPLE4, 0x403, 4, 0
+0x4843, 0x0033, 
+    IDC_SAMPLE4, 0x403, 4, 0
+0x4843, 0x0034, 
+    IDC_SAMPLE4, 0x403, 4, 0
+0x4843, 0x0035, 
+    IDC_SAMPLE4, 0x403, 4, 0
+0x4843, 0x0036, 
+    IDC_SAMPLE4, 0x403, 4, 0
+0x4843, 0x0037, 
+    IDC_SAMPLE4, 0x403, 11, 0
+0x432b, 0x3048, 0x2020, 0x432d, 0x3148, "\000" 
+    IDC_SAMPLE4, 0x403, 11, 0
+0x432d, 0x3048, 0x2020, 0x432b, 0x3148, "\000" 
+    IDC_SAMPLE4, 0x403, 11, 0
+0x432b, 0x3248, 0x2020, 0x432d, 0x3348, "\000" 
+    IDC_SAMPLE4, 0x403, 11, 0
+0x432d, 0x3248, 0x2020, 0x432b, 0x3348, "\000" 
+    IDC_SAMPLE4, 0x403, 11, 0
+0x432b, 0x3448, 0x2020, 0x432d, 0x3548, "\000" 
+    IDC_SAMPLE4, 0x403, 11, 0
+0x432d, 0x3448, 0x2020, 0x432b, 0x3548, "\000" 
+    IDC_SAMPLE4, 0x403, 11, 0
+0x432b, 0x3648, 0x2020, 0x432d, 0x3748, "\000" 
+    IDC_SAMPLE4, 0x403, 11, 0
+0x432d, 0x3648, 0x2020, 0x432b, 0x3748, "\000" 
+    IDC_SAMPLE5, 0x403, 4, 0
+0x4843, 0x0030, 
+    IDC_SAMPLE5, 0x403, 4, 0
+0x4843, 0x0031, 
+    IDC_SAMPLE5, 0x403, 4, 0
+0x4843, 0x0032, 
+    IDC_SAMPLE5, 0x403, 4, 0
+0x4843, 0x0033, 
+    IDC_SAMPLE5, 0x403, 4, 0
+0x4843, 0x0034, 
+    IDC_SAMPLE5, 0x403, 4, 0
+0x4843, 0x0035, 
+    IDC_SAMPLE5, 0x403, 4, 0
+0x4843, 0x0036, 
+    IDC_SAMPLE5, 0x403, 4, 0
+0x4843, 0x0037, 
+    IDC_SAMPLE5, 0x403, 11, 0
+0x432b, 0x3048, 0x2020, 0x432d, 0x3148, "\000" 
+    IDC_SAMPLE5, 0x403, 11, 0
+0x432d, 0x3048, 0x2020, 0x432b, 0x3148, "\000" 
+    IDC_SAMPLE5, 0x403, 11, 0
+0x432b, 0x3248, 0x2020, 0x432d, 0x3348, "\000" 
+    IDC_SAMPLE5, 0x403, 11, 0
+0x432d, 0x3248, 0x2020, 0x432b, 0x3348, "\000" 
+    IDC_SAMPLE5, 0x403, 11, 0
+0x432b, 0x3448, 0x2020, 0x432d, 0x3548, "\000" 
+    IDC_SAMPLE5, 0x403, 11, 0
+0x432d, 0x3448, 0x2020, 0x432b, 0x3548, "\000" 
+    IDC_SAMPLE5, 0x403, 11, 0
+0x432b, 0x3648, 0x2020, 0x432d, 0x3748, "\000" 
+    IDC_SAMPLE5, 0x403, 11, 0
+0x432d, 0x3648, 0x2020, 0x432b, 0x3748, "\000" 
+    IDC_SAMPLE6, 0x403, 4, 0
+0x4843, 0x0030, 
+    IDC_SAMPLE6, 0x403, 4, 0
+0x4843, 0x0031, 
+    IDC_SAMPLE6, 0x403, 4, 0
+0x4843, 0x0032, 
+    IDC_SAMPLE6, 0x403, 4, 0
+0x4843, 0x0033, 
+    IDC_SAMPLE6, 0x403, 4, 0
+0x4843, 0x0034, 
+    IDC_SAMPLE6, 0x403, 4, 0
+0x4843, 0x0035, 
+    IDC_SAMPLE6, 0x403, 4, 0
+0x4843, 0x0036, 
+    IDC_SAMPLE6, 0x403, 4, 0
+0x4843, 0x0037, 
+    IDC_SAMPLE6, 0x403, 11, 0
+0x432b, 0x3048, 0x2020, 0x432d, 0x3148, "\000" 
+    IDC_SAMPLE6, 0x403, 11, 0
+0x432d, 0x3048, 0x2020, 0x432b, 0x3148, "\000" 
+    IDC_SAMPLE6, 0x403, 11, 0
+0x432b, 0x3248, 0x2020, 0x432d, 0x3348, "\000" 
+    IDC_SAMPLE6, 0x403, 11, 0
+0x432d, 0x3248, 0x2020, 0x432b, 0x3348, "\000" 
+    IDC_SAMPLE6, 0x403, 11, 0
+0x432b, 0x3448, 0x2020, 0x432d, 0x3548, "\000" 
+    IDC_SAMPLE6, 0x403, 11, 0
+0x432d, 0x3448, 0x2020, 0x432b, 0x3548, "\000" 
+    IDC_SAMPLE6, 0x403, 11, 0
+0x432b, 0x3648, 0x2020, 0x432d, 0x3748, "\000" 
+    IDC_SAMPLE6, 0x403, 11, 0
+0x432d, 0x3648, 0x2020, 0x432b, 0x3748, "\000" 
+    IDC_SAMPLE7, 0x403, 4, 0
+0x4843, 0x0030, 
+    IDC_SAMPLE7, 0x403, 4, 0
+0x4843, 0x0031, 
+    IDC_SAMPLE7, 0x403, 4, 0
+0x4843, 0x0032, 
+    IDC_SAMPLE7, 0x403, 4, 0
+0x4843, 0x0033, 
+    IDC_SAMPLE7, 0x403, 4, 0
+0x4843, 0x0034, 
+    IDC_SAMPLE7, 0x403, 4, 0
+0x4843, 0x0035, 
+    IDC_SAMPLE7, 0x403, 4, 0
+0x4843, 0x0036, 
+    IDC_SAMPLE7, 0x403, 4, 0
+0x4843, 0x0037, 
+    IDC_SAMPLE7, 0x403, 11, 0
+0x432b, 0x3048, 0x2020, 0x432d, 0x3148, "\000" 
+    IDC_SAMPLE7, 0x403, 11, 0
+0x432d, 0x3048, 0x2020, 0x432b, 0x3148, "\000" 
+    IDC_SAMPLE7, 0x403, 11, 0
+0x432b, 0x3248, 0x2020, 0x432d, 0x3348, "\000" 
+    IDC_SAMPLE7, 0x403, 11, 0
+0x432d, 0x3248, 0x2020, 0x432b, 0x3348, "\000" 
+    IDC_SAMPLE7, 0x403, 11, 0
+0x432b, 0x3448, 0x2020, 0x432d, 0x3548, "\000" 
+    IDC_SAMPLE7, 0x403, 11, 0
+0x432d, 0x3448, 0x2020, 0x432b, 0x3548, "\000" 
+    IDC_SAMPLE7, 0x403, 11, 0
+0x432b, 0x3648, 0x2020, 0x432d, 0x3748, "\000" 
+    IDC_SAMPLE7, 0x403, 11, 0
+0x432d, 0x3648, 0x2020, 0x432b, 0x3748, "\000" 
+    IDC_SAMPLE8, 0x403, 4, 0
+0x4843, 0x0030, 
+    IDC_SAMPLE8, 0x403, 4, 0
+0x4843, 0x0031, 
+    IDC_SAMPLE8, 0x403, 4, 0
+0x4843, 0x0032, 
+    IDC_SAMPLE8, 0x403, 4, 0
+0x4843, 0x0033, 
+    IDC_SAMPLE8, 0x403, 4, 0
+0x4843, 0x0034, 
+    IDC_SAMPLE8, 0x403, 4, 0
+0x4843, 0x0035, 
+    IDC_SAMPLE8, 0x403, 4, 0
+0x4843, 0x0036, 
+    IDC_SAMPLE8, 0x403, 4, 0
+0x4843, 0x0037, 
+    IDC_SAMPLE8, 0x403, 11, 0
+0x432b, 0x3048, 0x2020, 0x432d, 0x3148, "\000" 
+    IDC_SAMPLE8, 0x403, 11, 0
+0x432d, 0x3048, 0x2020, 0x432b, 0x3148, "\000" 
+    IDC_SAMPLE8, 0x403, 11, 0
+0x432b, 0x3248, 0x2020, 0x432d, 0x3348, "\000" 
+    IDC_SAMPLE8, 0x403, 11, 0
+0x432d, 0x3248, 0x2020, 0x432b, 0x3348, "\000" 
+    IDC_SAMPLE8, 0x403, 11, 0
+0x432b, 0x3448, 0x2020, 0x432d, 0x3548, "\000" 
+    IDC_SAMPLE8, 0x403, 11, 0
+0x432d, 0x3448, 0x2020, 0x432b, 0x3548, "\000" 
+    IDC_SAMPLE8, 0x403, 11, 0
+0x432b, 0x3648, 0x2020, 0x432d, 0x3748, "\000" 
+    IDC_SAMPLE8, 0x403, 11, 0
+0x432d, 0x3648, 0x2020, 0x432b, 0x3748, "\000" 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Cursor
+//
+
+IDC_HAND_CURSOR         CURSOR  DISCARDABLE     "res\\hlink.cur"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ABOUTBOX            "&About Module Setup..."
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif
+#include "res\Module Setup.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

@@ -1,0 +1,757 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif\r\n"
+    "#include ""res\\ADC_Log.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\ADC_Log.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOG DISCARDABLE  0, 0, 217, 55
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About ADC_Log"
+FONT 8, "MS Sans Serif"
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,11,17,20,20
+    LTEXT           "ADC_Log Version 1.1",IDC_STATIC,40,10,119,8,SS_NOPREFIX
+    LTEXT           "Copyright (C) 1999  Integrity Instruments",IDC_STATIC,
+                    40,25,147,8
+    DEFPUSHBUTTON   "OK",IDOK,178,7,32,14,WS_GROUP
+    LTEXT           "www.rs-485.com    800-450-2001",IDC_STATIC,40,40,147,8
+END
+
+IDD_ADC_LOG_DIALOG DIALOGEX 0, 0, 197, 213
+STYLE DS_MODALFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_POPUP | 
+    WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "ADC_Log"
+FONT 8, "MS Sans Serif"
+BEGIN
+    PUSHBUTTON      "Exit",IDCANCEL,130,107,60,14
+    PUSHBUTTON      "Begin Log",IDC_BEGIN,130,7,60,14
+    PUSHBUTTON      "Halt Log",IDC_HALT,130,30,60,14
+    PUSHBUTTON      "Configuration",IDC_CONFIG,130,57,60,14
+    PUSHBUTTON      "Comm Setup",IDC_COMM_SETUP,130,82,60,14
+    EDITTEXT        IDC_FILENAME,15,165,165,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "File Browse...",IDC_BROWSE,67,186,60,14
+    GROUPBOX        "Log File Name",IDC_STATIC,7,148,183,58
+    LTEXT           "Last Command",IDC_STATIC,9,12,71,11
+    EDITTEXT        IDC_LAST_COMMAND,7,27,76,14,ES_AUTOHSCROLL | NOT 
+                    WS_TABSTOP
+    LTEXT           "Last Response",IDC_STATIC,9,52,71,11
+    EDITTEXT        IDC_LAST_RESPONSE,7,67,76,14,ES_AUTOHSCROLL | NOT 
+                    WS_TABSTOP
+    EDITTEXT        IDC_SAMPLE_COUNT,7,114,76,14,ES_AUTOHSCROLL | NOT 
+                    WS_TABSTOP
+    LTEXT           "Current Sample Count",IDC_STATIC,9,100,76,10
+END
+
+IDD_COMM_SETUP DIALOG DISCARDABLE  0, 0, 181, 170
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Comport Settings"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,124,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,124,26,50,14
+    COMBOBOX        IDC_COMPORT,7,21,92,54,CBS_DROPDOWN | CBS_AUTOHSCROLL | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_BAUD_RATE,7,54,91,54,CBS_DROPDOWN | CBS_AUTOHSCROLL | 
+                    WS_VSCROLL | WS_TABSTOP
+    CONTROL         "RS485 Interface",IDC_RS485_Radio,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP,14,88,68,10
+    CONTROL         "RS232 Interface",IDC_RS232_Radio,"Button",
+                    BS_AUTORADIOBUTTON,14,99,68,10
+    EDITTEXT        IDC_MODULE_ADDRESS,7,138,91,12,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    LTEXT           "Comport",IDC_STATIC,7,10,92,11
+    LTEXT           "Baud Rate",IDC_STATIC,7,43,92,11
+    GROUPBOX        "Interface",IDC_STATIC,7,77,86,38
+    LTEXT           "RS485 Module Address",IDC_STATIC,7,126,94,9
+END
+
+IDD_CONFIG_DIALOG DIALOG DISCARDABLE  0, 0, 280, 263
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "ADC-x Sample Configuration"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,213,7,60,14
+    PUSHBUTTON      "Cancel",IDCANCEL,213,48,60,14
+    COMBOBOX        IDC_SAMPLE1,54,7,94,83,CBS_DROPDOWN | CBS_AUTOHSCROLL | 
+                    WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Unipolar",IDC_UNI_SAMPLE1,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,155,7,56,12
+    CONTROL         "Unipolar",IDC_UNI_SAMPLE2,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,155,31,56,12
+    CONTROL         "Unipolar",IDC_UNI_SAMPLE3,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,155,53,56,12
+    CONTROL         "Unipolar",IDC_UNI_SAMPLE4,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,155,76,56,12
+    CONTROL         "Unipolar",IDC_UNI_SAMPLE5,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,155,99,56,12
+    CONTROL         "Unipolar",IDC_UNI_SAMPLE6,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,155,121,56,12
+    CONTROL         "Unipolar",IDC_UNI_SAMPLE7,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,155,146,56,12
+    CONTROL         "Unipolar",IDC_UNI_SAMPLE8,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,155,168,56,12
+    EDITTEXT        IDC_LOG_INTERVAL,54,191,94,12,ES_AUTOHSCROLL | ES_NUMBER
+    COMBOBOX        IDC_VREF,54,214,94,48,CBS_DROPDOWN | CBS_AUTOHSCROLL | 
+                    WS_VSCROLL | WS_TABSTOP
+    EDITTEXT        IDC_FILTER,54,237,94,12,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "Voltage Ref:",IDC_STATIC,7,216,43,10
+    LTEXT           "Log Interval:",IDC_STATIC,7,192,42,10
+    LTEXT           "Sample 1:",IDC_STATIC,7,9,37,10
+    LTEXT           "Sample 2:",IDC_STATIC,7,32,35,10
+    LTEXT           "Sample 3:",IDC_STATIC,7,55,36,10
+    LTEXT           "Sample 4:",IDC_STATIC,7,77,36,10
+    LTEXT           "Sample 5:",IDC_STATIC,7,100,35,10
+    LTEXT           "Sample 6:",IDC_STATIC,7,123,35,10
+    LTEXT           "Sample 7:",IDC_STATIC,7,147,36,10
+    LTEXT           "Sample 8:",IDC_STATIC,7,170,35,10
+    LTEXT           "Note: Log interval is in .1 second increments. Therefore, Log Interval 100=10 seconds",
+                    IDC_STATIC,153,188,113,26
+    LTEXT           "Filter:",IDC_STATIC,7,238,42,10
+    PUSHBUTTON      "Offset Calibration",IDC_OFFSET,213,27,60,14
+    COMBOBOX        IDC_SAMPLE2,54,31,94,83,CBS_DROPDOWN | CBS_AUTOHSCROLL | 
+                    WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_SAMPLE3,54,52,94,83,CBS_DROPDOWN | CBS_AUTOHSCROLL | 
+                    WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_SAMPLE4,54,76,94,83,CBS_DROPDOWN | CBS_AUTOHSCROLL | 
+                    WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_SAMPLE5,54,99,94,83,CBS_DROPDOWN | CBS_AUTOHSCROLL | 
+                    WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_SAMPLE6,54,121,94,83,CBS_DROPDOWN | CBS_AUTOHSCROLL | 
+                    WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_SAMPLE7,54,146,94,83,CBS_DROPDOWN | CBS_AUTOHSCROLL | 
+                    WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_SAMPLE8,54,168,94,83,CBS_DROPDOWN | CBS_AUTOHSCROLL | 
+                    WS_VSCROLL | WS_TABSTOP
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,1,0,1
+ PRODUCTVERSION 1,1,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "CompanyName", "\0"
+            VALUE "FileDescription", "ADC_Log MFC Application\0"
+            VALUE "FileVersion", "1, 1, 0, 1\0"
+            VALUE "InternalName", "ADC_Log\0"
+            VALUE "LegalCopyright", "Copyright (C) 1999  Integrity Instruments\0"
+            VALUE "OriginalFilename", "ADC_Log.EXE\0"
+            VALUE "ProductName", "ADC_Log Application\0"
+            VALUE "ProductVersion", "1, 1, 0, 1\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 210
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 48
+    END
+
+    IDD_ADC_LOG_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 190
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 206
+    END
+
+    IDD_COMM_SETUP, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 174
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 163
+    END
+
+    IDD_CONFIG_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 273
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 256
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_COMM_SETUP DLGINIT
+BEGIN
+    IDC_COMPORT, 0x403, 5, 0
+0x4f43, 0x314d, "\000" 
+    IDC_COMPORT, 0x403, 5, 0
+0x4f43, 0x324d, "\000" 
+    IDC_COMPORT, 0x403, 5, 0
+0x4f43, 0x334d, "\000" 
+    IDC_COMPORT, 0x403, 5, 0
+0x4f43, 0x344d, "\000" 
+    IDC_BAUD_RATE, 0x403, 7, 0
+0x3131, 0x3235, 0x3030, "\000" 
+    IDC_BAUD_RATE, 0x403, 6, 0
+0x3735, 0x3036, 0x0030, 
+    IDC_BAUD_RATE, 0x403, 6, 0
+0x3931, 0x3032, 0x0030, 
+    IDC_BAUD_RATE, 0x403, 5, 0
+0x3639, 0x3030, "\000" 
+    0
+END
+
+IDD_CONFIG_DIALOG DLGINIT
+BEGIN
+    IDC_SAMPLE1, 0x403, 5, 0
+0x6f4e, 0x656e, "\000" 
+    IDC_SAMPLE1, 0x403, 4, 0
+0x4843, 0x0030, 
+    IDC_SAMPLE1, 0x403, 4, 0
+0x4843, 0x0031, 
+    IDC_SAMPLE1, 0x403, 4, 0
+0x4843, 0x0032, 
+    IDC_SAMPLE1, 0x403, 4, 0
+0x4843, 0x0033, 
+    IDC_SAMPLE1, 0x403, 4, 0
+0x4843, 0x0034, 
+    IDC_SAMPLE1, 0x403, 4, 0
+0x4843, 0x0035, 
+    IDC_SAMPLE1, 0x403, 4, 0
+0x4843, 0x0036, 
+    IDC_SAMPLE1, 0x403, 4, 0
+0x4843, 0x0037, 
+    IDC_SAMPLE1, 0x403, 17, 0
+0x6944, 0x6669, 0x203a, 0x432b, 0x3048, 0x2020, 0x432d, 0x3148, "\000" 
+    IDC_SAMPLE1, 0x403, 17, 0
+0x6944, 0x6666, 0x203a, 0x432d, 0x3048, 0x2020, 0x432b, 0x3148, "\000" 
+    IDC_SAMPLE1, 0x403, 17, 0
+0x6944, 0x6666, 0x203a, 0x432b, 0x3248, 0x2020, 0x432d, 0x3348, "\000" 
+    IDC_SAMPLE1, 0x403, 17, 0
+0x6944, 0x6666, 0x203a, 0x432d, 0x3248, 0x2020, 0x432b, 0x3348, "\000" 
+    IDC_SAMPLE1, 0x403, 17, 0
+0x6944, 0x6666, 0x203a, 0x432b, 0x3448, 0x2020, 0x432d, 0x3548, "\000" 
+    IDC_SAMPLE1, 0x403, 17, 0
+0x6944, 0x6666, 0x203a, 0x432d, 0x3448, 0x2020, 0x432b, 0x3548, "\000" 
+    IDC_SAMPLE1, 0x403, 17, 0
+0x6944, 0x6666, 0x203a, 0x432b, 0x3648, 0x2020, 0x432d, 0x3748, "\000" 
+    IDC_SAMPLE1, 0x403, 16, 0
+0x6944, 0x6666, 0x2d3a, 0x4843, 0x2036, 0x2b20, 0x4843, 0x0037, 
+    IDC_SAMPLE1, 0x403, 9, 0
+0x6554, 0x706d, 0x4320, 0x3048, "\000" 
+    IDC_SAMPLE1, 0x403, 9, 0
+0x6554, 0x706d, 0x4320, 0x3148, "\000" 
+    IDC_SAMPLE1, 0x403, 9, 0
+0x6554, 0x706d, 0x4320, 0x3248, "\000" 
+    IDC_SAMPLE1, 0x403, 9, 0
+0x6554, 0x706d, 0x4320, 0x3348, "\000" 
+    IDC_SAMPLE1, 0x403, 9, 0
+0x6554, 0x706d, 0x4320, 0x3448, "\000" 
+    IDC_SAMPLE1, 0x403, 9, 0
+0x6554, 0x706d, 0x4320, 0x3548, "\000" 
+    IDC_SAMPLE1, 0x403, 9, 0
+0x6554, 0x706d, 0x4320, 0x3648, "\000" 
+    IDC_SAMPLE1, 0x403, 9, 0
+0x6554, 0x706d, 0x4320, 0x3748, "\000" 
+    IDC_VREF, 0x403, 7, 0
+0x2e31, 0x3032, 0x5630, "\000" 
+    IDC_VREF, 0x403, 7, 0
+0x2e32, 0x3035, 0x5630, "\000" 
+    IDC_VREF, 0x403, 7, 0
+0x2e34, 0x3930, 0x5636, "\000" 
+    IDC_VREF, 0x403, 7, 0
+0x2e35, 0x3030, 0x5630, "\000" 
+    IDC_SAMPLE2, 0x403, 5, 0
+0x6f4e, 0x656e, "\000" 
+    IDC_SAMPLE2, 0x403, 4, 0
+0x4843, 0x0030, 
+    IDC_SAMPLE2, 0x403, 4, 0
+0x4843, 0x0031, 
+    IDC_SAMPLE2, 0x403, 4, 0
+0x4843, 0x0032, 
+    IDC_SAMPLE2, 0x403, 4, 0
+0x4843, 0x0033, 
+    IDC_SAMPLE2, 0x403, 4, 0
+0x4843, 0x0034, 
+    IDC_SAMPLE2, 0x403, 4, 0
+0x4843, 0x0035, 
+    IDC_SAMPLE2, 0x403, 4, 0
+0x4843, 0x0036, 
+    IDC_SAMPLE2, 0x403, 4, 0
+0x4843, 0x0037, 
+    IDC_SAMPLE2, 0x403, 17, 0
+0x6944, 0x6669, 0x203a, 0x432b, 0x3048, 0x2020, 0x432d, 0x3148, "\000" 
+    IDC_SAMPLE2, 0x403, 17, 0
+0x6944, 0x6666, 0x203a, 0x432d, 0x3048, 0x2020, 0x432b, 0x3148, "\000" 
+    IDC_SAMPLE2, 0x403, 17, 0
+0x6944, 0x6666, 0x203a, 0x432b, 0x3248, 0x2020, 0x432d, 0x3348, "\000" 
+    IDC_SAMPLE2, 0x403, 17, 0
+0x6944, 0x6666, 0x203a, 0x432d, 0x3248, 0x2020, 0x432b, 0x3348, "\000" 
+    IDC_SAMPLE2, 0x403, 17, 0
+0x6944, 0x6666, 0x203a, 0x432b, 0x3448, 0x2020, 0x432d, 0x3548, "\000" 
+    IDC_SAMPLE2, 0x403, 17, 0
+0x6944, 0x6666, 0x203a, 0x432d, 0x3448, 0x2020, 0x432b, 0x3548, "\000" 
+    IDC_SAMPLE2, 0x403, 17, 0
+0x6944, 0x6666, 0x203a, 0x432b, 0x3648, 0x2020, 0x432d, 0x3748, "\000" 
+    IDC_SAMPLE2, 0x403, 16, 0
+0x6944, 0x6666, 0x2d3a, 0x4843, 0x2036, 0x2b20, 0x4843, 0x0037, 
+    IDC_SAMPLE2, 0x403, 9, 0
+0x6554, 0x706d, 0x4320, 0x3048, "\000" 
+    IDC_SAMPLE2, 0x403, 9, 0
+0x6554, 0x706d, 0x4320, 0x3148, "\000" 
+    IDC_SAMPLE2, 0x403, 9, 0
+0x6554, 0x706d, 0x4320, 0x3248, "\000" 
+    IDC_SAMPLE2, 0x403, 9, 0
+0x6554, 0x706d, 0x4320, 0x3348, "\000" 
+    IDC_SAMPLE2, 0x403, 9, 0
+0x6554, 0x706d, 0x4320, 0x3448, "\000" 
+    IDC_SAMPLE2, 0x403, 9, 0
+0x6554, 0x706d, 0x4320, 0x3548, "\000" 
+    IDC_SAMPLE2, 0x403, 9, 0
+0x6554, 0x706d, 0x4320, 0x3648, "\000" 
+    IDC_SAMPLE2, 0x403, 9, 0
+0x6554, 0x706d, 0x4320, 0x3748, "\000" 
+    IDC_SAMPLE3, 0x403, 5, 0
+0x6f4e, 0x656e, "\000" 
+    IDC_SAMPLE3, 0x403, 4, 0
+0x4843, 0x0030, 
+    IDC_SAMPLE3, 0x403, 4, 0
+0x4843, 0x0031, 
+    IDC_SAMPLE3, 0x403, 4, 0
+0x4843, 0x0032, 
+    IDC_SAMPLE3, 0x403, 4, 0
+0x4843, 0x0033, 
+    IDC_SAMPLE3, 0x403, 4, 0
+0x4843, 0x0034, 
+    IDC_SAMPLE3, 0x403, 4, 0
+0x4843, 0x0035, 
+    IDC_SAMPLE3, 0x403, 4, 0
+0x4843, 0x0036, 
+    IDC_SAMPLE3, 0x403, 4, 0
+0x4843, 0x0037, 
+    IDC_SAMPLE3, 0x403, 17, 0
+0x6944, 0x6669, 0x203a, 0x432b, 0x3048, 0x2020, 0x432d, 0x3148, "\000" 
+    IDC_SAMPLE3, 0x403, 17, 0
+0x6944, 0x6666, 0x203a, 0x432d, 0x3048, 0x2020, 0x432b, 0x3148, "\000" 
+    IDC_SAMPLE3, 0x403, 17, 0
+0x6944, 0x6666, 0x203a, 0x432b, 0x3248, 0x2020, 0x432d, 0x3348, "\000" 
+    IDC_SAMPLE3, 0x403, 17, 0
+0x6944, 0x6666, 0x203a, 0x432d, 0x3248, 0x2020, 0x432b, 0x3348, "\000" 
+    IDC_SAMPLE3, 0x403, 17, 0
+0x6944, 0x6666, 0x203a, 0x432b, 0x3448, 0x2020, 0x432d, 0x3548, "\000" 
+    IDC_SAMPLE3, 0x403, 17, 0
+0x6944, 0x6666, 0x203a, 0x432d, 0x3448, 0x2020, 0x432b, 0x3548, "\000" 
+    IDC_SAMPLE3, 0x403, 17, 0
+0x6944, 0x6666, 0x203a, 0x432b, 0x3648, 0x2020, 0x432d, 0x3748, "\000" 
+    IDC_SAMPLE3, 0x403, 16, 0
+0x6944, 0x6666, 0x2d3a, 0x4843, 0x2036, 0x2b20, 0x4843, 0x0037, 
+    IDC_SAMPLE3, 0x403, 9, 0
+0x6554, 0x706d, 0x4320, 0x3048, "\000" 
+    IDC_SAMPLE3, 0x403, 9, 0
+0x6554, 0x706d, 0x4320, 0x3148, "\000" 
+    IDC_SAMPLE3, 0x403, 9, 0
+0x6554, 0x706d, 0x4320, 0x3248, "\000" 
+    IDC_SAMPLE3, 0x403, 9, 0
+0x6554, 0x706d, 0x4320, 0x3348, "\000" 
+    IDC_SAMPLE3, 0x403, 9, 0
+0x6554, 0x706d, 0x4320, 0x3448, "\000" 
+    IDC_SAMPLE3, 0x403, 9, 0
+0x6554, 0x706d, 0x4320, 0x3548, "\000" 
+    IDC_SAMPLE3, 0x403, 9, 0
+0x6554, 0x706d, 0x4320, 0x3648, "\000" 
+    IDC_SAMPLE3, 0x403, 9, 0
+0x6554, 0x706d, 0x4320, 0x3748, "\000" 
+    IDC_SAMPLE4, 0x403, 5, 0
+0x6f4e, 0x656e, "\000" 
+    IDC_SAMPLE4, 0x403, 4, 0
+0x4843, 0x0030, 
+    IDC_SAMPLE4, 0x403, 4, 0
+0x4843, 0x0031, 
+    IDC_SAMPLE4, 0x403, 4, 0
+0x4843, 0x0032, 
+    IDC_SAMPLE4, 0x403, 4, 0
+0x4843, 0x0033, 
+    IDC_SAMPLE4, 0x403, 4, 0
+0x4843, 0x0034, 
+    IDC_SAMPLE4, 0x403, 4, 0
+0x4843, 0x0035, 
+    IDC_SAMPLE4, 0x403, 4, 0
+0x4843, 0x0036, 
+    IDC_SAMPLE4, 0x403, 4, 0
+0x4843, 0x0037, 
+    IDC_SAMPLE4, 0x403, 17, 0
+0x6944, 0x6669, 0x203a, 0x432b, 0x3048, 0x2020, 0x432d, 0x3148, "\000" 
+    IDC_SAMPLE4, 0x403, 17, 0
+0x6944, 0x6666, 0x203a, 0x432d, 0x3048, 0x2020, 0x432b, 0x3148, "\000" 
+    IDC_SAMPLE4, 0x403, 17, 0
+0x6944, 0x6666, 0x203a, 0x432b, 0x3248, 0x2020, 0x432d, 0x3348, "\000" 
+    IDC_SAMPLE4, 0x403, 17, 0
+0x6944, 0x6666, 0x203a, 0x432d, 0x3248, 0x2020, 0x432b, 0x3348, "\000" 
+    IDC_SAMPLE4, 0x403, 17, 0
+0x6944, 0x6666, 0x203a, 0x432b, 0x3448, 0x2020, 0x432d, 0x3548, "\000" 
+    IDC_SAMPLE4, 0x403, 17, 0
+0x6944, 0x6666, 0x203a, 0x432d, 0x3448, 0x2020, 0x432b, 0x3548, "\000" 
+    IDC_SAMPLE4, 0x403, 17, 0
+0x6944, 0x6666, 0x203a, 0x432b, 0x3648, 0x2020, 0x432d, 0x3748, "\000" 
+    IDC_SAMPLE4, 0x403, 16, 0
+0x6944, 0x6666, 0x2d3a, 0x4843, 0x2036, 0x2b20, 0x4843, 0x0037, 
+    IDC_SAMPLE4, 0x403, 9, 0
+0x6554, 0x706d, 0x4320, 0x3048, "\000" 
+    IDC_SAMPLE4, 0x403, 9, 0
+0x6554, 0x706d, 0x4320, 0x3148, "\000" 
+    IDC_SAMPLE4, 0x403, 9, 0
+0x6554, 0x706d, 0x4320, 0x3248, "\000" 
+    IDC_SAMPLE4, 0x403, 9, 0
+0x6554, 0x706d, 0x4320, 0x3348, "\000" 
+    IDC_SAMPLE4, 0x403, 9, 0
+0x6554, 0x706d, 0x4320, 0x3448, "\000" 
+    IDC_SAMPLE4, 0x403, 9, 0
+0x6554, 0x706d, 0x4320, 0x3548, "\000" 
+    IDC_SAMPLE4, 0x403, 9, 0
+0x6554, 0x706d, 0x4320, 0x3648, "\000" 
+    IDC_SAMPLE4, 0x403, 9, 0
+0x6554, 0x706d, 0x4320, 0x3748, "\000" 
+    IDC_SAMPLE5, 0x403, 5, 0
+0x6f4e, 0x656e, "\000" 
+    IDC_SAMPLE5, 0x403, 4, 0
+0x4843, 0x0030, 
+    IDC_SAMPLE5, 0x403, 4, 0
+0x4843, 0x0031, 
+    IDC_SAMPLE5, 0x403, 4, 0
+0x4843, 0x0032, 
+    IDC_SAMPLE5, 0x403, 4, 0
+0x4843, 0x0033, 
+    IDC_SAMPLE5, 0x403, 4, 0
+0x4843, 0x0034, 
+    IDC_SAMPLE5, 0x403, 4, 0
+0x4843, 0x0035, 
+    IDC_SAMPLE5, 0x403, 4, 0
+0x4843, 0x0036, 
+    IDC_SAMPLE5, 0x403, 4, 0
+0x4843, 0x0037, 
+    IDC_SAMPLE5, 0x403, 17, 0
+0x6944, 0x6669, 0x203a, 0x432b, 0x3048, 0x2020, 0x432d, 0x3148, "\000" 
+    IDC_SAMPLE5, 0x403, 17, 0
+0x6944, 0x6666, 0x203a, 0x432d, 0x3048, 0x2020, 0x432b, 0x3148, "\000" 
+    IDC_SAMPLE5, 0x403, 17, 0
+0x6944, 0x6666, 0x203a, 0x432b, 0x3248, 0x2020, 0x432d, 0x3348, "\000" 
+    IDC_SAMPLE5, 0x403, 17, 0
+0x6944, 0x6666, 0x203a, 0x432d, 0x3248, 0x2020, 0x432b, 0x3348, "\000" 
+    IDC_SAMPLE5, 0x403, 17, 0
+0x6944, 0x6666, 0x203a, 0x432b, 0x3448, 0x2020, 0x432d, 0x3548, "\000" 
+    IDC_SAMPLE5, 0x403, 17, 0
+0x6944, 0x6666, 0x203a, 0x432d, 0x3448, 0x2020, 0x432b, 0x3548, "\000" 
+    IDC_SAMPLE5, 0x403, 17, 0
+0x6944, 0x6666, 0x203a, 0x432b, 0x3648, 0x2020, 0x432d, 0x3748, "\000" 
+    IDC_SAMPLE5, 0x403, 16, 0
+0x6944, 0x6666, 0x2d3a, 0x4843, 0x2036, 0x2b20, 0x4843, 0x0037, 
+    IDC_SAMPLE5, 0x403, 9, 0
+0x6554, 0x706d, 0x4320, 0x3048, "\000" 
+    IDC_SAMPLE5, 0x403, 9, 0
+0x6554, 0x706d, 0x4320, 0x3148, "\000" 
+    IDC_SAMPLE5, 0x403, 9, 0
+0x6554, 0x706d, 0x4320, 0x3248, "\000" 
+    IDC_SAMPLE5, 0x403, 9, 0
+0x6554, 0x706d, 0x4320, 0x3348, "\000" 
+    IDC_SAMPLE5, 0x403, 9, 0
+0x6554, 0x706d, 0x4320, 0x3448, "\000" 
+    IDC_SAMPLE5, 0x403, 9, 0
+0x6554, 0x706d, 0x4320, 0x3548, "\000" 
+    IDC_SAMPLE5, 0x403, 9, 0
+0x6554, 0x706d, 0x4320, 0x3648, "\000" 
+    IDC_SAMPLE5, 0x403, 9, 0
+0x6554, 0x706d, 0x4320, 0x3748, "\000" 
+    IDC_SAMPLE6, 0x403, 5, 0
+0x6f4e, 0x656e, "\000" 
+    IDC_SAMPLE6, 0x403, 4, 0
+0x4843, 0x0030, 
+    IDC_SAMPLE6, 0x403, 4, 0
+0x4843, 0x0031, 
+    IDC_SAMPLE6, 0x403, 4, 0
+0x4843, 0x0032, 
+    IDC_SAMPLE6, 0x403, 4, 0
+0x4843, 0x0033, 
+    IDC_SAMPLE6, 0x403, 4, 0
+0x4843, 0x0034, 
+    IDC_SAMPLE6, 0x403, 4, 0
+0x4843, 0x0035, 
+    IDC_SAMPLE6, 0x403, 4, 0
+0x4843, 0x0036, 
+    IDC_SAMPLE6, 0x403, 4, 0
+0x4843, 0x0037, 
+    IDC_SAMPLE6, 0x403, 17, 0
+0x6944, 0x6669, 0x203a, 0x432b, 0x3048, 0x2020, 0x432d, 0x3148, "\000" 
+    IDC_SAMPLE6, 0x403, 17, 0
+0x6944, 0x6666, 0x203a, 0x432d, 0x3048, 0x2020, 0x432b, 0x3148, "\000" 
+    IDC_SAMPLE6, 0x403, 17, 0
+0x6944, 0x6666, 0x203a, 0x432b, 0x3248, 0x2020, 0x432d, 0x3348, "\000" 
+    IDC_SAMPLE6, 0x403, 17, 0
+0x6944, 0x6666, 0x203a, 0x432d, 0x3248, 0x2020, 0x432b, 0x3348, "\000" 
+    IDC_SAMPLE6, 0x403, 17, 0
+0x6944, 0x6666, 0x203a, 0x432b, 0x3448, 0x2020, 0x432d, 0x3548, "\000" 
+    IDC_SAMPLE6, 0x403, 17, 0
+0x6944, 0x6666, 0x203a, 0x432d, 0x3448, 0x2020, 0x432b, 0x3548, "\000" 
+    IDC_SAMPLE6, 0x403, 17, 0
+0x6944, 0x6666, 0x203a, 0x432b, 0x3648, 0x2020, 0x432d, 0x3748, "\000" 
+    IDC_SAMPLE6, 0x403, 16, 0
+0x6944, 0x6666, 0x2d3a, 0x4843, 0x2036, 0x2b20, 0x4843, 0x0037, 
+    IDC_SAMPLE6, 0x403, 9, 0
+0x6554, 0x706d, 0x4320, 0x3048, "\000" 
+    IDC_SAMPLE6, 0x403, 9, 0
+0x6554, 0x706d, 0x4320, 0x3148, "\000" 
+    IDC_SAMPLE6, 0x403, 9, 0
+0x6554, 0x706d, 0x4320, 0x3248, "\000" 
+    IDC_SAMPLE6, 0x403, 9, 0
+0x6554, 0x706d, 0x4320, 0x3348, "\000" 
+    IDC_SAMPLE6, 0x403, 9, 0
+0x6554, 0x706d, 0x4320, 0x3448, "\000" 
+    IDC_SAMPLE6, 0x403, 9, 0
+0x6554, 0x706d, 0x4320, 0x3548, "\000" 
+    IDC_SAMPLE6, 0x403, 9, 0
+0x6554, 0x706d, 0x4320, 0x3648, "\000" 
+    IDC_SAMPLE6, 0x403, 9, 0
+0x6554, 0x706d, 0x4320, 0x3748, "\000" 
+    IDC_SAMPLE7, 0x403, 5, 0
+0x6f4e, 0x656e, "\000" 
+    IDC_SAMPLE7, 0x403, 4, 0
+0x4843, 0x0030, 
+    IDC_SAMPLE7, 0x403, 4, 0
+0x4843, 0x0031, 
+    IDC_SAMPLE7, 0x403, 4, 0
+0x4843, 0x0032, 
+    IDC_SAMPLE7, 0x403, 4, 0
+0x4843, 0x0033, 
+    IDC_SAMPLE7, 0x403, 4, 0
+0x4843, 0x0034, 
+    IDC_SAMPLE7, 0x403, 4, 0
+0x4843, 0x0035, 
+    IDC_SAMPLE7, 0x403, 4, 0
+0x4843, 0x0036, 
+    IDC_SAMPLE7, 0x403, 4, 0
+0x4843, 0x0037, 
+    IDC_SAMPLE7, 0x403, 17, 0
+0x6944, 0x6669, 0x203a, 0x432b, 0x3048, 0x2020, 0x432d, 0x3148, "\000" 
+    IDC_SAMPLE7, 0x403, 17, 0
+0x6944, 0x6666, 0x203a, 0x432d, 0x3048, 0x2020, 0x432b, 0x3148, "\000" 
+    IDC_SAMPLE7, 0x403, 17, 0
+0x6944, 0x6666, 0x203a, 0x432b, 0x3248, 0x2020, 0x432d, 0x3348, "\000" 
+    IDC_SAMPLE7, 0x403, 17, 0
+0x6944, 0x6666, 0x203a, 0x432d, 0x3248, 0x2020, 0x432b, 0x3348, "\000" 
+    IDC_SAMPLE7, 0x403, 17, 0
+0x6944, 0x6666, 0x203a, 0x432b, 0x3448, 0x2020, 0x432d, 0x3548, "\000" 
+    IDC_SAMPLE7, 0x403, 17, 0
+0x6944, 0x6666, 0x203a, 0x432d, 0x3448, 0x2020, 0x432b, 0x3548, "\000" 
+    IDC_SAMPLE7, 0x403, 17, 0
+0x6944, 0x6666, 0x203a, 0x432b, 0x3648, 0x2020, 0x432d, 0x3748, "\000" 
+    IDC_SAMPLE7, 0x403, 16, 0
+0x6944, 0x6666, 0x2d3a, 0x4843, 0x2036, 0x2b20, 0x4843, 0x0037, 
+    IDC_SAMPLE7, 0x403, 9, 0
+0x6554, 0x706d, 0x4320, 0x3048, "\000" 
+    IDC_SAMPLE7, 0x403, 9, 0
+0x6554, 0x706d, 0x4320, 0x3148, "\000" 
+    IDC_SAMPLE7, 0x403, 9, 0
+0x6554, 0x706d, 0x4320, 0x3248, "\000" 
+    IDC_SAMPLE7, 0x403, 9, 0
+0x6554, 0x706d, 0x4320, 0x3348, "\000" 
+    IDC_SAMPLE7, 0x403, 9, 0
+0x6554, 0x706d, 0x4320, 0x3448, "\000" 
+    IDC_SAMPLE7, 0x403, 9, 0
+0x6554, 0x706d, 0x4320, 0x3548, "\000" 
+    IDC_SAMPLE7, 0x403, 9, 0
+0x6554, 0x706d, 0x4320, 0x3648, "\000" 
+    IDC_SAMPLE7, 0x403, 9, 0
+0x6554, 0x706d, 0x4320, 0x3748, "\000" 
+    IDC_SAMPLE8, 0x403, 5, 0
+0x6f4e, 0x656e, "\000" 
+    IDC_SAMPLE8, 0x403, 4, 0
+0x4843, 0x0030, 
+    IDC_SAMPLE8, 0x403, 4, 0
+0x4843, 0x0031, 
+    IDC_SAMPLE8, 0x403, 4, 0
+0x4843, 0x0032, 
+    IDC_SAMPLE8, 0x403, 4, 0
+0x4843, 0x0033, 
+    IDC_SAMPLE8, 0x403, 4, 0
+0x4843, 0x0034, 
+    IDC_SAMPLE8, 0x403, 4, 0
+0x4843, 0x0035, 
+    IDC_SAMPLE8, 0x403, 4, 0
+0x4843, 0x0036, 
+    IDC_SAMPLE8, 0x403, 4, 0
+0x4843, 0x0037, 
+    IDC_SAMPLE8, 0x403, 17, 0
+0x6944, 0x6669, 0x203a, 0x432b, 0x3048, 0x2020, 0x432d, 0x3148, "\000" 
+    IDC_SAMPLE8, 0x403, 17, 0
+0x6944, 0x6666, 0x203a, 0x432d, 0x3048, 0x2020, 0x432b, 0x3148, "\000" 
+    IDC_SAMPLE8, 0x403, 17, 0
+0x6944, 0x6666, 0x203a, 0x432b, 0x3248, 0x2020, 0x432d, 0x3348, "\000" 
+    IDC_SAMPLE8, 0x403, 17, 0
+0x6944, 0x6666, 0x203a, 0x432d, 0x3248, 0x2020, 0x432b, 0x3348, "\000" 
+    IDC_SAMPLE8, 0x403, 17, 0
+0x6944, 0x6666, 0x203a, 0x432b, 0x3448, 0x2020, 0x432d, 0x3548, "\000" 
+    IDC_SAMPLE8, 0x403, 17, 0
+0x6944, 0x6666, 0x203a, 0x432d, 0x3448, 0x2020, 0x432b, 0x3548, "\000" 
+    IDC_SAMPLE8, 0x403, 17, 0
+0x6944, 0x6666, 0x203a, 0x432b, 0x3648, 0x2020, 0x432d, 0x3748, "\000" 
+    IDC_SAMPLE8, 0x403, 16, 0
+0x6944, 0x6666, 0x2d3a, 0x4843, 0x2036, 0x2b20, 0x4843, 0x0037, 
+    IDC_SAMPLE8, 0x403, 9, 0
+0x6554, 0x706d, 0x4320, 0x3048, "\000" 
+    IDC_SAMPLE8, 0x403, 9, 0
+0x6554, 0x706d, 0x4320, 0x3148, "\000" 
+    IDC_SAMPLE8, 0x403, 9, 0
+0x6554, 0x706d, 0x4320, 0x3248, "\000" 
+    IDC_SAMPLE8, 0x403, 9, 0
+0x6554, 0x706d, 0x4320, 0x3348, "\000" 
+    IDC_SAMPLE8, 0x403, 9, 0
+0x6554, 0x706d, 0x4320, 0x3448, "\000" 
+    IDC_SAMPLE8, 0x403, 9, 0
+0x6554, 0x706d, 0x4320, 0x3548, "\000" 
+    IDC_SAMPLE8, 0x403, 9, 0
+0x6554, 0x706d, 0x4320, 0x3648, "\000" 
+    IDC_SAMPLE8, 0x403, 9, 0
+0x6554, 0x706d, 0x4320, 0x3748, "\000" 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ABOUTBOX            "&About ADC_Log..."
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif
+#include "res\ADC_Log.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

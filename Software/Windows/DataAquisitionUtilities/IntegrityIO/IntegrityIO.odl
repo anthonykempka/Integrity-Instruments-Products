@@ -1,0 +1,109 @@
+// IntegrityIO.odl : type library source for ActiveX Control project.
+
+// This file will be processed by the Make Type Library (mktyplib) tool to
+// produce the type library (IntegrityIO.tlb) that will become a resource in
+// IntegrityIO.ocx.
+
+#include <olectl.h>
+#include <idispids.h>
+
+[ uuid(CBE068B4-C05C-49D7-9B1D-44AE4069AF4C), version(1.0),
+  helpfile("IntegrityIO.hlp"),
+  helpstring("IntegrityIO ActiveX Control module"),
+  control ]
+library INTEGRITYIOLib
+{
+	importlib(STDOLE_TLB);
+	importlib(STDTYPE_TLB);
+
+	//  Primary dispatch interface for CIntegrityIOCtrl
+
+	[ uuid(29DC770F-1391-4D90-A80D-FE1F2CC7F5A3),
+	  helpstring("Dispatch interface for IntegrityIO Control"), hidden ]
+	dispinterface _DIntegrityIO
+	{
+		properties:
+			// NOTE - ClassWizard will maintain property information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_PROP(CIntegrityIOCtrl)
+			[id(1)] long lnComPort;
+			[id(2)] long lnBaudRate;
+			[id(3)] long lnProtocol;
+			[id(4)] long lnModuleAddress;
+			[id(5)] boolean bPortOpen;
+			[id(6)] long lnCommTimeout;
+			[id(7)] double dReferenceVoltage;
+			[id(8)] long lnAbout;
+			[id(9)] long lnLastError;
+			[id(10)] boolean bDialogDisable;
+			[id(11)] long lnSoftwareVersion;
+			[id(12)] long lnFirmwareVersion;
+			[id(13)] long lnDigitalPort;
+			[id(14)] long lnDigitalDirection;
+			[id(15)] long lnPulseCount;
+			[id(16)] long lnADCControl;
+			[id(17)] double dADCBipolar;
+			[id(18)] long lnDACControl;
+			[id(19)] double dDACOutput;
+			[id(20)] long lnRcvErrCount;
+			[id(21)] boolean bPWMUpdate;
+			[id(22)] long lnEEPROMAddress;
+			[id(23)] long lnEEPROMData;
+			[id(24)] boolean bResetModule;
+			[id(25)] long lnPWMFreq;
+			[id(26)] long lnPWMDuty;
+			[id(27)] double dADCUnipolar;
+			[id(32)] VARIANT_BOOL bInvalidate;
+			[id(33)] LONG lnAnalogGain;
+			[id(34)] boolean bModeStream;
+			[id(35)] double dDACReferenceVoltage;
+			[id(37)] LONG lnUSBStreamBlockCount;
+			[id(39), helpstring("property nADCBits")] SHORT nADCBits;
+			[id(40), helpstring("property dADCScale")] DOUBLE dADCScale;
+			//}}AFX_ODL_PROP
+			//[id(34), helpstring("property bModeStream")] VARIANT_BOOL bModeStream;
+		methods:
+			// NOTE - ClassWizard will maintain method information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_METHOD(CIntegrityIOCtrl)
+			[id(28)] void SetDIOBit(long bitValue, long bitPosition);
+			[id(29)] long GetDIOBit(long bitPosition);
+			[id(30)] void SetDIOBitDDR(long bitValue, long bitPosition);
+			[id(31)] long GetDIOBitDDR(short bitPosition);
+			//}}AFX_ODL_METHOD
+
+			[id(DISPID_ABOUTBOX)] void AboutBox();
+			[id(36), helpstring("method GetUSBModuleAddress")] LONG GetUSBModuleAddress(LONG moduleIndex);
+			[id(38), helpstring("method GetUSBDataBlock")] LONG GetUSBDataBlock(DOUBLE* adcData, LONG startIndex, LONG count);
+	};
+
+	//  Event dispatch interface for CIntegrityIOCtrl
+
+	[ uuid(79EA71B5-94ED-463B-9F34-E36279AA89A0),
+	  helpstring("Event interface for IntegrityIO Control") ]
+	dispinterface _DIntegrityIOEvents
+	{
+		properties:
+			//  Event interface has no properties
+
+		methods:
+			// NOTE - ClassWizard will maintain event information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_EVENT(CIntegrityIOCtrl)
+			//}}AFX_ODL_EVENT
+	};
+
+	//  Class information for CIntegrityIOCtrl
+
+	[ uuid(B9B93B71-3EA9-4BDD-9734-CD28DF66EB75),
+	  helpstring("IntegrityIO Control"), control ]
+	coclass IntegrityIO
+	{
+		[default] dispinterface _DIntegrityIO;
+		[default, source] dispinterface _DIntegrityIOEvents;
+	};
+
+
+	//{{AFX_APPEND_ODL}}
+	//}}AFX_APPEND_ODL}}
+};

@@ -1,0 +1,60 @@
+// IntegrityBarGraph.idl : type library source for ActiveX Control project.
+
+// This file will be processed by the MIDL compiler tool to
+// produce the type library (IntegrityBarGraph.tlb) that will become a resource in
+// IntegrityBarGraph.ocx.
+
+#include <olectl.h>
+#include <idispids.h>
+
+// Integrity Instruments Bar Graph Control
+[ uuid(D38D3179-D74F-49E8-A1F1-9A2A04FB75E0), version(1.0),
+  helpfile("IntegrityBarGraph.hlp"),
+  helpstring("IntegrityBarGraph ActiveX Control module"),
+  control ]
+library IntegrityBarGraphLib
+{
+	importlib(STDOLE_TLB);
+
+	//  Primary dispatch interface for CIntegrityBarGraphCtrl
+
+	[ uuid(43F8802F-69F3-428C-875A-9C1EBBBE0C85),
+	  helpstring("Dispatch interface for IntegrityBarGraph Control")]
+	dispinterface _DIntegrityBarGraph
+	{
+		properties:
+		[id(1), helpstring("property dblMaxValue")] DOUBLE dblMaxValue;
+		[id(2), helpstring("property dblMinValue")] DOUBLE dblMinValue;
+		[id(3), helpstring("property lnNumElements")] LONG lnNumElements;
+methods:
+
+			[id(DISPID_ABOUTBOX)] void AboutBox();
+			[id(4), propget, helpstring("property dElement")] DOUBLE dElement(USHORT index);
+			[id(4), propput, helpstring("property dElement")] void dElement(USHORT index, DOUBLE newVal);
+			[id(5), propget, helpstring("property strElementTitle")] BSTR strElementTitle(USHORT index);
+			[id(5), propput, helpstring("property strElementTitle")] void strElementTitle(USHORT index, BSTR newVal);
+	};
+
+	//  Event dispatch interface for CIntegrityBarGraphCtrl
+
+	[ uuid(45D064D8-9DE5-4A47-8472-F5FBC4FD0639),
+	  helpstring("Event interface for IntegrityBarGraph Control") ]
+	dispinterface _DIntegrityBarGraphEvents
+	{
+		properties:
+			//  Event interface has no properties
+
+		methods:
+	};
+
+	//  Class information for CIntegrityBarGraphCtrl
+
+	[ uuid(6C8AF639-E23A-4041-B6B2-3303D7D0E066),
+	  helpstring("IntegrityBarGraph Control"), control ]
+	coclass IntegrityBarGraph
+	{
+		[default] dispinterface _DIntegrityBarGraph;
+		[default, source] dispinterface _DIntegrityBarGraphEvents;
+	};
+
+};

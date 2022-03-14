@@ -1,0 +1,20 @@
+[OPTIONS]
+CONTENTS=main_index
+TITLE=INTEGRITYIO Control Help
+COMPRESS=true
+WARNING=2
+HLP=IntegrityIO.hlp
+ERRORLOG=IntegrityIO.log
+
+[FILES]
+hlp\IntegrityIO.rtf
+
+[BITMAPS]
+; miscellaneous
+hlp\Bullet.bmp
+
+[ALIAS]
+HIDD_ABOUTBOX_INTEGRITYIO = HID_APP_ABOUT_INTEGRITYIO
+
+[MAP]
+#include <hlp\IntegrityIO.hm>

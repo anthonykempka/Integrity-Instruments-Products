@@ -1,0 +1,35 @@
+--------------------Configuration: ADC_Log - Win32 Release--------------------
+Begining build with project "F:\ADC_Log\ADC_Log.dsp", at root.
+Active configuration is Win32 (x86) Application (based on Win32 (x86) Application)
+
+Project's tools are:
+			"32-bit C/C++ Compiler for 80x86" with flags "/nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /Fp"Release/ADC_Log.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c "
+			"OLE Type Library Maker" with flags "/nologo /D "NDEBUG" /mktyplib203 /o NUL /win32 "
+			"Win32 Resource Compiler" with flags "/l 0x409 /fo"Release/ADC_Log.res" /d "NDEBUG" "
+			"Browser Database Maker" with flags "/nologo /o"Release/ADC_Log.bsc" "
+			"COFF Linker for 80x86" with flags "/nologo /subsystem:windows /incremental:no /pdb:"Release/ADC_Log.pdb" /machine:I386 /out:"Release/ADC_Log.exe" "
+			"Custom Build" with flags ""
+			"<Component 0xa>" with flags ""
+
+Creating command line "rc.exe /l 0x409 /fo"Release/ADC_Log.res" /d "NDEBUG" "F:\ADC_Log\ADC_Log.rc"" 
+Creating temp file "c:\windows\TEMP\RSPB333.TMP" with contents </nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /Fp"Release/ADC_Log.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"F:\ADC_Log\ADC_LogDlg.cpp"
+>
+Creating command line "cl.exe @c:\windows\TEMP\RSPB333.TMP" 
+Creating temp file "c:\windows\TEMP\RSPB334.TMP" with contents </nologo /subsystem:windows /incremental:no /pdb:"Release/ADC_Log.pdb" /machine:I386 /out:"Release/ADC_Log.exe" 
+.\Release\ADC_Log.obj
+.\Release\ADC_LogDlg.obj
+.\Release\Comm32.obj
+.\Release\ComSetup.obj
+.\Release\Configuration.obj
+.\Release\StdAfx.obj
+.\Release\ADC_Log.res>
+Creating command line "link.exe @c:\windows\TEMP\RSPB334.TMP" 
+Compiling resources...
+Compiling...
+ADC_LogDlg.cpp
+Linking...
+
+
+
+ADC_Log.exe - 0 error(s), 0 warning(s)

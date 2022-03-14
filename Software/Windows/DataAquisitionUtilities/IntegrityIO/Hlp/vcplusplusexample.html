@@ -1,0 +1,172 @@
+<html>
+<head>
+<title>Visual C++</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
+
+<body bgcolor="#FFFFCC">
+<h1>Visual Basic Example</h1>
+<table width="68%" border="0" align="left">
+  <tr> 
+    <td width="13%"><a href="index.html">Home</a></td>
+    <td width="20%"><a href="vbexample.html">Visual Basic</a></td>
+    <td width="21%"><a href="vcplusplusexample.html">Visual C++</a> </td>
+    <td width="18%"><a href="testpointexample.html">Testpoint</a> </td>
+    <td width="28%">&nbsp;</td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+<hr align="left">
+<blockquote>
+<p>This example was created using Microsoft Visual C++ version 6.0. The source 
+    code and Visual C++ project can be found in your program files directory in 
+    the Integrity Instruments\\IntegrityIO\Examples\VC folder. The source code 
+    contains the comments that were left out of this document to make it easier 
+    to read. The write of this document assumes that the reader has a basic working 
+    knowledge of the Visual Studio. It is also assumed that the ADC-xxx module 
+    is connection to the computers COM1 serial port and that the ADC-xxx module 
+    communication speed is set to 115200 Baud (<i>SW1 1 &amp; 2 set to the on 
+    position</i>).</p>
+  <h2>Step 1 - Create a new project using the Visual Studio Appwizard.</h2>
+  <h2><img src="Images/vcmfcproject.jpg" width="561" height="400"></h2>
+  <p>Select MFC Appwizard (exe), enter the project name, then press the OK button.</p>
+  <p><img src="Images/vcprojects1.jpg" width="477" height="384"></p>
+  <p>Select a Dialog based application, press Next.</p>
+  <p><img src="Images/vcprojects2.jpg" width="477" height="384"></p>
+  <p>Make sure the ActiveX Controls is checked. Press the next button.</p>
+  <p><img src="Images/vcprojects3.jpg" width="477" height="384"></p>
+  <p>Keep all of the default settings, press the Next button.</p>
+  <p><img src="Images/vcprojects4.jpg" width="477" height="384"></p>
+  <p>Press the Finish button.</p>
+  <p><img src="Images/vcprojects5.jpg" width="414" height="423"></p>
+  <p>Press the OK button. Now we have a project to work with.</p>
+  <h2>Step 2 - Add the Start and Stop buttons to the dialog template.</h2>
+  <h2><img src="Images/vcdlg1.jpg" width="630" height="558"></h2>
+  <p>Add two buttons to the Dialog Template</p>
+  <p><img src="Images/vcdlg2.jpg" width="403" height="162"></p>
+  <p>Make Button1 the Start button. Set it's ID to IDC_BTN_START, and set the 
+    Caption to Start.</p>
+  <p><img src="Images/vcdlg3.jpg" width="403" height="162"></p>
+  <p>Make Button 2 the Stop button. Set it's ID to IDC_BTN_STOP, and set the Caption 
+    to Stop.</p>
+  <h2>Step 3 - Add the Analog Control Objects.</h2>
+  <h2><img src="Images/vcdlg4.jpg" width="630" height="558"></h2>
+  <h3>Set the properties for the analog I/O controls</h3>
+  <h3><img src="Images/vcdlg5.jpg" width="403" height="162"></h3>
+  <p>Make Button3 the Toggle button. Set the ID to IDC_BTN_TOGGLEP1 and the caption 
+    to Toggle P1.0</p>
+  <p><img src="Images/vcdlg6.jpg" width="403" height="162"></p>
+  <p>Set the Static Text box up to display the Port 1 Bit 0 Status as it is read 
+    back from Port 2 Bit 0. Set the ID to IDC_LBL_PORTSTATUS and the caption to 
+    Off.</p>
+  <p><img src="Images/vcdlg7.jpg" width="403" height="162"> </p>
+  <p>Set the Edit1 Edit Box to be the edit control for outputting voltage. Set 
+    its ID to IDC_TXT_DAC0OUTPUT</p>
+  <p><img src="Images/vcdlg8.jpg" width="403" height="162"></p>
+  <p>Set Button 4 to be the D/A output control point. Set its ID to IDC_BTN_DAC0OUT, 
+    set the Caption to D/A Output.</p>
+  <p><img src="Images/vcdlg9.jpg" width="403" height="162"></p>
+  <p>Set Edit2 to be the A/D channle 0 input monitor. Set its ID to IDC_TXT_ADC0INPUT.</p>
+  <p><img src="Images/vcdlg10.jpg" width="403" height="162"></p>
+  <p>Set Button5 to tbe the A/D input control point. Set its ID to IDC_BTN_ADC0INPUT, 
+    set the Caption to A/D Input.</p>
+  <h2>Step 4 - Add the Integrity IO ActiveX control to the project.</h2>
+  <h2><img src="Images/vcdlg11.jpg" width="433" height="404"></h2>
+  <p>Select the IntegrityIO Control from the Comonents and Controls Gallery, and 
+    press the Insert button. This is located in the Project - Add to Project - 
+    Components and Controls menu item. The gallery control will ask if you want 
+    to insert the control. Press the OK button, then press the close button.</p>
+  <p><img src="Images/vcdlg12.jpg" width="630" height="558"></p>
+  <p>Add the IntegrityIO component to the dialog template.</p>
+  <h2>Step 5 - Map the button message handlers.</h2>
+  <p>&nbsp;</p>
+  <p>Double click the Start button and press OK. This will add a message handler 
+    for the Start button. Using the Window menu reactivate the VCExample.rc editor 
+    and reapeat this procedure for the Stop button, the Toggle P1.0 button, the 
+    D/A Output button, and the Get A/D button.</p>
+  <p><img src="Images/vcdlg13.jpg" width="677" height="586"></p>
+  <p>Once all of the button handlers have been mapped the CVCExampleDlg class 
+    will have a new function for each of the message handlers.</p>
+  <h2>Step 6 - Name all of the controls.</h2>
+  <h2><img src="Images/vcdlg14.jpg" width="561" height="403"></h2>
+  <p>From the Classwizard, Add a variable for the Integrity IO Control</p>
+  <p><img src="Images/vcdlg15.jpg" width="320" height="288"></p>
+  <p>Set the Member variable name to m_ctrlIntegrity, press OK.</p>
+  <p><img src="Images/vcdlg16.jpg" width="320" height="288"></p>
+  <p>Repeat the above process for the ADC0INPUT control. Make sure to set the 
+    Variable Type to double.</p>
+  <p><img src="Images/vcdlg17.jpg" width="320" height="288"></p>
+  <p>And again for the DAC0OUTPUT control. Don't forget to set the variable type.</p>
+  <p><img src="Images/vcdlg18.jpg" width="561" height="403"></p>
+  <p>When your finished adding variables, the classwizard should look like this.</p>
+  <h2>Step 7 - Add Code for the Start and Stop Buttons.</h2>
+  <p>Add code for the start button . Add the following lines of code to the <b>OnBtnStart() 
+    </b>message handler.</p>
+  <blockquote> 
+    <p><b>m_ctrlIntegrity.SetLnComPort(1);<br>
+      m_ctrlIntegrity.SetLnBaudRate(115200);<br>
+      m_ctrlIntegrity.SetBPortOpen(TRUE); <br>
+      m_ctrlIntegrity.SetDIOBitDDR(1, 0);<br>
+      m_ctrlIntegrity.SetDIOBitDDR(0, 8);<br>
+      m_ctrlIntegrity.SetLnDigitalPort(0);</b></p>
+  </blockquote>
+  <p>Add code for the stip button. Add the following line of code to the <b>OnBtnStop()</b> 
+    message handler.</p>
+  <blockquote> 
+    <p><b>m_ctrlIntegrity.SetBPortOpen(FALSE);</b><br>
+    </p>
+  </blockquote>
+  <p>At this point you can see the control do somthing. Run your project and press 
+    the Start button. If you have entered the code accuratly and the communcation 
+    port is available, the green light on the Integrity IO control will light 
+    up. Press the Stop button and the green light will turn off.</p>
+  <h2>Step 8 - Add code to toggle Port 1 Bit 0 and Read Port 2 Bit 0</h2>
+  <p>Add the following lines of code to the <b>OnBtnTogglep1() </b>message handler.</p>
+  <blockquote> 
+    <p><b>long p2In;</b></p>
+    <p><b>p2In = m_ctrlIntegrity.GetDIOBit(0);<br>
+      p2In ^= 1;</b></p>
+    <p><b>m_ctrlIntegrity.SetDIOBit(p2In, 8);<br>
+      p2In = m_ctrlIntegrity.GetDIOBit(0);</b></p>
+    <p><b>if(p2In == 1) <br>
+      {<br>
+      </b> 
+    <blockquote><b> m_lblPortStatus = "On"; <br>
+      </b></blockquote>
+    <b>} <br>
+    else <br>
+    {<br>
+    </b> 
+    <blockquote><b> m_lblPortStatus = "Off"; <br>
+      </b></blockquote>
+    <p><b>}</b></p>
+    <p><b><br>
+      UpdateData(FALSE);<br>
+      </b></p>
+  </blockquote>
+  <h2>Step 9 - Add code to Output a voltage to D/A converter 0</h2>
+  <p>Add the following lines of code to the <b>OnBtnDac0out()</b> message handler.</p>
+  <blockquote> 
+    <p> <b>UpdateData (TRUE);</b></p>
+    <p><b> m_ctrlIntegrity.SetLnDACControl(0); <br>
+      m_ctrlIntegrity.SetDDACOutput(m_dDAC0Output); </b></p>
+    <p><b><br>
+      m_ctrlIntegrity.SetLnADCControl(8); <br>
+      m_dADC0Volts = m_ctrlIntegrity.GetDADCUnipolar(); </b></p>
+    <p><b> UpdateData(FALSE); <br>
+      </b></p>
+  </blockquote>
+  <h2>Step 10 - Add code to read A/D converter channel 0</h2>
+  <blockquote> 
+    <p><b>UpdateData(TRUE);</b></p>
+    <p><b>m_ctrlIntegrity.SetLnADCControl(8);</b></p>
+    <p><b>m_dADC0Volts = m_ctrlIntegrity.GetDADCUnipolar();</b></p>
+    <p><b>UpdateData(FALSE);</b></p>
+    <p>&nbsp;</p>
+  </blockquote>
+  <p>Make sure that the Digital I/O port Port 1 Bit 0 is connection to Port 2 
+    bit 0 and that Analog Out A is connected to Analog In Channel 0. Your project 
+    is ready to run.</p>
+</blockquote>
+</body>
+</html>

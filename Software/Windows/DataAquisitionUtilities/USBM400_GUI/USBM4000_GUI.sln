@@ -1,0 +1,29 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "USBM4000_GUI", "USBM3000_GUI.vcproj", "{3EE3B761-1FE9-44E1-875B-5F60BCCC6F40}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "USBM300 Lib", "..\USBM300 Class\USBM300 Lib.vcproj", "{3F613C10-2D40-4621-83A8-DA39DA62E44B}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{3EE3B761-1FE9-44E1-875B-5F60BCCC6F40}.Debug.ActiveCfg = Debug|Win32
+		{3EE3B761-1FE9-44E1-875B-5F60BCCC6F40}.Debug.Build.0 = Debug|Win32
+		{3EE3B761-1FE9-44E1-875B-5F60BCCC6F40}.Release.ActiveCfg = Release|Win32
+		{3EE3B761-1FE9-44E1-875B-5F60BCCC6F40}.Release.Build.0 = Release|Win32
+		{3F613C10-2D40-4621-83A8-DA39DA62E44B}.Debug.ActiveCfg = Debug|Win32
+		{3F613C10-2D40-4621-83A8-DA39DA62E44B}.Debug.Build.0 = Debug|Win32
+		{3F613C10-2D40-4621-83A8-DA39DA62E44B}.Release.ActiveCfg = Release|Win32
+		{3F613C10-2D40-4621-83A8-DA39DA62E44B}.Release.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal

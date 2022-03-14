@@ -1,0 +1,9 @@
+; IntegrityIO.def : Declares the module parameters.
+
+LIBRARY      "INTEGRITYIO.OCX"
+
+EXPORTS
+	DllCanUnloadNow     PRIVATE
+	DllGetClassObject   PRIVATE
+	DllRegisterServer   PRIVATE
+	DllUnregisterServer PRIVATE

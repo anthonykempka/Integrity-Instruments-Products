@@ -1,0 +1,1857 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#include ""res\\DAMUtils.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\r\n"
+    "1 TYPELIB ""DAMUtils.tlb""\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\DAMUtils.ico"
+IDR_DAMUtilsTYPE        ICON                    "res\\DAMUtilsDoc.ico"
+IDI_ICON1               ICON                    "res\\icon1.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDR_MAINFRAME           BITMAP                  "res\\Toolbar.bmp"
+IDB_BMPGRAPH            BITMAP                  "res\\bitmap3.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Toolbar
+//
+
+IDR_MAINFRAME TOOLBAR  16, 15
+BEGIN
+    BUTTON      ID_FILE_NEW
+    BUTTON      ID_FILE_OPEN
+    BUTTON      ID_FILE_SAVE
+    SEPARATOR
+    BUTTON      ID_EDIT_CUT
+    BUTTON      ID_EDIT_COPY
+    BUTTON      ID_EDIT_PASTE
+    SEPARATOR
+    BUTTON      ID_FILE_PRINT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MAINFRAME MENU 
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&New\tCtrl+N",                ID_FILE_NEW
+        MENUITEM "&Open...\tCtrl+O",            ID_FILE_OPEN
+        MENUITEM SEPARATOR
+        MENUITEM "Recent File",                 ID_FILE_MRU_FILE1, GRAYED
+        MENUITEM SEPARATOR
+        MENUITEM "&Close",                      ID_FILE_CLOSE
+        MENUITEM "E&xit",                       ID_APP_EXIT
+    END
+    POPUP "&View"
+    BEGIN
+        MENUITEM "&Toolbar",                    ID_VIEW_TOOLBAR
+        MENUITEM "&Status Bar",                 ID_VIEW_STATUS_BAR
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&About DAMUtils...",          ID_APP_ABOUT
+    END
+END
+
+IDR_DAMUtilsTYPE MENU 
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&New\tCtrl+N",                ID_FILE_NEW
+        MENUITEM "&Open...\tCtrl+O",            ID_FILE_OPEN
+        MENUITEM "&Close",                      ID_FILE_CLOSE
+        MENUITEM "&Save\tCtrl+S",               ID_FILE_SAVE
+        MENUITEM "Save &As...",                 ID_FILE_SAVE_AS
+        MENUITEM SEPARATOR
+        MENUITEM "Recent File",                 ID_FILE_MRU_FILE1, GRAYED
+        MENUITEM SEPARATOR
+        MENUITEM "E&xit",                       ID_APP_EXIT
+    END
+    POPUP "&Edit"
+    BEGIN
+        MENUITEM "&Undo\tCtrl+Z",               ID_EDIT_UNDO
+        MENUITEM SEPARATOR
+        MENUITEM "Cu&t\tCtrl+X",                ID_EDIT_CUT
+        MENUITEM "&Copy\tCtrl+C",               ID_EDIT_COPY
+        MENUITEM "&Paste\tCtrl+V",              ID_EDIT_PASTE
+    END
+    POPUP "&View"
+    BEGIN
+        MENUITEM "&Toolbar",                    ID_VIEW_TOOLBAR
+        MENUITEM "&Status Bar",                 ID_VIEW_STATUS_BAR
+    END
+    POPUP "&Tools"
+    BEGIN
+        MENUITEM "Stream &Mode\tCtrl+M",        ID_TOOLS_STREAMMODE
+        MENUITEM "&Data Logger",                ID_TOOLS_DATALOGGER
+    END
+    POPUP "&Window"
+    BEGIN
+        MENUITEM "&New Window",                 ID_WINDOW_NEW
+        MENUITEM "&Cascade",                    ID_WINDOW_CASCADE
+        MENUITEM "&Tile",                       ID_WINDOW_TILE_HORZ
+        MENUITEM "&Arrange Icons",              ID_WINDOW_ARRANGE
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&Contents",                   ID_HELP_CONTENTS
+        MENUITEM "&Index",                      ID_HELP_INDEX32778
+        MENUITEM SEPARATOR
+        MENUITEM "&About DAMUtils...",          ID_APP_ABOUT
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_MAINFRAME ACCELERATORS 
+BEGIN
+    "C",            ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
+    VK_INSERT,      ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
+    VK_DELETE,      ID_EDIT_CUT,            VIRTKEY, SHIFT, NOINVERT
+    "X",            ID_EDIT_CUT,            VIRTKEY, CONTROL, NOINVERT
+    "V",            ID_EDIT_PASTE,          VIRTKEY, CONTROL, NOINVERT
+    VK_INSERT,      ID_EDIT_PASTE,          VIRTKEY, SHIFT, NOINVERT
+    VK_BACK,        ID_EDIT_UNDO,           VIRTKEY, ALT, NOINVERT
+    "Z",            ID_EDIT_UNDO,           VIRTKEY, CONTROL, NOINVERT
+    "N",            ID_FILE_NEW,            VIRTKEY, CONTROL, NOINVERT
+    "O",            ID_FILE_OPEN,           VIRTKEY, CONTROL, NOINVERT
+    "S",            ID_FILE_SAVE,           VIRTKEY, CONTROL, NOINVERT
+    VK_F6,          ID_NEXT_PANE,           VIRTKEY, NOINVERT
+    VK_F6,          ID_PREV_PANE,           VIRTKEY, SHIFT, NOINVERT
+    "M",            ID_TOOLS_STREAMMODE,    VIRTKEY, CONTROL, NOINVERT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOGEX 0, 0, 235, 55
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "About DAMUtils"
+FONT 8, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,11,17,20,20
+    LTEXT           "DAMUtils Version 1.1",IDC_STATIC,40,10,119,8,
+                    SS_NOPREFIX
+    LTEXT           "Copyright (C) 2005",IDC_STATIC,40,25,119,8
+    DEFPUSHBUTTON   "OK",IDOK,178,7,50,16,WS_GROUP
+END
+
+IDD_DAMUTILS_FORM DIALOGEX 0, 0, 375, 303
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD
+FONT 8, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_TAB1,"SysTabControl32",TCS_MULTILINE,7,7,283,289
+    PUSHBUTTON      "Read Current",IDC_BTN_READCURRENT,318,7,50,14
+    PUSHBUTTON      "Configure",IDC_BTN_CONFIGURE,318,24,50,14
+    PUSHBUTTON      "Defaults",IDC_BTN_DEFAULTS,318,41,50,14
+    PUSHBUTTON      "Comm Setup",IDC_BTN_COMMSETUP,318,59,50,14
+    CONTROL         "",IDC_INTEGRITYIOCTRL1,
+                    "{B9B93B71-3EA9-4BDD-9734-CD28DF66EB75}",WS_TABSTOP,308,
+                    271,60,25
+END
+
+IDD_DLG_232M200 DIALOGEX 0, 0, 284, 266
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_VISIBLE
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    LTEXT           "Digital I/O Direction:",IDC_STATIC,15,23,66,8
+    EDITTEXT        IDC_EBDIODIR,82,20,56,14,ES_AUTOHSCROLL
+    CONTROL         "EXP-x attached (invert digital I/O)",IDC_CHKEXP_X,
+                    "Button",BS_AUTOCHECKBOX | BS_LEFTTEXT | WS_TABSTOP,13,
+                    41,125,10
+    CONTROL         " Slow A/D clock (high Z inputs)",IDC_CHKHIGHZ,"Button",
+                    BS_AUTOCHECKBOX | BS_LEFTTEXT | WS_TABSTOP,26,59,112,10
+    LTEXT           "(Hexadecimal values used in edit boxes)",IDC_STATIC,29,
+                    73,129,8
+    LTEXT           "Port 2 Power Up:",IDC_STATIC,153,23,56,8
+    EDITTEXT        IDC_EBPUP2,215,20,56,14,ES_AUTOHSCROLL
+    LTEXT           "D/A CH0 Power Up:",IDC_STATIC,145,42,64,8
+    EDITTEXT        IDC_EBPUDA0,215,40,56,14,ES_AUTOHSCROLL
+    LTEXT           "D/A CH1 Power Up:",IDC_STATIC,145,60,64,8
+    EDITTEXT        IDC_EBPUDA1,215,58,56,14,ES_AUTOHSCROLL
+    GROUPBOX        "Digital Mode Setup",IDC_STATIC,13,92,259,49
+    CONTROL         "Enable Digital Status",IDC_CHKENDIGSTAT,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,17,157,81,10
+    CONTROL         "Enable Pulse Counter Status",IDC_CHKENPULSECTRSTAT,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,17,173,107,10
+    LTEXT           "Config:",IDC_STATIC,19,105,24,8
+    EDITTEXT        IDC_EBDIGCONFIG,49,102,56,14,ES_AUTOHSCROLL
+    LTEXT           "0x0000 = Disabled",IDC_STATIC,111,101,61,8
+    LTEXT           "0x0001 = Update on digital or pulse count change",
+                    IDC_STATIC,176,101,95,20
+    LTEXT           "0x0002 ... 0xFFFF = milliseconds between automatic timed updates",
+                    IDC_STATIC,111,118,157,18
+    GROUPBOX        "Stream Mode Setup",IDC_STATIC,13,144,259,109
+    LTEXT           "Analog Count:",IDC_STATIC,18,192,30,19
+    EDITTEXT        IDC_EBADCCOUNT,47,193,56,14,ES_AUTOHSCROLL
+    GROUPBOX        "ASynchronous Mode Setup",IDC_STATIC,9,83,268,176
+    LTEXT           "0x0000 = No analog samples",IDC_STATIC,17,212,94,8
+    LTEXT           "1 ...0 = # analog samples taken",IDC_STATIC,17,220,104,
+                    11
+    LISTBOX         IDC_LST_ADCTYPES,123,172,54,74,LBS_HASSTRINGS | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    LISTBOX         IDC_LST_ADCCFG,200,172,48,74,LBS_NOINTEGRALHEIGHT | 
+                    LBS_MULTICOLUMN | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Add",IDC_BTN_ADD,180,192,17,14
+    PUSHBUTTON      "Del",IDC_BTN_REMOVE,180,211,17,14
+    PUSHBUTTON      "Up",IDC_BTN_UP,251,192,17,14
+    PUSHBUTTON      "Dn",IDC_BTN_DOWN,251,211,17,14
+    LTEXT           "Sample Modes",IDC_STATIC,123,159,46,8
+    LTEXT           "Configuration",IDC_STATIC,200,159,44,8
+END
+
+IDD_DLG_232M300 DIALOGEX 0, 0, 284, 266
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_VISIBLE
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    LTEXT           "Digital I/O Direction:",IDC_STATIC,15,23,66,8
+    EDITTEXT        IDC_EBDIODIR1M3,82,20,26,14,ES_AUTOHSCROLL
+    CONTROL         "EXP-x attached (invert digital I/O)",IDC_CHKEXP_XM3,
+                    "Button",BS_AUTOCHECKBOX | BS_LEFTTEXT | WS_TABSTOP,13,
+                    41,125,10
+    CONTROL         " Slow A/D clock (high Z inputs)",IDC_CHKHIGHZM3,"Button",
+                    BS_AUTOCHECKBOX | BS_LEFTTEXT | WS_TABSTOP,26,59,112,10
+    LTEXT           "(Hexadecimal values used in edit boxes)",IDC_STATIC,29,
+                    73,129,8
+    LTEXT           "Dig I/O  Power Up:",IDC_STATIC,148,23,61,8
+    EDITTEXT        IDC_EBPUP1M3,215,20,26,14,ES_AUTOHSCROLL
+    LTEXT           "D/A CH0 Power Up:",IDC_STATIC,145,42,64,8
+    EDITTEXT        IDC_EBPUDA0M3,215,40,56,14,ES_AUTOHSCROLL
+    LTEXT           "D/A CH1 Power Up:",IDC_STATIC,145,60,64,8
+    EDITTEXT        IDC_EBPUDA1M3,215,58,56,14,ES_AUTOHSCROLL
+    GROUPBOX        "Digital Mode Setup",IDC_STATIC,13,92,259,49
+    CONTROL         "Enable Digital Status",IDC_CHKENDIGSTATM3,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,17,157,81,10
+    CONTROL         "Enable Pulse Counter Status",IDC_CHKENPULSECTRSTATM3,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,17,173,107,10
+    LTEXT           "Config:",IDC_STATIC,19,105,24,8
+    EDITTEXT        IDC_EBDIGCONFIGM3,49,102,56,14,ES_AUTOHSCROLL
+    LTEXT           "0x0000 = Disabled",IDC_STATIC,111,101,61,8
+    LTEXT           "0x0001 = Update on digital or pulse count change",
+                    IDC_STATIC,176,101,95,20
+    LTEXT           "0x0002 ... 0xFFFF = milliseconds between automatic timed updates",
+                    IDC_STATIC,111,118,157,18
+    GROUPBOX        "Stream Mode Setup",IDC_STATIC,13,144,259,109
+    LTEXT           "Analog Count:",IDC_STATIC,18,192,30,19
+    EDITTEXT        IDC_EBADCCOUNTM3,47,193,56,14,ES_AUTOHSCROLL
+    GROUPBOX        "ASynchronous Mode Setup",IDC_STATIC,9,83,268,176
+    LTEXT           "0x0000 = No analog samples",IDC_STATIC,17,212,94,8
+    LTEXT           "1 ...0 = # analog samples taken",IDC_STATIC,17,220,104,
+                    11
+    LISTBOX         IDC_LST_ADCTYPESM3,123,172,54,74,LBS_HASSTRINGS | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    LISTBOX         IDC_LST_ADCCFGM3,200,172,48,74,LBS_NOINTEGRALHEIGHT | 
+                    LBS_MULTICOLUMN | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Add",IDC_BTN_ADDM3,180,192,17,14
+    PUSHBUTTON      "Del",IDC_BTN_REMOVEM3,180,211,17,14
+    PUSHBUTTON      "Up",IDC_BTN_UPM3,251,192,17,14
+    PUSHBUTTON      "Dn",IDC_BTN_DOWNM3,251,211,17,14
+    LTEXT           "Port 1",IDC_STATIC,84,9,20,8
+    EDITTEXT        IDC_EBDIODIR2M3,111,20,26,14,ES_AUTOHSCROLL
+    LTEXT           "Port 2",IDC_STATIC,113,9,20,8
+    EDITTEXT        IDC_EBPUP2M4,245,20,26,14,ES_AUTOHSCROLL
+    LTEXT           "Port 1",IDC_STATIC,218,9,20,8
+    LTEXT           "Port 2",IDC_STATIC,248,9,20,8
+    LTEXT           "Sample Modes",IDC_STATIC,123,159,46,8
+    LTEXT           "Configuration",IDC_STATIC,200,159,44,8
+END
+
+IDD_DLG_485M300 DIALOGEX 0, 0, 284, 266
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_VISIBLE
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    LTEXT           "Module Address:",IDC_STATIC,27,12,54,8
+    EDITTEXT        IDC_EBMODADDR_485,82,10,26,14,ES_AUTOHSCROLL
+    LTEXT           "Port 1",IDC_STATIC,84,27,20,8
+    LTEXT           "Port 2",IDC_STATIC,113,27,20,8
+    LTEXT           "Digital I/O Direction:",IDC_STATIC,15,41,66,8
+    EDITTEXT        IDC_EBDIODIR1M3_485,82,38,26,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EBDIODIR2M3_485,111,38,26,14,ES_AUTOHSCROLL
+    CONTROL         "EXP-x attached (invert digital I/O)",IDC_CHKEXP_XM3_485,
+                    "Button",BS_AUTOCHECKBOX | BS_LEFTTEXT | WS_TABSTOP,13,
+                    59,125,10
+    CONTROL         " Slow A/D clock (high Z inputs)",IDC_CHKHIGHZM3_485,
+                    "Button",BS_AUTOCHECKBOX | BS_LEFTTEXT | WS_TABSTOP,26,
+                    77,112,10
+    LTEXT           "(Hexadecimal values used in edit boxes)",IDC_STATIC,61,
+                    98,129,8
+    LTEXT           "Port 1",IDC_STATIC,218,27,20,8
+    LTEXT           "Port 2",IDC_STATIC,248,27,20,8
+    LTEXT           "Dig I/O  Power Up:",IDC_STATIC,148,41,61,8
+    EDITTEXT        IDC_EBPUP1M3_485,215,38,26,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EBPUP2M4_485,245,38,26,14,ES_AUTOHSCROLL
+    LTEXT           "D/A CH0 Power Up:",IDC_STATIC,145,60,64,8
+    EDITTEXT        IDC_EBPUDA0M3_485,215,58,56,14,ES_AUTOHSCROLL
+    LTEXT           "D/A CH1 Power Up:",IDC_STATIC,145,78,64,8
+    EDITTEXT        IDC_EBPUDA1M3_485,215,76,56,14,ES_AUTOHSCROLL
+END
+
+IDD_DLG_USBM400 DIALOGEX 0, 0, 284, 266
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_VISIBLE
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    LTEXT           "Module Address:",IDC_STATIC,27,12,54,8
+    EDITTEXT        IDC_EBMODADDRU4,82,10,26,14,ES_AUTOHSCROLL
+    LTEXT           "Port 1",IDC_STATIC,84,27,20,8
+    LTEXT           "Port 2",IDC_STATIC,113,27,20,8
+    LTEXT           "Digital I/O Direction:",IDC_STATIC,15,41,66,8
+    EDITTEXT        IDC_EBDIODIR1U4,82,38,26,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EBDIODIR2U4,111,38,26,14,ES_AUTOHSCROLL
+    LTEXT           "Dig I/O  Power Up:",IDC_STATIC,148,41,61,8
+    LTEXT           "Port 1",IDC_STATIC,218,27,20,8
+    LTEXT           "Port 2",IDC_STATIC,248,27,20,8
+    EDITTEXT        IDC_EBPUP1U4,215,38,26,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EBPUP2U4,245,38,26,14,ES_AUTOHSCROLL
+    CONTROL         "EXP-x attached (invert digital I/O)",IDC_CHKEXP_XU4,
+                    "Button",BS_AUTOCHECKBOX | BS_LEFTTEXT | WS_TABSTOP,12,
+                    59,125,10
+    CONTROL         " Slow A/D clock (high Z inputs)",IDC_CHKHIGHZU4,"Button",
+                    BS_AUTOCHECKBOX | BS_LEFTTEXT | WS_TABSTOP,25,77,112,10
+    LTEXT           "D/A CH0 Power Up:",IDC_STATIC,145,60,64,8
+    EDITTEXT        IDC_EBPUDA0U4,215,58,56,14,ES_AUTOHSCROLL
+    LTEXT           "D/A CH1 Power Up:",IDC_STATIC,145,78,64,8
+    EDITTEXT        IDC_EBPUDA1U4,215,76,56,14,ES_AUTOHSCROLL
+    LTEXT           "(Hexadecimal values used in edit boxes)",IDC_STATIC,77,
+                    110,129,8
+    COMBOBOX        IDC_CB_ADCREFU4,127,96,144,105,CBS_DROPDOWN | WS_VSCROLL | 
+                    WS_TABSTOP
+    LTEXT           "ADC Refrence:",IDC_STATIC,72,98,49,8
+    GROUPBOX        "Stream Mode Setup",IDC_STATIC,7,121,270,138
+    LISTBOX         IDC_LIST1,15,143,66,106,LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_TABSTOP
+    LISTBOX         IDC_LIST2,110,143,66,106,LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_TABSTOP
+    LISTBOX         IDC_LIST3,201,143,66,106,LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Sample Modes",IDC_STATIC,15,131,46,8
+    LTEXT           "Configuration",IDC_STATIC,110,131,44,8
+    LTEXT           "Gain",IDC_STATIC,201,131,15,8
+    PUSHBUTTON      "Add",IDC_BTN_ADDUSBSTREAM,87,147,18,14
+    PUSHBUTTON      "Del",IDC_BTN_REMOVEUSBSTREAM,87,166,18,14
+    PUSHBUTTON      "Up",IDC_BTN_USBUP,179,147,18,14
+    PUSHBUTTON      "Dn",IDC_BTNUSBDOWN,179,166,18,14
+END
+
+IDD_DLG_COMMSETUP DIALOGEX 0, 0, 186, 95
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "Comm Setup"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,129,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,129,24,50,14
+    LTEXT           "Comm Port",IDC_STATIC,14,14,36,8
+    LTEXT           "Baud Rate",IDC_STATIC,14,42,34,8
+    COMBOBOX        IDC_CB_COMMPORT,14,25,63,122,CBS_DROPDOWN | WS_VSCROLL | 
+                    WS_TABSTOP
+    COMBOBOX        IDC_CB_BAUDRATE,14,53,63,95,CBS_DROPDOWN | WS_VSCROLL | 
+                    WS_TABSTOP
+END
+
+IDD_DLGUSBSTREAMMGR DIALOGEX 0, 0, 400, 277
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION
+CAPTION "USB Stream"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,343,10,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,343,27,50,14
+    GROUPBOX        "Logging",IDC_STATIC,7,7,323,42
+    CONTROL         "Enable",IDC_CHECK1,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,17,18,37,10
+    PUSHBUTTON      "Browse",IDC_BTN_BROWSE,273,29,50,14
+    EDITTEXT        IDC_EBLOGFILE,46,29,219,14,ES_AUTOHSCROLL
+    LTEXT           "Log File",IDC_STATIC,17,32,25,8
+    GROUPBOX        "Statistics",IDC_STATIC,7,53,323,51
+    PUSHBUTTON      "Start",IDC_BTN_START,343,56,50,14
+    LTEXT           "Unit Address: 1",IDC_STUNITADDRESS,14,65,95,8
+    LTEXT           "Status: Idle",IDC_STSTATUS,14,78,95,8
+    PUSHBUTTON      "Stop",IDC_BTNSTOP,343,73,50,14
+    LTEXT           "Data Blocks:",IDC_STDATABLOCKS,121,65,89,8
+    LTEXT           "Que Size:",IDC_STAVAILABLE,121,78,89,8
+    LTEXT           "0.0, 0.0",IDC_STDISPLAY,14,90,301,8
+    LTEXT           "Data Bytes:",IDC_STBPS,222,65,103,8
+    LTEXT           "Run Time:",IDC_STTIME,222,78,103,8
+    CONTROL         "",IDC_INTEGRITYBARGRAPCTRL2,
+                    "{6C8AF639-E23A-4041-B6B2-3303D7D0E066}",WS_TABSTOP,7,
+                    115,323,154
+END
+
+IDD_DLG_232M100 DIALOGEX 0, 0, 284, 266
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_VISIBLE | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    LTEXT           "Digital I/O Direction:",IDC_STATIC,13,23,66,8
+    EDITTEXT        IDC_EBDIODIRM1,80,20,56,14,ES_AUTOHSCROLL
+    LTEXT           "Port 2 Power Up:",IDC_STATIC,151,23,56,8
+    EDITTEXT        IDC_EBPUPM1,213,20,56,14,ES_AUTOHSCROLL
+    LTEXT           "(Hexadecimal values used in edit boxes)",IDC_STATIC,27,
+                    73,129,8
+    GROUPBOX        "ASynchronous Mode Setup",IDC_STATIC,7,83,268,176
+    GROUPBOX        "Digital Mode Setup",IDC_STATIC,11,92,259,49
+    LTEXT           "Config:",IDC_STATIC,17,105,24,8
+    EDITTEXT        IDC_EBDIGCONFIGM1,47,102,56,14,ES_AUTOHSCROLL
+    LTEXT           "0x0000 = Disabled",IDC_STATIC,109,101,61,8
+    LTEXT           "0x0001 = Update on digital or pulse count change",
+                    IDC_STATIC,174,101,95,20
+    LTEXT           "0x0002 ... 0xFFFF = milliseconds between automatic timed updates",
+                    IDC_STATIC,109,118,157,18
+    GROUPBOX        "Stream Mode Setup",IDC_STATIC,11,144,259,109
+    CONTROL         "Enable Digital Status",IDC_CHKENDIGSTATM1,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,15,157,81,10
+    CONTROL         "Enable Pulse Counter Status",IDC_CHKENPULSECTRSTATM1,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,173,107,10
+    LTEXT           "Analog Count:",IDC_STATIC,16,192,30,19
+    EDITTEXT        IDC_EBADCCOUNTM1,45,193,56,14,ES_AUTOHSCROLL
+    LTEXT           "0x0000 = No analog samples",IDC_STATIC,15,212,94,8
+    LTEXT           "1 ...0 = # analog samples taken",IDC_STATIC,15,220,104,
+                    11
+    LTEXT           "Sample Modes",IDC_STATIC,121,159,46,8
+    LISTBOX         IDC_LST_ADCTYPESM1,121,172,54,74,LBS_HASSTRINGS | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Add",IDC_BTN_ADDM1,178,192,17,14
+    PUSHBUTTON      "Del",IDC_BTN_REMOVEM1,178,211,17,14
+    LTEXT           "Configuration",IDC_STATIC,198,159,44,8
+    LISTBOX         IDC_LST_ADCCFGM1,198,172,48,74,LBS_NOINTEGRALHEIGHT | 
+                    LBS_MULTICOLUMN | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Up",IDC_BTN_UPM1,249,192,17,14
+    PUSHBUTTON      "Dn",IDC_BTN_DOWNM1,249,211,17,14
+END
+
+IDD_DLG_232M100LOGGER DIALOGEX 0, 0, 306, 281
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "232M100 Data Logging"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    GROUPBOX        "Log File",IDC_STATIC,7,7,227,30
+    EDITTEXT        IDC_EB_M100LOGFILE,14,16,155,14,ES_AUTOHSCROLL | 
+                    ES_READONLY
+    PUSHBUTTON      "Browse",IDC_BTNBROWSEM100LOG,176,16,50,14
+    GROUPBOX        "Channels",IDC_STATIC,7,41,227,30
+    CONTROL         "0",IDC_CHKM100CH0,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    17,52,20,10
+    CONTROL         "1",IDC_CHKM100CH1,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    44,52,20,10
+    CONTROL         "2",IDC_CHKM100CH2,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    70,52,20,10
+    CONTROL         "3",IDC_CHKM100CH3,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    96,52,20,10
+    CONTROL         "4",IDC_CHKM100CH4,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    122,52,20,10
+    CONTROL         "5",IDC_CHKM100CH5,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    148,52,20,10
+    CONTROL         "6",IDC_CHKM100CH6,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    174,52,20,10
+    CONTROL         "7",IDC_CHKM100CH7,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    200,52,20,10
+    GROUPBOX        "Interval",IDC_STATIC,7,74,107,30
+    EDITTEXT        IDC_EB_M100LOGINTERVAL,15,84,52,14,ES_AUTOHSCROLL
+    LTEXT           "Second(s)",IDC_STATIC,77,87,33,8
+    DEFPUSHBUTTON   "OK",IDOK,249,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,249,24,50,14
+    PUSHBUTTON      "Start",IDC_BTN_M100LOGSTART,249,46,50,14
+    PUSHBUTTON      "Halt",IDC_BTN_M100LOGSTOP,249,63,50,14,WS_DISABLED
+    CONTROL         "",IDC_INTEGRITYLINEGRACTRL2,
+                    "{B68EE2FB-A4D5-4580-931C-3D43E85D724D}",WS_TABSTOP,7,
+                    114,292,136
+    LTEXT           "Minimum Value",IDC_STATIC,7,262,47,8
+    LTEXT           "Maximum Value",IDC_STATIC,112,262,50,8
+    EDITTEXT        IDC_EBGRAPHMIN,56,260,40,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EBGRAPHMAX,166,260,40,14,ES_AUTOHSCROLL
+END
+
+IDD_DLG_232M200LOGGER DIALOGEX 0, 0, 306, 281
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "232M200 Data Logging"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    GROUPBOX        "Log File",IDC_STATIC,7,7,227,30
+    EDITTEXT        IDC_EB_M200LOGFILE,14,16,155,14,ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_TABSTOP
+    PUSHBUTTON      "Browse",IDC_BTNBROWSEM200LOG,176,16,50,14
+    GROUPBOX        "Channels",IDC_STATIC,7,41,107,30
+    CONTROL         "0",IDC_CHKM200CH0,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    17,52,20,10
+    CONTROL         "1",IDC_CHKM200CH1,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    44,52,20,10
+    GROUPBOX        "Diffarential Conversion",IDC_STATIC,121,41,88,62
+    CONTROL         "Off",IDC_RBDIFFADCOFF,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP | WS_TABSTOP,135,55,27,10
+    CONTROL         "CH0+ CH1-",IDC_RBDIFFADCPOS,"Button",BS_AUTORADIOBUTTON,
+                    135,66,53,10
+    CONTROL         "CH0- CH1+",IDC_RBDIFFADCNEG,"Button",BS_AUTORADIOBUTTON,
+                    135,78,53,10
+    GROUPBOX        "Interval",IDC_STATIC,7,74,107,30
+    EDITTEXT        IDC_EB_M200LOGINTERVAL,15,84,52,14,ES_AUTOHSCROLL
+    LTEXT           "Second(s)",IDC_STATIC,77,87,33,8
+    CONTROL         "",IDC_INTEGRITYLINEGRACTRL1,
+                    "{B68EE2FB-A4D5-4580-931C-3D43E85D724D}",0x0,7,120,292,
+                    136
+    LTEXT           "Minimum Value",IDC_STATIC,7,262,47,8
+    EDITTEXT        IDC_EBM200GRAPHMIN,56,260,40,14,ES_AUTOHSCROLL
+    LTEXT           "Maximum Value",IDC_STATIC,112,262,50,8
+    EDITTEXT        IDC_EBM200GRAPHMAX,166,260,40,14,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,249,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,249,24,50,14
+    PUSHBUTTON      "Start",IDC_BTN_M200LOGSTART,249,46,50,14
+    PUSHBUTTON      "Halt",IDC_BTN_M200LOGSTOP,249,63,50,14,WS_DISABLED
+END
+
+IDD_DLG_232M300LOGGER DIALOGEX 0, 0, 359, 330
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "232M300 Data Logging"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    GROUPBOX        "Log File",IDC_STATIC,7,7,227,30
+    EDITTEXT        IDC_EB_M300LOGFILE,14,16,155,14,ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_TABSTOP
+    PUSHBUTTON      "Browse",IDC_BTNBROWSEM300LOG,176,16,50,14
+    GROUPBOX        "Unipolar Channels",IDC_STATIC,7,41,276,30
+    CONTROL         "0",IDC_CHKM300CH0,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    13,52,20,10
+    CONTROL         "1",IDC_CHKM300CH1,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    46,52,20,10
+    CONTROL         "2",IDC_CHKM300CH2,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    83,52,20,10
+    CONTROL         "3",IDC_CHKM300CH3,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    116,52,20,10
+    CONTROL         "4",IDC_CHKM300CH4,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    153,52,20,10
+    CONTROL         "5",IDC_CHKM300CH5,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    186,52,20,10
+    CONTROL         "6",IDC_CHKM300CH6,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    223,52,20,10
+    CONTROL         "7",IDC_CHKM300CH7,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    256,52,20,10
+    GROUPBOX        "Bipolar-CH0/CH1",IDC_STATIC,7,75,66,53
+    CONTROL         "Off",IDC_RBDIFFADCOFF,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP | WS_TABSTOP,13,87,27,10
+    CONTROL         "CH0+ CH1-",IDC_RBDIFFADCPOS,"Button",BS_AUTORADIOBUTTON,
+                    13,98,53,10
+    CONTROL         "CH0- CH1+",IDC_RBDIFFADCNEG,"Button",BS_AUTORADIOBUTTON,
+                    13,110,53,10
+    GROUPBOX        "Bipolar-CH2/CH3",IDC_STATIC,77,75,66,53
+    CONTROL         "Off",IDC_RBDIFFADCOFF2,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP | WS_TABSTOP,83,87,27,10
+    CONTROL         "CH2+ CH3-",IDC_RBDIFFADCPOS2,"Button",
+                    BS_AUTORADIOBUTTON,83,98,53,10
+    CONTROL         "CH2- CH3+",IDC_RBDIFFADCNEG2,"Button",
+                    BS_AUTORADIOBUTTON,83,110,53,10
+    GROUPBOX        "Bipolar-CH4/CH5",IDC_STATIC,147,75,66,53
+    CONTROL         "Off",IDC_RBDIFFADCOFF3,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP | WS_TABSTOP,153,87,27,10
+    CONTROL         "CH4+ CH5-",IDC_RBDIFFADCPOS3,"Button",
+                    BS_AUTORADIOBUTTON,153,98,53,10
+    CONTROL         "CH4- CH5+",IDC_RBDIFFADCNEG3,"Button",
+                    BS_AUTORADIOBUTTON,153,110,53,10
+    GROUPBOX        "Bipolar-CH6/CH7",IDC_STATIC,217,75,66,53
+    CONTROL         "Off",IDC_RBDIFFADCOFF4,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP | WS_TABSTOP,223,87,27,10
+    CONTROL         "CH6+ CH7-",IDC_RBDIFFADCPOS4,"Button",
+                    BS_AUTORADIOBUTTON,223,98,53,10
+    CONTROL         "CH6- CH7+",IDC_RBDIFFADCNEG4,"Button",
+                    BS_AUTORADIOBUTTON,223,110,53,10
+    GROUPBOX        "Interval",IDC_STATIC,7,129,107,30
+    EDITTEXT        IDC_EB_M300LOGINTERVAL,15,139,52,14,ES_AUTOHSCROLL
+    LTEXT           "Second(s)",IDC_STATIC,77,142,33,8
+    CONTROL         "",IDC_INTEGRITYLINEGRACTRL1,
+                    "{B68EE2FB-A4D5-4580-931C-3D43E85D724D}",0x0,7,166,345,
+                    136
+    LTEXT           "Minimum Value",IDC_STATIC,7,310,47,8
+    EDITTEXT        IDC_EBM300GRAPHMIN,56,308,40,14,ES_AUTOHSCROLL
+    LTEXT           "Maximum Value",IDC_STATIC,112,310,50,8
+    EDITTEXT        IDC_EBM300GRAPHMAX,166,308,40,14,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,302,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,302,24,50,14
+    PUSHBUTTON      "Start",IDC_BTN_M300LOGSTART,302,46,50,14
+    PUSHBUTTON      "Halt",IDC_BTN_M300LOGSTOP,302,63,50,14,WS_DISABLED
+END
+
+IDD_DLG_485M300LOGGER DIALOGEX 0, 0, 359, 330
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "485M300 Data Logging"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    GROUPBOX        "Log File",IDC_STATIC,7,7,227,30
+    EDITTEXT        IDC_EB_M300LOGFILE,14,16,155,14,ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_TABSTOP
+    PUSHBUTTON      "Browse",IDC_BTNBROWSEM300LOG,176,16,50,14
+    GROUPBOX        "Unipolar Channels",IDC_STATIC,7,41,276,30
+    CONTROL         "0",IDC_CHKM300CH0,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    13,52,20,10
+    CONTROL         "1",IDC_CHKM300CH1,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    46,52,20,10
+    CONTROL         "2",IDC_CHKM300CH2,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    83,52,20,10
+    CONTROL         "3",IDC_CHKM300CH3,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    116,52,20,10
+    CONTROL         "4",IDC_CHKM300CH4,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    153,52,20,10
+    CONTROL         "5",IDC_CHKM300CH5,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    186,52,20,10
+    CONTROL         "6",IDC_CHKM300CH6,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    223,52,20,10
+    CONTROL         "7",IDC_CHKM300CH7,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    256,52,20,10
+    GROUPBOX        "Bipolar-CH0/CH1",IDC_STATIC,7,75,66,53
+    CONTROL         "Off",IDC_RBDIFFADCOFF,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP | WS_TABSTOP,13,87,27,10
+    CONTROL         "CH0+ CH1-",IDC_RBDIFFADCPOS,"Button",BS_AUTORADIOBUTTON,
+                    13,98,53,10
+    CONTROL         "CH0- CH1+",IDC_RBDIFFADCNEG,"Button",BS_AUTORADIOBUTTON,
+                    13,110,53,10
+    GROUPBOX        "Bipolar-CH2/CH3",IDC_STATIC,77,75,66,53
+    CONTROL         "Off",IDC_RBDIFFADCOFF2,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP | WS_TABSTOP,83,87,27,10
+    CONTROL         "CH2+ CH3-",IDC_RBDIFFADCPOS2,"Button",
+                    BS_AUTORADIOBUTTON,83,98,53,10
+    CONTROL         "CH2- CH3+",IDC_RBDIFFADCNEG2,"Button",
+                    BS_AUTORADIOBUTTON,83,110,53,10
+    GROUPBOX        "Bipolar-CH4/CH5",IDC_STATIC,147,75,66,53
+    CONTROL         "Off",IDC_RBDIFFADCOFF3,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP | WS_TABSTOP,153,87,27,10
+    CONTROL         "CH4+ CH5-",IDC_RBDIFFADCPOS3,"Button",
+                    BS_AUTORADIOBUTTON,153,98,53,10
+    CONTROL         "CH4- CH5+",IDC_RBDIFFADCNEG3,"Button",
+                    BS_AUTORADIOBUTTON,153,110,53,10
+    GROUPBOX        "Bipolar-CH6/CH7",IDC_STATIC,217,75,66,53
+    CONTROL         "Off",IDC_RBDIFFADCOFF4,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP | WS_TABSTOP,223,87,27,10
+    CONTROL         "CH6+ CH7-",IDC_RBDIFFADCPOS4,"Button",
+                    BS_AUTORADIOBUTTON,223,98,53,10
+    CONTROL         "CH6- CH7+",IDC_RBDIFFADCNEG4,"Button",
+                    BS_AUTORADIOBUTTON,223,110,53,10
+    GROUPBOX        "Interval",IDC_STATIC,7,129,107,30
+    EDITTEXT        IDC_EB_M300LOGINTERVAL,15,139,52,14,ES_AUTOHSCROLL
+    LTEXT           "Second(s)",IDC_STATIC,77,142,33,8
+    GROUPBOX        "Module Address",IDC_STATIC,124,129,89,30
+    EDITTEXT        IDC_EBMODULEADDRESS,135,139,64,14,ES_AUTOHSCROLL
+    CONTROL         "",IDC_INTEGRITYLINEGRACTRL1,
+                    "{B68EE2FB-A4D5-4580-931C-3D43E85D724D}",0x0,7,166,345,
+                    136
+    LTEXT           "Minimum Value",IDC_STATIC,7,310,47,8
+    EDITTEXT        IDC_EBM300GRAPHMIN,56,308,40,14,ES_AUTOHSCROLL
+    LTEXT           "Maximum Value",IDC_STATIC,112,310,50,8
+    EDITTEXT        IDC_EBM300GRAPHMAX,166,308,40,14,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,302,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,302,24,50,14
+    PUSHBUTTON      "Start",IDC_BTN_M300LOGSTART,302,46,50,14
+    PUSHBUTTON      "Halt",IDC_BTN_M300LOGSTOP,302,63,50,14,WS_DISABLED
+END
+
+IDD_DLG_USBM400LOGGER DIALOGEX 0, 0, 359, 382
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "USBM400 Data Logging"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    GROUPBOX        "Log File",IDC_STATIC,7,7,227,30
+    EDITTEXT        IDC_EB_M400LOGFILE,14,16,155,14,ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_TABSTOP
+    PUSHBUTTON      "Browse",IDC_BTNBROWSEM400LOG,176,16,50,14
+    GROUPBOX        "Unipolar Channels",IDC_STATIC,7,41,276,30
+    CONTROL         "0",IDC_CHKM400CH0,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    13,52,20,10
+    CONTROL         "1",IDC_CHKM400CH1,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    46,52,20,10
+    CONTROL         "2",IDC_CHKM400CH2,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    83,52,20,10
+    CONTROL         "3",IDC_CHKM400CH3,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    116,52,20,10
+    CONTROL         "4",IDC_CHKM400CH4,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    153,52,20,10
+    CONTROL         "5",IDC_CHKM400CH5,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    186,52,20,10
+    CONTROL         "6",IDC_CHKM400CH6,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    223,52,20,10
+    CONTROL         "7",IDC_CHKM400CH7,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    256,52,20,10
+    GROUPBOX        "Bipolar-CH0/CH1",IDC_STATIC,7,75,66,53
+    CONTROL         "Off",IDC_RBDIFFADCOFF,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP | WS_TABSTOP,13,87,27,10
+    CONTROL         "CH0+ CH1-",IDC_RBDIFFADCPOS,"Button",BS_AUTORADIOBUTTON,
+                    13,98,53,10
+    CONTROL         "CH0- CH1+",IDC_RBDIFFADCNEG,"Button",BS_AUTORADIOBUTTON,
+                    13,110,53,10
+    GROUPBOX        "Bipolar-CH2/CH3",IDC_STATIC,77,75,66,53
+    CONTROL         "Off",IDC_RBDIFFADCOFF2,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP | WS_TABSTOP,83,87,27,10
+    CONTROL         "CH2+ CH3-",IDC_RBDIFFADCPOS2,"Button",
+                    BS_AUTORADIOBUTTON,83,98,53,10
+    CONTROL         "CH2- CH3+",IDC_RBDIFFADCNEG2,"Button",
+                    BS_AUTORADIOBUTTON,83,110,53,10
+    GROUPBOX        "Bipolar-CH4/CH5",IDC_STATIC,147,75,66,53
+    CONTROL         "Off",IDC_RBDIFFADCOFF3,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP | WS_TABSTOP,153,87,27,10
+    CONTROL         "CH4+ CH5-",IDC_RBDIFFADCPOS3,"Button",
+                    BS_AUTORADIOBUTTON,153,98,53,10
+    CONTROL         "CH4- CH5+",IDC_RBDIFFADCNEG3,"Button",
+                    BS_AUTORADIOBUTTON,153,110,53,10
+    GROUPBOX        "Bipolar-CH6/CH7",IDC_STATIC,217,75,66,53
+    CONTROL         "Off",IDC_RBDIFFADCOFF4,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP | WS_TABSTOP,223,87,27,10
+    CONTROL         "CH6+ CH7-",IDC_RBDIFFADCPOS4,"Button",
+                    BS_AUTORADIOBUTTON,223,98,53,10
+    CONTROL         "CH6- CH7+",IDC_RBDIFFADCNEG4,"Button",
+                    BS_AUTORADIOBUTTON,223,110,53,10
+    GROUPBOX        "Interval",IDC_STATIC,7,182,107,30
+    EDITTEXT        IDC_EB_M400LOGINTERVAL,15,192,52,14,ES_AUTOHSCROLL
+    LTEXT           "Second(s)",IDC_STATIC,77,195,33,8
+    GROUPBOX        "Module Address",IDC_STATIC,124,182,89,30
+    EDITTEXT        IDC_EBMODULEADDRESS,135,192,64,14,ES_AUTOHSCROLL
+    CONTROL         "",IDC_INTEGRITYLINEGRACTRL1,
+                    "{B68EE2FB-A4D5-4580-931C-3D43E85D724D}",0x0,7,221,345,
+                    136
+    LTEXT           "Minimum Value",IDC_STATIC,7,363,47,8
+    EDITTEXT        IDC_EBM400GRAPHMIN,56,361,40,14,ES_AUTOHSCROLL
+    LTEXT           "Maximum Value",IDC_STATIC,112,363,50,8
+    EDITTEXT        IDC_EBM400GRAPHMAX,166,361,40,14,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,302,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,302,24,50,14
+    PUSHBUTTON      "Start",IDC_BTN_M400LOGSTART,302,46,50,14
+    PUSHBUTTON      "Halt",IDC_BTN_M400LOGSTOP,302,63,50,14,WS_DISABLED
+    GROUPBOX        "Gain",IDC_STATIC,7,133,276,43
+    COMBOBOX        IDC_CB_ACH0_1,17,154,30,89,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_TABSTOP
+    LTEXT           "CH0(1)",IDC_STATIC,17,143,24,8
+    COMBOBOX        IDC_CB_ACH0_2,50,154,30,89,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_TABSTOP
+    LTEXT           "CH1(0)",IDC_STATIC,50,143,24,8
+    COMBOBOX        IDC_CB_ACH0_3,82,154,30,89,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_TABSTOP
+    LTEXT           "CH2(3)",IDC_STATIC,82,143,24,8
+    COMBOBOX        IDC_CB_ACH0_4,114,154,30,89,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "CH3(2)",IDC_STATIC,114,143,24,8
+    COMBOBOX        IDC_CB_ACH0_5,146,154,30,89,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "CH4(5)",IDC_STATIC,146,143,24,8
+    COMBOBOX        IDC_CB_ACH0_6,178,154,30,89,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "CH5(4)",IDC_STATIC,178,143,24,8
+    COMBOBOX        IDC_CB_ACH0_7,210,154,30,89,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "CH6(7)",IDC_STATIC,210,143,24,8
+    COMBOBOX        IDC_CB_ACH0_8,242,154,30,89,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "CH7(6)",IDC_STATIC,242,143,24,8
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,2,0,2
+ PRODUCTVERSION 1,2,0,2
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904e4"
+        BEGIN
+            VALUE "CompanyName", "Integrity Instruments"
+            VALUE "FileDescription", "Data Aquisition Module Utility"
+            VALUE "FileVersion", "1.2.0.1"
+            VALUE "InternalName", "DAMUtils.exe"
+            VALUE "LegalCopyright", "(c) Integrity Instruments, Inc.  All rights reserved."
+            VALUE "OriginalFilename", "DAMUtils.exe"
+            VALUE "ProductName", "DAMUtils"
+            VALUE "ProductVersion", "1.2.0.2"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1252
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 228
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 48
+    END
+
+    IDD_DAMUTILS_FORM, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 368
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 296
+    END
+
+    IDD_DLG_232M200, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 277
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 259
+    END
+
+    IDD_DLG_232M300, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 277
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 259
+    END
+
+    IDD_DLG_485M300, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 277
+        TOPMARGIN, 6
+        BOTTOMMARGIN, 259
+    END
+
+    IDD_DLG_USBM400, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 277
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 259
+    END
+
+    IDD_DLG_COMMSETUP, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 179
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 88
+    END
+
+    IDD_DLGUSBSTREAMMGR, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 393
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 270
+    END
+
+    IDD_DLG_232M100, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 277
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 259
+    END
+
+    IDD_DLG_232M100LOGGER, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 299
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 274
+    END
+
+    IDD_DLG_232M200LOGGER, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 299
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 274
+    END
+
+    IDD_DLG_232M300LOGGER, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 352
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 323
+    END
+
+    IDD_DLG_485M300LOGGER, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 352
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 323
+    END
+
+    IDD_DLG_USBM400LOGGER, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 352
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 375
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_DLG_COMMSETUP DLGINIT
+BEGIN
+    IDC_CB_COMMPORT, 0x403, 5, 0
+0x4f43, 0x314d, "\000" 
+    IDC_CB_COMMPORT, 0x403, 5, 0
+0x4f43, 0x324d, "\000" 
+    IDC_CB_COMMPORT, 0x403, 5, 0
+0x4f43, 0x334d, "\000" 
+    IDC_CB_COMMPORT, 0x403, 5, 0
+0x4f43, 0x344d, "\000" 
+    IDC_CB_COMMPORT, 0x403, 5, 0
+0x4f43, 0x354d, "\000" 
+    IDC_CB_COMMPORT, 0x403, 5, 0
+0x4f43, 0x364d, "\000" 
+    IDC_CB_COMMPORT, 0x403, 5, 0
+0x4f43, 0x374d, "\000" 
+    IDC_CB_COMMPORT, 0x403, 5, 0
+0x4f43, 0x384d, "\000" 
+    IDC_CB_COMMPORT, 0x403, 5, 0
+0x4f43, 0x394d, "\000" 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x314d, 0x0030, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x314d, 0x0031, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x314d, 0x0032, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x314d, 0x0033, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x314d, 0x0034, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x314d, 0x0035, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x314d, 0x0036, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x314d, 0x0037, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x314d, 0x0038, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x314d, 0x0039, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x324d, 0x0030, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x324d, 0x0031, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x324d, 0x0032, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x324d, 0x0033, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x324d, 0x0034, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x324d, 0x0035, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x324d, 0x0036, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x324d, 0x0037, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x324d, 0x0038, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x324d, 0x0039, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x334d, 0x0030, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x334d, 0x0031, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x334d, 0x0032, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x334d, 0x0033, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x334d, 0x0034, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x334d, 0x0035, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x334d, 0x0036, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x334d, 0x0037, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x334d, 0x0038, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x334d, 0x0039, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x344d, 0x0030, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x344d, 0x0031, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x344d, 0x0032, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x344d, 0x0033, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x344d, 0x0034, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x344d, 0x0035, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x344d, 0x0036, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x344d, 0x0037, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x344d, 0x0038, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x344d, 0x0039, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x354d, 0x0030, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x354d, 0x0031, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x354d, 0x0032, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x354d, 0x0033, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x354d, 0x0034, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x354d, 0x0035, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x354d, 0x0036, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x354d, 0x0037, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x354d, 0x0038, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x354d, 0x0039, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x364d, 0x0030, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x364d, 0x0031, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x364d, 0x0032, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x364d, 0x0033, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x364d, 0x0034, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x364d, 0x0035, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x364d, 0x0036, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x364d, 0x0037, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x364d, 0x0038, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x364d, 0x0039, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x374d, 0x0030, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x374d, 0x0031, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x374d, 0x0032, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x374d, 0x0033, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x374d, 0x0034, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x374d, 0x0035, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x374d, 0x0036, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x374d, 0x0037, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x374d, 0x0038, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x374d, 0x0039, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x384d, 0x0030, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x384d, 0x0031, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x384d, 0x0032, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x384d, 0x0033, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x384d, 0x0034, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x384d, 0x0035, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x384d, 0x0036, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x384d, 0x0037, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x384d, 0x0038, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x384d, 0x0039, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x394d, 0x0030, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x394d, 0x0031, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x394d, 0x0032, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x394d, 0x0033, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x394d, 0x0034, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x394d, 0x0035, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x394d, 0x0036, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x394d, 0x0037, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x394d, 0x0038, 
+    IDC_CB_COMMPORT, 0x403, 6, 0
+0x4f43, 0x394d, 0x0039, 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3030, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3130, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3230, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3330, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3430, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3530, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3630, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3730, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3830, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3930, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3031, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3131, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3231, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3331, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3431, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3531, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3631, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3731, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3831, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3931, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3032, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3132, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3232, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3332, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3432, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3532, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3632, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3732, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3832, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3932, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3033, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3133, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3233, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3333, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3433, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3533, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3633, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3733, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3833, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3933, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3034, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3134, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3234, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3334, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3434, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3534, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3634, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3734, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3834, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3934, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3035, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3135, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3235, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3335, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3435, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3535, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3635, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3735, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3835, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3935, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3036, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3136, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3236, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3336, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3436, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3536, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3636, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3736, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3836, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3936, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3037, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3137, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3237, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3337, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3437, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3537, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3637, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3737, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3837, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3937, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3038, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3138, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3238, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3338, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3438, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3538, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3638, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3738, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3838, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3938, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3039, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3139, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3239, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3339, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3439, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3539, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3639, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3739, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3839, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x314d, 0x3939, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x324d, 0x3030, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x324d, 0x3130, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x324d, 0x3230, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x324d, 0x3330, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x324d, 0x3430, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x324d, 0x3530, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x324d, 0x3630, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x324d, 0x3730, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x324d, 0x3830, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x324d, 0x3930, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x324d, 0x3031, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x324d, 0x3131, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x324d, 0x3231, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x324d, 0x3331, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x324d, 0x3431, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x324d, 0x3531, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x324d, 0x3631, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x324d, 0x3731, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x324d, 0x3831, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x324d, 0x3931, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x324d, 0x3032, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x324d, 0x3132, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x324d, 0x3232, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x324d, 0x3332, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x324d, 0x3432, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x324d, 0x3532, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x324d, 0x3632, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x324d, 0x3732, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x324d, 0x3832, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x324d, 0x3932, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x324d, 0x3033, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x324d, 0x3133, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x324d, 0x3233, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x324d, 0x3333, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x324d, 0x3433, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x324d, 0x3533, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x324d, 0x3633, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x324d, 0x3733, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x324d, 0x3833, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x324d, 0x3933, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x324d, 0x3034, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x324d, 0x3134, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x324d, 0x3234, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x324d, 0x3334, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x324d, 0x3434, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x324d, 0x3534, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x324d, 0x3634, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x324d, 0x3734, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x324d, 0x3834, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x324d, 0x3934, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x324d, 0x3035, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x324d, 0x3135, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x324d, 0x3235, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x324d, 0x3335, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x324d, 0x3435, "\000" 
+    IDC_CB_COMMPORT, 0x403, 7, 0
+0x4f43, 0x324d, 0x3535, "\000" 
+    IDC_CB_BAUDRATE, 0x403, 5, 0
+0x3639, 0x3030, "\000" 
+    IDC_CB_BAUDRATE, 0x403, 6, 0
+0x3931, 0x3032, 0x0030, 
+    IDC_CB_BAUDRATE, 0x403, 6, 0
+0x3735, 0x3036, 0x0030, 
+    IDC_CB_BAUDRATE, 0x403, 7, 0
+0x3131, 0x3235, 0x3030, "\000" 
+    0
+END
+
+IDD_DLGUSBSTREAMMGR DLGINIT
+BEGIN
+    IDC_INTEGRITYBARGRAPCTRL2, 0x376, 20, 0
+0x0000, 0x0000, 0x0000, 0x0001, 0x3220, 0x0000, 0x19d7, 0x0000, 0x0000, 
+0x0000, 
+    0
+END
+
+IDD_DAMUTILS_FORM DLGINIT
+BEGIN
+    IDC_INTEGRITYIOCTRL1, 0x376, 20, 0
+0x0000, 0x0000, 0x0000, 0x0001, 0x094d, 0x0000, 0x043d, 0x0000, 0x0000, 
+0x0000, 
+    0
+END
+
+IDD_DLG_232M100LOGGER DLGINIT
+BEGIN
+    IDC_INTEGRITYLINEGRACTRL2, 0x376, 20, 0
+0x0000, 0x0000, 0x0000, 0x0001, 0x2d45, 0x0000, 0x16d7, 0x0000, 0x0000, 
+0x0000, 
+    0
+END
+
+IDD_DLG_232M200LOGGER DLGINIT
+BEGIN
+    IDC_INTEGRITYLINEGRACTRL1, 0x376, 20, 0
+0x0000, 0x0000, 0x0000, 0x0001, 0x2d45, 0x0000, 0x16d7, 0x0000, 0x0000, 
+0x0000, 
+    0
+END
+
+IDD_DLG_232M300LOGGER DLGINIT
+BEGIN
+    IDC_INTEGRITYLINEGRACTRL1, 0x376, 20, 0
+0x0000, 0x0000, 0x0000, 0x0001, 0x3589, 0x0000, 0x16d7, 0x0000, 0x0000, 
+0x0000, 
+    0
+END
+
+IDD_DLG_485M300LOGGER DLGINIT
+BEGIN
+    IDC_INTEGRITYLINEGRACTRL1, 0x376, 20, 0
+0x0000, 0x0000, 0x0000, 0x0001, 0x3589, 0x0000, 0x16d7, 0x0000, 0x0000, 
+0x0000, 
+    0
+END
+
+IDD_DLG_USBM400LOGGER DLGINIT
+BEGIN
+    IDC_INTEGRITYLINEGRACTRL1, 0x376, 20, 0
+0x0000, 0x0000, 0x0000, 0x0001, 0x3589, 0x0000, 0x16d7, 0x0000, 0x0000, 
+0x0000, 
+    IDC_CB_ACH0_1, 0x403, 2, 0
+0x0031, 
+    IDC_CB_ACH0_1, 0x403, 2, 0
+0x0032, 
+    IDC_CB_ACH0_1, 0x403, 2, 0
+0x0034, 
+    IDC_CB_ACH0_1, 0x403, 2, 0
+0x0035, 
+    IDC_CB_ACH0_1, 0x403, 2, 0
+0x0038, 
+    IDC_CB_ACH0_1, 0x403, 3, 0
+0x3031, "\000" 
+    IDC_CB_ACH0_1, 0x403, 3, 0
+0x3631, "\000" 
+    IDC_CB_ACH0_1, 0x403, 3, 0
+0x3032, "\000" 
+    IDC_CB_ACH0_2, 0x403, 2, 0
+0x0031, 
+    IDC_CB_ACH0_2, 0x403, 2, 0
+0x0032, 
+    IDC_CB_ACH0_2, 0x403, 2, 0
+0x0034, 
+    IDC_CB_ACH0_2, 0x403, 2, 0
+0x0035, 
+    IDC_CB_ACH0_2, 0x403, 2, 0
+0x0038, 
+    IDC_CB_ACH0_2, 0x403, 3, 0
+0x3031, "\000" 
+    IDC_CB_ACH0_2, 0x403, 3, 0
+0x3631, "\000" 
+    IDC_CB_ACH0_2, 0x403, 3, 0
+0x3032, "\000" 
+    IDC_CB_ACH0_3, 0x403, 2, 0
+0x0031, 
+    IDC_CB_ACH0_3, 0x403, 2, 0
+0x0032, 
+    IDC_CB_ACH0_3, 0x403, 2, 0
+0x0034, 
+    IDC_CB_ACH0_3, 0x403, 2, 0
+0x0035, 
+    IDC_CB_ACH0_3, 0x403, 2, 0
+0x0038, 
+    IDC_CB_ACH0_3, 0x403, 3, 0
+0x3031, "\000" 
+    IDC_CB_ACH0_3, 0x403, 3, 0
+0x3631, "\000" 
+    IDC_CB_ACH0_3, 0x403, 3, 0
+0x3032, "\000" 
+    IDC_CB_ACH0_4, 0x403, 2, 0
+0x0031, 
+    IDC_CB_ACH0_4, 0x403, 2, 0
+0x0032, 
+    IDC_CB_ACH0_4, 0x403, 2, 0
+0x0034, 
+    IDC_CB_ACH0_4, 0x403, 2, 0
+0x0035, 
+    IDC_CB_ACH0_4, 0x403, 2, 0
+0x0038, 
+    IDC_CB_ACH0_4, 0x403, 3, 0
+0x3031, "\000" 
+    IDC_CB_ACH0_4, 0x403, 3, 0
+0x3631, "\000" 
+    IDC_CB_ACH0_4, 0x403, 3, 0
+0x3032, "\000" 
+    IDC_CB_ACH0_5, 0x403, 2, 0
+0x0031, 
+    IDC_CB_ACH0_5, 0x403, 2, 0
+0x0032, 
+    IDC_CB_ACH0_5, 0x403, 2, 0
+0x0034, 
+    IDC_CB_ACH0_5, 0x403, 2, 0
+0x0035, 
+    IDC_CB_ACH0_5, 0x403, 2, 0
+0x0038, 
+    IDC_CB_ACH0_5, 0x403, 3, 0
+0x3031, "\000" 
+    IDC_CB_ACH0_5, 0x403, 3, 0
+0x3631, "\000" 
+    IDC_CB_ACH0_5, 0x403, 3, 0
+0x3032, "\000" 
+    IDC_CB_ACH0_6, 0x403, 2, 0
+0x0031, 
+    IDC_CB_ACH0_6, 0x403, 2, 0
+0x0032, 
+    IDC_CB_ACH0_6, 0x403, 2, 0
+0x0034, 
+    IDC_CB_ACH0_6, 0x403, 2, 0
+0x0035, 
+    IDC_CB_ACH0_6, 0x403, 2, 0
+0x0038, 
+    IDC_CB_ACH0_6, 0x403, 3, 0
+0x3031, "\000" 
+    IDC_CB_ACH0_6, 0x403, 3, 0
+0x3631, "\000" 
+    IDC_CB_ACH0_6, 0x403, 3, 0
+0x3032, "\000" 
+    IDC_CB_ACH0_7, 0x403, 2, 0
+0x0031, 
+    IDC_CB_ACH0_7, 0x403, 2, 0
+0x0032, 
+    IDC_CB_ACH0_7, 0x403, 2, 0
+0x0034, 
+    IDC_CB_ACH0_7, 0x403, 2, 0
+0x0035, 
+    IDC_CB_ACH0_7, 0x403, 2, 0
+0x0038, 
+    IDC_CB_ACH0_7, 0x403, 3, 0
+0x3031, "\000" 
+    IDC_CB_ACH0_7, 0x403, 3, 0
+0x3631, "\000" 
+    IDC_CB_ACH0_7, 0x403, 3, 0
+0x3032, "\000" 
+    IDC_CB_ACH0_8, 0x403, 2, 0
+0x0031, 
+    IDC_CB_ACH0_8, 0x403, 2, 0
+0x0032, 
+    IDC_CB_ACH0_8, 0x403, 2, 0
+0x0034, 
+    IDC_CB_ACH0_8, 0x403, 2, 0
+0x0035, 
+    IDC_CB_ACH0_8, 0x403, 2, 0
+0x0038, 
+    IDC_CB_ACH0_8, 0x403, 3, 0
+0x3031, "\000" 
+    IDC_CB_ACH0_8, 0x403, 3, 0
+0x3631, "\000" 
+    IDC_CB_ACH0_8, 0x403, 3, 0
+0x3032, "\000" 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// HTML
+//
+
+IDR_HTML_232M100        HTML                    "232M100.htm"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDP_OLE_INIT_FAILED     "OLE initialization failed.  Make sure that the OLE libraries are the correct version."
+END
+
+STRINGTABLE 
+BEGIN
+    IDR_MAINFRAME           "DAMUtils"
+    IDR_DAMUtilsTYPE        "\nDAMUtils\nDAMUtils\nDAMUtils Files (*.dam)\n.dam\nDAMUtils.Document\nDAMUtils.Document"
+END
+
+STRINGTABLE 
+BEGIN
+    AFX_IDS_APP_TITLE       "DAMUtils"
+    AFX_IDS_IDLEMESSAGE     "Ready"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_INDICATOR_EXT        "EXT"
+    ID_INDICATOR_CAPS       "CAP"
+    ID_INDICATOR_NUM        "NUM"
+    ID_INDICATOR_SCRL       "SCRL"
+    ID_INDICATOR_OVR        "OVR"
+    ID_INDICATOR_REC        "REC"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_FILE_NEW             "Create a new document\nNew"
+    ID_FILE_OPEN            "Open an existing document\nOpen"
+    ID_FILE_CLOSE           "Close the active document\nClose"
+    ID_FILE_SAVE            "Save the active document\nSave"
+    ID_FILE_SAVE_AS         "Save the active document with a new name\nSave As"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_APP_ABOUT            "Display program information, version number and copyright\nAbout"
+    ID_APP_EXIT             "Quit the application; prompts to save documents\nExit"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_FILE_MRU_FILE1       "Open this document"
+    ID_FILE_MRU_FILE2       "Open this document"
+    ID_FILE_MRU_FILE3       "Open this document"
+    ID_FILE_MRU_FILE4       "Open this document"
+    ID_FILE_MRU_FILE5       "Open this document"
+    ID_FILE_MRU_FILE6       "Open this document"
+    ID_FILE_MRU_FILE7       "Open this document"
+    ID_FILE_MRU_FILE8       "Open this document"
+    ID_FILE_MRU_FILE9       "Open this document"
+    ID_FILE_MRU_FILE10      "Open this document"
+    ID_FILE_MRU_FILE11      "Open this document"
+    ID_FILE_MRU_FILE12      "Open this document"
+    ID_FILE_MRU_FILE13      "Open this document"
+    ID_FILE_MRU_FILE14      "Open this document"
+    ID_FILE_MRU_FILE15      "Open this document"
+    ID_FILE_MRU_FILE16      "Open this document"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_NEXT_PANE            "Switch to the next window pane\nNext Pane"
+    ID_PREV_PANE            "Switch back to the previous window pane\nPrevious Pane"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_WINDOW_NEW           "Open another window for the active document\nNew Window"
+    ID_WINDOW_ARRANGE       "Arrange icons at the bottom of the window\nArrange Icons"
+    ID_WINDOW_CASCADE       "Arrange windows so they overlap\nCascade Windows"
+    ID_WINDOW_TILE_HORZ     "Arrange windows as non-overlapping tiles\nTile Windows"
+    ID_WINDOW_TILE_VERT     "Arrange windows as non-overlapping tiles\nTile Windows"
+    ID_WINDOW_SPLIT         "Split the active window into panes\nSplit"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_EDIT_CLEAR           "Erase the selection\nErase"
+    ID_EDIT_CLEAR_ALL       "Erase everything\nErase All"
+    ID_EDIT_COPY            "Copy the selection and put it on the Clipboard\nCopy"
+    ID_EDIT_CUT             "Cut the selection and put it on the Clipboard\nCut"
+    ID_EDIT_FIND            "Find the specified text\nFind"
+    ID_EDIT_PASTE           "Insert Clipboard contents\nPaste"
+    ID_EDIT_REPEAT          "Repeat the last action\nRepeat"
+    ID_EDIT_REPLACE         "Replace specific text with different text\nReplace"
+    ID_EDIT_SELECT_ALL      "Select the entire document\nSelect All"
+    ID_EDIT_UNDO            "Undo the last action\nUndo"
+    ID_EDIT_REDO            "Redo the previously undone action\nRedo"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_VIEW_TOOLBAR         "Show or hide the toolbar\nToggle ToolBar"
+    ID_VIEW_STATUS_BAR      "Show or hide the status bar\nToggle StatusBar"
+END
+
+STRINGTABLE 
+BEGIN
+    AFX_IDS_SCSIZE          "Change the window size"
+    AFX_IDS_SCMOVE          "Change the window position"
+    AFX_IDS_SCMINIMIZE      "Reduce the window to an icon"
+    AFX_IDS_SCMAXIMIZE      "Enlarge the window to full size"
+    AFX_IDS_SCNEXTWINDOW    "Switch to the next document window"
+    AFX_IDS_SCPREVWINDOW    "Switch to the previous document window"
+    AFX_IDS_SCCLOSE         "Close the active window and prompts to save the documents"
+END
+
+STRINGTABLE 
+BEGIN
+    AFX_IDS_SCRESTORE       "Restore the window to normal size"
+    AFX_IDS_SCTASKLIST      "Activate Task List"
+    AFX_IDS_MDICHILD        "Activate this window"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_TOOLS_STREAMMODE     "Start/Stop Data Stream Mode"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#include "res\DAMUtils.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+1 TYPELIB "DAMUtils.tlb"
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

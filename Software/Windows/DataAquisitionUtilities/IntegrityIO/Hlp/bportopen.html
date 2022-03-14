@@ -1,0 +1,44 @@
+<html>
+<head>
+<title>bPortOpen</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
+
+<body bgcolor="#FFFFCC">
+<h1>Integrity I/O Module</h1>
+<table width="25%" border="0" align="left">
+  <tr> 
+    <td height="20"><a href="properties.html">Properties</a></td>
+    <td height="20"><a href="methods.html">Methods</a></td>
+    <td height="20"><a href="index.html">Home</a></td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+<hr>
+<h2>BOOL bPortOpen</h2>
+<blockquote> 
+  <p>Open/Close the serial port.</p>
+</blockquote>
+<h2>Syntax</h2>
+<blockquote> 
+  <p><i>value = </i>object.<b>bPortOpen</b></p>
+  <p>or</p>
+  <p>object.<b>bPortOpen = </b><i>value</i></p>
+</blockquote>
+<h2>Dependencies</h2>
+<blockquote>
+  <p><a href="lncomport.html">lnComPort</a>, <a href="lnbaudrate.html">lnBaudRate</a></p>
+</blockquote>
+<p><b><i>Remarks:</i></b></p>
+<blockquote> 
+  <p> Setting this flag to a value of TRUE (1) will force the object to attempt 
+    an open of the serial port defined by the <a href="lncomport.html">lnComPort</a> 
+    property. It will use the baud rate defined by the <a href="lnbaudrate.html">lnBaudRate</a> 
+    property.</p>
+  <p>If the port open fails reading this propery will return a FALSE(value)</p>
+  <p>Default value is FALSE (0)</p>
+  <p>Property has Read/Write attributes.</p>
+  <p>&nbsp;</p>
+</blockquote>
+</body>
+</html>

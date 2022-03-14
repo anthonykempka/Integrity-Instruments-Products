@@ -1,0 +1,71 @@
+;
+; INF for Integrity Instruments, Inc.
+; USBM400 Data Acquisition board
+;
+; (c) Copyright 2002-2003 Integrity Instruments, Inc.
+;
+
+[Version]
+Signature="$CHICAGO$"
+Class=INTEGRITYDAQ
+ClassGUID={33FE7EFF-62F3-4ffd-8159-9F47CEFBE1C3}
+Provider=%INTEG%
+DriverVer=09/20/2003,1.1.0.0
+
+;-----------------------------------------------------------------------------
+; Integrity Instruments Data Acquisition class
+
+[ClassInstall32]
+AddReg=INTEGRITYDAQ.AddClassReg
+
+[INTEGRITYDAQ.AddClassReg]
+HKR,,,,%INTEGRITYDAQ.ClassName%
+;-----------------------------------------------------------------------------
+
+[SourceDisksNames]
+1="USBM400 Installation Disk",,,
+
+[SourceDisksFiles]
+USBM400.sys=1
+
+[Manufacturer]
+%MfgName%=Integrity
+
+[Integrity]
+%USBM400.DeviceDesc%=USBM400.Dev, USB\Vid_10ef&Pid_0004
+
+[DestinationDirs]
+USBM400.Files.Ext = 10,System32\Drivers
+
+[USBM400.Dev]
+CopyFiles=USBM400.Files.Ext
+AddReg=USBM400.AddReg
+
+[USBM400.Dev.NT]
+CopyFiles=USBM400.Files.Ext
+
+[USBM400.Dev.NT.Services]
+Addservice=USBM400,0x00000002,USBM400.AddService
+
+[USBM400.AddService]
+DisplayName    = %USBM400.SvcDesc%
+ServiceType    = 1                  ; SERVICE_KERNEL_DRIVER
+StartType      = 3                  ; SERVICE_DEMAND_START
+ErrorControl   = 1                  ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %10%\System32\Drivers\USBM400.sys
+
+[USBM400.AddReg]
+HKR,,DevLoader,,*ntkern
+HKR,,NTMPDriver,,USBM400.sys
+
+[USBM400.Files.Ext]
+USBM400.sys
+
+;---------------------------------------------------------------;
+
+[Strings]
+INTEG="Integrity Instruments, Inc."
+MfgName="Integrity Instruments, Inc."
+USBM400.DeviceDesc="USBM400 Data Acquisition Module"
+USBM400.SvcDesc="Integrity Instruments USBM400 device driver"
+INTEGRITYDAQ.ClassName="Integrity Instruments Data Acquisition"

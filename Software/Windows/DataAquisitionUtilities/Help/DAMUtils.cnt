@@ -1,0 +1,5 @@
+:Base DAMUtils.hlp
+:Title Data Acquisition Module Utility
+:Index dummy=dummy.hlp ;(This is necessary when using KLinks - because of a bug in the help
+:Link dummy.hlp        ; compiler. Without this only the first keyword would be looked up!)
+1 Getting Started=SHM_contents0001@DAMUtils.hlp

@@ -1,0 +1,32 @@
+<html>
+<head>
+<title>SetDIOBitDDR()</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
+
+<body bgcolor="#FFFFCC">
+<h1>Integrity I/O Module</h1>
+<table width="25%" border="0" align="left">
+  <tr> 
+    <td height="20"><a href="properties.html">Properties</a></td>
+    <td height="20"><a href="methods.html">Methods</a></td>
+    <td height="20"><a href="index.html">Home</a></td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+<hr>
+<h2>SetDIOBitDDR</h2>
+<p>Output a single bit to the digital IO port data direction register.</p>
+<h2>Syntax</h2>
+<i>value = </i>object.<b>GetDIOBitDDR(long bitDirection, long bitPosition)</b> 
+as Long 
+<p><b>bitDirection</b>: Writes a 0 or 1 to the appropriate bit position in the 
+  data direction register. Writing a data 0 will force the corresponding port 
+  pin to be an output, writing a data 1 makes the port pin an input.</p>
+<p><b>bitPositon</b>: Valid bit positions are 0 ... 15. Bit positions are weighted 
+  as XXYY where XX = Port 2, and YY = Port 1. Bit position 0 refers to Port1 bit 
+  0, Bit position 8 refers to Port 2 Bit 0.</p>
+<p><b>Remarks</b></p>
+<p>This function implements a read/modify/write on the digital I/O port.</p>
+</body>
+</html>

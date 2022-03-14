@@ -1,0 +1,29 @@
+// DAMUtils.idl : type library source for DAMUtils.exe
+
+// This file will be processed by the MIDL compiler to produce the
+// type library (DAMUtils.tlb).
+
+[ uuid(1563B108-8F1E-47C0-A5A3-C960F2BBD7EC), version(1.0) ]
+library DAMUtils
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	//  Primary dispatch interface for CDAMUtilsDoc
+	
+	[ uuid(5722A921-D07C-4805-A2E2-1AA6FC4F8ACF) ]
+	dispinterface IDAMUtils
+	{
+		properties:
+			
+		methods:
+	};
+
+	//  Class information for CDAMUtilsDoc
+	
+	[ uuid(85BA914E-1A63-435B-A61A-34FE6BBFB474) ]
+	coclass CDAMUtilsDoc
+	{
+		[default] dispinterface IDAMUtils;
+	};
+};

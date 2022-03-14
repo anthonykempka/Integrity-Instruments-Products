@@ -1,0 +1,38 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<!-- Sitemap 1.0 -->
+</HEAD><BODY>
+<UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Read Current">
+		<param name="Name" value="Getting Started">
+		<param name="Local" value="Getting Started.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Configure">
+		<param name="Name" value="Getting Started">
+		<param name="Local" value="Getting Started.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Defaults">
+		<param name="Name" value="Getting Started">
+		<param name="Local" value="Getting Started.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Comm Setup">
+		<param name="Name" value="Getting Started">
+		<param name="Local" value="Getting Started.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Save Settings">
+		<param name="Name" value="File functions">
+		<param name="Local" value="File functions.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Data Logger">
+		<param name="Local" value="Data Logger.htm">
+		</OBJECT>
+</UL>
+</BODY></HTML>

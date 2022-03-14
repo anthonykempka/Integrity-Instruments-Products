@@ -1,0 +1,153 @@
+<html>
+<head>
+<title>Visual Basic Example</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
+
+<body bgcolor="#FFFFCC">
+<h1>Visual Basic Example</h1>
+<table width="68%" border="0" align="left">
+  <tr> 
+    <td width="13%"><a href="index.html">Home</a></td>
+    <td width="20%"><a href="vbexample.html">Visual Basic</a></td>
+    <td width="21%"><a href="vcplusplusexample.html">Visual C++</a> </td>
+    <td width="18%"><a href="testpointexample.html">Testpoint</a> </td>
+    <td width="28%">&nbsp;</td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+<hr align="left">
+<blockquote> 
+  <p>This example was created using Microsoft Visual Basic version 6.0. The source 
+    code and Visual Basic project can be found in your program files directory 
+    in the Integrity Instruments\\IntegrityIO\Examples\VB folder. The source code 
+    contains the comments that were left out of this document to make it easier 
+    to read. The write of this document assumes that the reader has a basic working 
+    knowledge of the Visual Basic IDE. It is also assumed that the ADC-xxx module 
+    is connection to the computers COM1 serial port and that the ADC-xxx module 
+    communication speed is set to 115200 Baud (<i>SW1 1 &amp; 2 set to the on 
+    position</i>).</p>
+  <h2>Step 1 - Add the Integrity IO control to a new project.</h2>
+  <pre><img src="Images/vbintegrityioadd.jpg" width="432" height="384"></pre>
+  <p>&nbsp;</p>
+  <h2>Step 2 - Add the Integrity IO control to your form.</h2>
+  <p><img src="Images/vbintegrityioform.jpg" width="432" height="292"></p>
+  <h2>Step 3 - Add Start and Stop buttons to your form.</h2>
+  <blockquote> 
+    <p> Set the <b>Caption</b> property for the Command1 button to <i>Start</i>, 
+      then set the <b>Name</b> property to <i>btnStart</i>.</p>
+    <p>Set the <b>Caption</b> property for the Command2 button to <i>Stop</i>, 
+      then set the <b>Name</b> property to <i>btnStop.</i></p>
+  </blockquote>
+  <p><img src="Images/vbformbuttons.jpg" width="430" height="334"></p>
+  <blockquote> 
+    <p>Add the code for configuring configuing communications and setting up the 
+      digital port I/O by double clicking on the Start button. Port 1 bit 0 will 
+      be configured as an output, Port 2 bit 0 will be configured as an input. 
+      Add the following lines of code to the<b> btnStart_Click() </b>function:</p>
+    <blockquote> 
+      <p> <b>IntegrityIO1.lnComPort = 1<br>
+        IntegrityIO1.lnBaudRate = 115200<br>
+        IntegrityIO1.bPortOpen = True<br>
+        IntegrityIO1.SetDIOBitDDR 1, 0<br>
+        IntegrityIO1.SetDIOBitDDR 0, 8<br>
+        IntegrityIO1.lnDigitalPort = 0</b><br>
+      </p>
+    </blockquote>
+    <p>Now add the code for closing the communications port. Add the following 
+      lines of code to the <b>btnStop_Click()</b> function:</p>
+    <blockquote> 
+      <p><b>IntegrityIO1.bPortOpen = False</b></p>
+    </blockquote>
+    <p>At this point you can see the control do somthing. Run your project and 
+      press the Start button. If you have entered the code accuratly and the communcation 
+      port is available, the green light on the Integrity IO control will light 
+      up. Press the Stop button and the green light will turn off.</p>
+  </blockquote>
+  <h2>Step 4 - Add Button for Digtal I/O toggle function.</h2>
+  <h2><img src="Images/vbtogglebtn.jpg" width="446" height="347"></h2>
+  <p>&nbsp;</p>
+  <h2>Step 5 - Add a label to display the state of Port1 Bit 0</h2>
+  <p><img src="Images/vbaddlable.jpg" width="446" height="347"></p>
+  <blockquote> 
+    <p>Add a label to your form. Change the name propery of the label to <i>lblPort2In</i><br>
+      Set the caption property to Off.<br>
+      Set the font property to MS Sans Serif size 24.<br>
+    </p>
+    <p>Add the code to toggle Port 1 bit 0 and update the display to the <b>btnTogglePort_Click()</b> 
+      function. This section assumes that Port 1 Bit 0 is looped back to Port 
+      2 Bit 0 (<i>P1.1 to P1.14</i>).</p>
+    <blockquote> 
+      <p><code> <b>Dim p2In As Long<br>
+        <br>
+        p2In = IntegrityIO1.GetDIOBit(0) <br>
+        p2In = p2In Xor 1</b></code></p>
+      <p><code><b><br>
+        IntegrityIO1.SetDIOBit p2In, 8<br>
+        p2In = IntegrityIO1.GetDIOBit(0)</b></code></p>
+      <p><b><code><br>
+        If p2In = 1 Then <br>
+        </code></b></p>
+      <blockquote> 
+        <p><code><b>lblPort2In.Caption = "On"</b></code></p>
+      </blockquote>
+      <p><code><b>Else <br>
+        </b> </code></p>
+      <blockquote> 
+        <p><code><b>lblPort2In.Caption = "Off"</b></code></p>
+      </blockquote>
+      <p><code><b>End If</b> </code></p>
+    </blockquote>
+  </blockquote>
+  <h2>Step 6 - Add objects for analog I/O </h2>
+  <h2><img src="Images/vbanalogctrl.jpg" width="443" height="346"></h2>
+  <blockquote> 
+    <p>Set the name property of the D/A 0 text box to <i>txtDAC0Output</i><br>
+      Set the name property of the A/D 0 text box to <i>txtADC0Input</i><br>
+      Set the name property of the Set D/A button to <i>btnDAC0Out</i><br>
+      Set the name property of the Get A/D button to <i>btnADC0In</i> </p>
+    <p>Double click the Set D/A button, then add the following lines of code to 
+      the <b>btnDAC0Out_Click() </b>function.</p>
+    <blockquote> 
+      <p><b>Dim dTemp as Double</b></p>
+      <p><b>IntegrityIO1.lnDACControl = 0</b></p>
+      <p><b>dTemp = Val(txtDAC0Output)</b></p>
+      <p><b>If (dTemp &lt; 0) Or (dTemp &gt; IntegrityIO1.dReferenceVoltage) then</b></p>
+      <blockquote> 
+        <p><b>MsgBox &quot;D/A output is out of range&quot;</b><br>
+          <b>Exit Sub</b> </p>
+      </blockquote>
+      <p><b>End If</b></p>
+      <p><b>IntegrityIO1.dDACOutput = dTemp</b></p>
+      <p>IntegrityIO1.lnADCControl = 8</p>
+      <p>txtADC0Input = Format(IntegrityIO1.dADCUnipolar, "0.000")</p>
+    </blockquote>
+    <p>Double click the Get A/D button, then add the following lines of code to 
+      the <b>btnADC0In_Click()</b> function.</p>
+    <blockquote> 
+      <p>
+        <b>IntegrityIO1.lnADCControl = 8</b><BR>
+        <b>txtADC0Input = Format(IntegrityIO1.dADCUnipolar, "0.000")</b>
+      </p>
+    </blockquote>
+  </blockquote>
+  <p>&nbsp;</p>
+  <h2>Finally - Run the program and test the I/O</h2>
+  <blockquote>
+    <p> Make sure that Analog Out A is connected to Analog In Channel 0, and Port 
+      1 Bit 0 is connected to Port 2 bit 0.<br>
+      Run the project.<br>
+      Press the start button. The green light on the Integrity IO control should 
+      light up.<br>
+      Press the Toggle button. Each time you press the button, the Label should 
+      change from On to Off then Off to on.</p>
+    <p>Enter a voltage between 0 and 5.0 volts in the D/A output text box and 
+      press the Set D/A button. This should update the A/D 0 input text box with 
+      the value read back from Analog Channel 0. <br>
+    </p>
+  </blockquote>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+</blockquote>
+</body>
+</html>

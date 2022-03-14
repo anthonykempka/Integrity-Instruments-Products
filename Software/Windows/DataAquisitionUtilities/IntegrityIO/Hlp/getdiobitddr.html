@@ -1,0 +1,31 @@
+<html>
+<head>
+<title>GetDIOBitDDR</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
+
+<body bgcolor="#FFFFCC">
+<h1>Integrity I/O Module</h1>
+<table width="25%" border="0" align="left">
+  <tr> 
+    <td height="20"><a href="properties.html">Properties</a></td>
+    <td height="20"><a href="methods.html">Methods</a></td>
+    <td height="20"><a href="index.html">Home</a></td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+<hr>
+<h2>GetDIOBitDDR</h2>
+<p>Read a single bit from the digital IO port data direction register.</p>
+<h2>Syntax</h2>
+<i>value = </i>object.<b>GetDIOBitDDR(long bitPosition)</b> as Long 
+<p>GetDIOBit returns a 0 or 1 long value that represents the state of the Digitial 
+  I/O data direction register. Valid bit positions are 0 ... 15. Bit positions 
+  are weighted as XXYY where XX = Port 2, and YY = Port 1. Bit position 0 refers 
+  to Port1 bit 0, Bit position 8 refers to Port 2 Bit 0.</p>
+<h3>Remarks</h3>
+<p>Refer to the users manual for specific details. This function implements the 
+  &quot;T&quot; command.</p>
+<p>&nbsp;</p>
+</body>
+</html>

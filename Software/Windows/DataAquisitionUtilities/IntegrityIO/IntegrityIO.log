@@ -1,0 +1,19 @@
+Microsoft (R) Help Compiler
+HCRTF 4.03.0002
+Copyright (c) Microsoft Corp 1990 - 1995. All rights reserved.
+integrityio.hpj
+    HC1002: Note: 
+	Using existing phrase table: IntegrityIO.ph.
+    HC1010: Note: 
+	The following mapped Topic IDs were not used in any topic:
+	HIDD_PROPPAGE_INTEGRITYIO
+3	Topics
+0	Jumps
+0	Keywords
+1	Bitmap
+
+
+Created C:\0Job\IntegrityIO\IntegrityIO.hlp, 6,512 bytes
+Phrase+Zeck compression decreased help file by 72 bytes.
+Compile time: 0 minutes, 0 seconds
+2 notes, 0 warnings

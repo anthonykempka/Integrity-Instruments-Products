@@ -1,0 +1,31 @@
+# Build file for USBM400 C++ library
+
+TARGETNAME=USBM400
+TARGETPATH=obj
+TARGETTYPE=LIBRARY
+
+UMTYPE=windows
+
+# Use multi-threaded run-time libraries in DLL
+# USE_MSVCRT=1
+# Use multi-threaded run-time libraries STATIC linked
+# This must be set for a library
+USE_LIBCMT=1
+
+# Set compiler warning level
+MSC_WARNING_LEVEL=-W3 -WX
+
+# Set for Unicode
+C_DEFINES = $(C_DEFINES) -D_WIN32 -DUNICODE -D_UNICODE
+
+# This is for the GUID and IOCTL's defined in "bulkusr.h"
+INCLUDES=..\usbm400_sys_v2
+
+# Set the OS target version
+_NT_TARGET_VERSION=$(_NT_TARGET_VERSION_WINXP)
+
+LINKER_FLAGS=-map
+
+SOURCES=\
+        USBM400LIB.cpp
+

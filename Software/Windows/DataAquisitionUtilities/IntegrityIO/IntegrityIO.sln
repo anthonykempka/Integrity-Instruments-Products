@@ -1,0 +1,51 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "IntegrityIO", "IntegrityIO.vcproj", "{C7F6657F-9F68-4583-A2EE-D8B0F9EB2A9C}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "USBM300 Lib", "..\USBM300 Class\USBM300 Lib.vcproj", "{82A95E87-FBEF-4FCE-8489-607B7C6B4B2C}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup", "Setup\Setup.vdproj", "{AEA1B39A-1D0C-4298-A95B-F6BC8462472E}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+		Unicode Debug = Unicode Debug
+		Unicode Release = Unicode Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{C7F6657F-9F68-4583-A2EE-D8B0F9EB2A9C}.Debug.ActiveCfg = Debug|Win32
+		{C7F6657F-9F68-4583-A2EE-D8B0F9EB2A9C}.Debug.Build.0 = Debug|Win32
+		{C7F6657F-9F68-4583-A2EE-D8B0F9EB2A9C}.Release.ActiveCfg = Release|Win32
+		{C7F6657F-9F68-4583-A2EE-D8B0F9EB2A9C}.Release.Build.0 = Release|Win32
+		{C7F6657F-9F68-4583-A2EE-D8B0F9EB2A9C}.Unicode Debug.ActiveCfg = Unicode Debug|Win32
+		{C7F6657F-9F68-4583-A2EE-D8B0F9EB2A9C}.Unicode Debug.Build.0 = Unicode Debug|Win32
+		{C7F6657F-9F68-4583-A2EE-D8B0F9EB2A9C}.Unicode Release.ActiveCfg = Unicode Release|Win32
+		{C7F6657F-9F68-4583-A2EE-D8B0F9EB2A9C}.Unicode Release.Build.0 = Unicode Release|Win32
+		{82A95E87-FBEF-4FCE-8489-607B7C6B4B2C}.Debug.ActiveCfg = Debug|Win32
+		{82A95E87-FBEF-4FCE-8489-607B7C6B4B2C}.Debug.Build.0 = Debug|Win32
+		{82A95E87-FBEF-4FCE-8489-607B7C6B4B2C}.Release.ActiveCfg = Release|Win32
+		{82A95E87-FBEF-4FCE-8489-607B7C6B4B2C}.Release.Build.0 = Release|Win32
+		{82A95E87-FBEF-4FCE-8489-607B7C6B4B2C}.Unicode Debug.ActiveCfg = Debug|Win32
+		{82A95E87-FBEF-4FCE-8489-607B7C6B4B2C}.Unicode Debug.Build.0 = Debug|Win32
+		{82A95E87-FBEF-4FCE-8489-607B7C6B4B2C}.Unicode Release.ActiveCfg = Release|Win32
+		{82A95E87-FBEF-4FCE-8489-607B7C6B4B2C}.Unicode Release.Build.0 = Release|Win32
+		{AEA1B39A-1D0C-4298-A95B-F6BC8462472E}.Debug.ActiveCfg = Debug
+		{AEA1B39A-1D0C-4298-A95B-F6BC8462472E}.Debug.Build.0 = Debug
+		{AEA1B39A-1D0C-4298-A95B-F6BC8462472E}.Release.ActiveCfg = Release
+		{AEA1B39A-1D0C-4298-A95B-F6BC8462472E}.Release.Build.0 = Release
+		{AEA1B39A-1D0C-4298-A95B-F6BC8462472E}.Unicode Debug.ActiveCfg = Debug
+		{AEA1B39A-1D0C-4298-A95B-F6BC8462472E}.Unicode Debug.Build.0 = Debug
+		{AEA1B39A-1D0C-4298-A95B-F6BC8462472E}.Unicode Release.ActiveCfg = Release
+		{AEA1B39A-1D0C-4298-A95B-F6BC8462472E}.Unicode Release.Build.0 = Release
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal

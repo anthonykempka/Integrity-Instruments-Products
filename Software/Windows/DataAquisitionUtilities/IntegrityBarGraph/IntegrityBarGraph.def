@@ -1,0 +1,9 @@
+; IntegrityBarGraph.def : Declares the module parameters.
+
+LIBRARY      "IntegrityBarGraph.OCX"
+
+EXPORTS
+	DllCanUnloadNow     PRIVATE
+	DllGetClassObject   PRIVATE
+	DllRegisterServer   PRIVATE
+	DllUnregisterServer PRIVATE
