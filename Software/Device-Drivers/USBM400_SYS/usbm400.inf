@@ -1,0 +1,93 @@
+;
+; Copyright (c) 2008 Integrity Instruments,  Inc.  All rights reserved.
+;
+;Module Name:
+;
+;    USBM400.INF
+;
+;Abstract:
+;    Installation INF file for the Integrity Instruments, Inc. USBM400 module
+;
+; WDM version! (Removed KMDF co-installer section)
+;
+
+[Version]
+Signature="$WINDOWS NT$"
+; Integrity Instruments, Inc. Class and Class Guid 
+Class=INTEGRITYDAQ
+ClassGUID={33FE7EFF-62F3-4ffd-8159-9F47CEFBE1C3}
+Provider=%MfgName%
+DriverVer=2/8/2008,1.2.0.0
+CatalogFile=usbm400.cat
+
+; ================= Class section =====================
+
+[ClassInstall32]
+Addreg=SampleClassReg     
+
+[SampleClassReg]
+HKR,,,0,%ClassName%
+HKR,,Icon,,-5
+
+[DestinationDirs]
+DefaultDestDir = 12
+CoInstaller_CopyFiles = 11
+
+; ================= Device section =====================
+
+[Manufacturer]
+%MfgName%=Integrity,NTx86,NTamd64
+
+; For Win2K
+[Integrity]
+%USBM400%=UsbDevice.Dev, USB\VID_10EF&PID_0400
+
+; For XP and later
+[Integrity.NTx86]
+%USBM400%=UsbDevice.Dev, USB\VID_10EF&PID_0400
+
+[Integrity.NTamd64]
+%USBM400%=UsbDevice.Dev, USB\VID_10EF&PID_0400
+
+[UsbDevice.Dev.NT]
+CopyFiles=UsbDevice.Files.Ext
+
+[UsbDevice.Dev.NT.Services]
+Addservice = usbm400, 0x00000002, UsbDevice.AddService
+
+[UsbDevice.AddService]
+DisplayName    = %usbdevice.SvcDesc%
+ServiceType    = 1                  ; SERVICE_KERNEL_DRIVER
+StartType      = 3                  ; SERVICE_DEMAND_START
+ErrorControl   = 1                  ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %10%\System32\Drivers\usbm400.sys
+AddReg         = UsbDevice.AddReg
+LoadOrderGroup = Base
+
+[UsbDevice.AddReg]
+HKR,,DevLoader,,*ntkern
+HKR,,NTMPDriver,,usbm400.sys
+; Note: AAK  Not using any parameters at this time. Use the following as an example.
+;HKR,"Parameters","MaximumTransferSize",0x10001,4096
+;HKR,"Parameters","DebugLevel",0x10001,2
+
+[UsbDevice.Files.Ext]
+usbm400.sys
+
+[SourceDisksNames]
+1=%Disk_Description%,,,
+
+[SourceDisksFiles.x86]
+usbm400.sys = 1,x86,
+
+[SourceDisksFiles.amd64]
+usbm400.sys = 1,x64,
+
+;---------------------------------------------------------------;
+
+[Strings]
+MfgName           = "Integrity Instruments, Inc."
+Disk_Description  = "USB Installation Disk"
+usbdevice.SvcDesc = "WDM USB Driver for USBM400 Module"
+ClassName         = "Integrity Instruments Data Acquisition"
+USBM400           = "USBM400 Data Acquisition Module"

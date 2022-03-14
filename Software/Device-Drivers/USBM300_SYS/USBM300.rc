@@ -1,0 +1,20 @@
+#include <windows.h>
+#include <ntverp.h>
+
+#ifdef VER_COMPANYNAME_STR
+#undef VER_COMPANYNAME_STR
+#endif
+
+#define VER_FILETYPE                VFT_DRV
+#define VER_FILESUBTYPE             VFT2_DRV_SYSTEM
+#define VER_LEGALCOPYRIGHT_YEARS    "2003"
+#define VER_LEGALCOPYRIGHT_STR      "Copyright (c) Integrity Instruments, Inc. " VER_LEGALCOPYRIGHT_YEARS
+#define VER_COMPANYNAME_STR         "Integrity Instruments, Inc."
+#define VER_FILEDESCRIPTION_STR     "USBM300 Data Acquisition Driver"
+#define VER_INTERNALNAME_STR        "USBM300.sys"
+#define VER_ORIGINALFILENAME_STR    "USBM300.sys"
+#define VER_FILEVERSION_STR         "1.100"
+#define VER_FILEVERSION             1,1,0,0
+
+#include "common.ver"
+

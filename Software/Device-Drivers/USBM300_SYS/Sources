@@ -1,0 +1,18 @@
+TARGETNAME=USBM300
+TARGETPATH=obj
+TARGETTYPE=DRIVER
+DRIVERTYPE=WDM
+
+INCLUDES=$(BASEDIR)\INC
+
+TARGETLIBS=$(DDK_LIB_PATH)\usbd.lib
+
+#
+# Following is used to create .SYM symbol file - ala Windows 98
+# USE_MAPSYM=1
+
+SOURCES=          \
+        USBM300.rc \
+        DEBUG.c \
+        USBM300.c
+

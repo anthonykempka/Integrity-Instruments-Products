@@ -1,0 +1,101 @@
+
+USBM400.CDF
+--------------
+
+[CatalogHeader]
+Name=usbm400.cat
+ResultDir=.\
+PublicVersion=0x00000001
+[CatalogFiles]
+<HASH>usbm400.sys=.\usbm400.sys
+<HASH>usbm400.inf=.\usbm400.inf
+
+
+
+
+Command lines capture
+------------------------
+
+
+D:\CodeSigningKey>signtool.exe sign /v /ac GlobalSign_Root_CA.cer /t http://timestamp.globalsign.com/scripts/timstamp.dll usbm400.sys
+The following certificate was selected:
+    Issued to: Integrity Instruments, Inc.
+    Issued by: GlobalSign CodeSigning CA - G2
+    Expires:   Thu Dec 06 16:53:51 2012
+    SHA1 hash: 3B32AEC1E964ADC5E936A04361E13FBD18C44E4C
+
+Cross certificate chain (using machine store):
+    Issued to: Microsoft Code Verification Root
+    Issued by: Microsoft Code Verification Root
+    Expires:   Sat Nov 01 08:54:03 2025
+    SHA1 hash: 8FBE4D070EF8AB1BCCAF2A9D5CCAE7282A2C66B3
+
+        Issued to: GlobalSign Root CA
+        Issued by: Microsoft Code Verification Root
+        Expires:   Thu Apr 15 15:05:08 2021
+        SHA1 hash: CC1DEEBF6D55C2C9061BA16F10A0BFA6979A4A32
+
+            Issued to: GlobalSign CodeSigning CA - G2
+            Issued by: GlobalSign Root CA
+            Expires:   Sat Apr 13 05:00:00 2019
+            SHA1 hash: 9000401777DD2B43393D7B594D2FF4CBA4516B38
+
+                Issued to: Integrity Instruments, Inc.
+                Issued by: GlobalSign CodeSigning CA - G2
+                Expires:   Thu Dec 06 16:53:51 2012
+                SHA1 hash: 3B32AEC1E964ADC5E936A04361E13FBD18C44E4C
+
+Done Adding Additional Store
+Successfully signed and timestamped: usbm400.sys
+
+Number of files successfully Signed: 1
+Number of warnings: 0
+Number of errors: 0
+
+-----
+
+D:\CodeSigningKey>makecat /v usbm400.cdf
+opened:    usbm400.cdf
+processing: <HASH>usbm400.sys
+processing: <HASH>usbm400.inf
+Succeeded
+
+-----
+
+D:\CodeSigningKey>signtool.exe sign /v /ac GlobalSign_Root_CA.cer /t http://timestamp.globalsign.com/scripts/timstamp.dll usbm400.cat
+The following certificate was selected:
+    Issued to: Integrity Instruments, Inc.
+    Issued by: GlobalSign CodeSigning CA - G2
+    Expires:   Thu Dec 06 16:53:51 2012
+    SHA1 hash: 3B32AEC1E964ADC5E936A04361E13FBD18C44E4C
+
+Cross certificate chain (using machine store):
+    Issued to: Microsoft Code Verification Root
+    Issued by: Microsoft Code Verification Root
+    Expires:   Sat Nov 01 08:54:03 2025
+    SHA1 hash: 8FBE4D070EF8AB1BCCAF2A9D5CCAE7282A2C66B3
+
+        Issued to: GlobalSign Root CA
+        Issued by: Microsoft Code Verification Root
+        Expires:   Thu Apr 15 15:05:08 2021
+        SHA1 hash: CC1DEEBF6D55C2C9061BA16F10A0BFA6979A4A32
+
+            Issued to: GlobalSign CodeSigning CA - G2
+            Issued by: GlobalSign Root CA
+            Expires:   Sat Apr 13 05:00:00 2019
+            SHA1 hash: 9000401777DD2B43393D7B594D2FF4CBA4516B38
+
+                Issued to: Integrity Instruments, Inc.
+                Issued by: GlobalSign CodeSigning CA - G2
+                Expires:   Thu Dec 06 16:53:51 2012
+                SHA1 hash: 3B32AEC1E964ADC5E936A04361E13FBD18C44E4C
+
+Done Adding Additional Store
+Successfully signed and timestamped: usbm400.cat
+
+Number of files successfully Signed: 1
+Number of warnings: 0
+Number of errors: 0
+
+D:\CodeSigningKey>
+

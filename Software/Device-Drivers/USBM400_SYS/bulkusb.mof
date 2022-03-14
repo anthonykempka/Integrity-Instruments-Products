@@ -1,0 +1,26 @@
+[Dynamic, Provider("WMIProv"),
+ WMI,
+ Description("ASI DataMyte Bulk Usb driver"),
+ guid("{35FE35E2-567E-498f-8C64-E25E7EE201AB}"),
+ locale("MS\\0x409")]
+class BulkDeviceInformation
+{
+    [key, read]
+     string InstanceName;
+
+    [read] boolean Active;
+
+    [WmiDataId(1),
+     read,
+     write,
+     Description("The DebugPrintLevel property indicates the debug output level of the generic client driver.")
+     ]
+    uint32 DebugPrintLevel;
+	
+    [WmiDataId(2),
+     read,
+     Description("ModelName")
+     ]
+    string ModelName;
+
+};
