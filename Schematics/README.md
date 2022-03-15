@@ -1,6 +1,8 @@
 # Integrity Instruments Schematics
 
-These schematics are named using the part of model number - mostly.
+These schematics are named using original part number, well mostly anyway.
+
+There are approximately 50 different schematics representing many different designs raning from RS-485 protocol converters to data acquisition modules.
 
 In addition to schematics, there are CAD drawings showing the mechanical dimensions of certain parts. These are named "DIM"
 
