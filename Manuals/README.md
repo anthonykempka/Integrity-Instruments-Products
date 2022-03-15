@@ -1,6 +1,8 @@
 # Integrity Instruments User Manuals
 
-These User Manuals are named using the part of model number - mostly.
+These User Manuals are named using thepart numbers, well mostly anyway.
+
+The User Manuals correspond to the [schematics](https://github.com/anthonykempka/Integrity-Instruments-Products/tree/main/Schematics) sharing the same name.
 
 | Name | Description |
 |------|-------------|
